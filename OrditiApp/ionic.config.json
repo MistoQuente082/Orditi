@@ -1,5 +1,7 @@
 {
   "name": "OrditiApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

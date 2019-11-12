@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { Map } from "leaflet";
 
 @Component({
   selector: 'app-home',
@@ -6,7 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  map: Map;
+  marker: any;
+  latlong: [];
 
-  constructor() {}
+  constructor(
+    private geolocation: Geolocation
+  ) {}
+  showMap(){
+    this.map= new Map("Mymap").setView
+  }
 
 }
