@@ -16,7 +16,7 @@ export class HomePage {
     private geolocation: Geolocation
   ) {}
   showMap(){
-    this.map= new Map("Mymap").setView
+    this.map= new Map("Mymap").setView([])
   }
 
 }
