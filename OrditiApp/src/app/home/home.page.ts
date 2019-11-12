@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker } from 'leaflet';
+import { Map, latLng, tileLayer, Layer, marker, circle , polygon } from 'leaflet';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -33,6 +33,18 @@ export class HomePage {
           marker([this.lat, this.long]).addTo(this.map)
             .bindPopup('Você está aqui!')
             .openPopup();
+          circle([51.508, -0.11], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+        }).addTo(this.map);
+          polygon([
+          [51.509, -0.08],
+          [51.503, -0.06],
+          [51.51, -0.047]
+        ]).addTo(this.map);
+        polygon.bindPopup("I am a polygon.");
         }).catch((error) => {
           this.geolocationErrorAlert();
           console.log('Error getting location', error);
@@ -56,4 +68,4 @@ export class HomePage {
         await alert.present();
       }
 
-}
+    }
