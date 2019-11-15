@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker, circle , polygon } from 'leaflet';
+import { Map, latLng, tileLayer, Layer, marker, circle , Icon } from 'leaflet';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -22,6 +22,7 @@ export class HomePage {
       /** Set a time to reload the map **/
       setTimeout(() => {
         /** Get current position **/
+        
         this.geolocation.getCurrentPosition().then((resp) => {
           this.lat = resp.coords.latitude;
           this.long = resp.coords.longitude;
@@ -33,29 +34,43 @@ export class HomePage {
           marker([this.lat, this.long]).addTo(this.map)
             .bindPopup('Você está aqui!')
             .openPopup();
-          circle([51.508, -0.11], {
+          var circulo1 = circle([51.508, -0.11], {
+            name:'centro de maceió',
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 5000
+        }).addTo(this.map);
+          circulo1.bindPopup("sou um cirulo1")
+         var circulo2 = circle([39.508, -0.9], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,
             radius: 500
         }).addTo(this.map);
-          polygon([
-          [51.509, -0.08],
-          [51.503, -0.06],
-          [51.51, -0.047]
-        ]).addTo(this.map);
-        polygon.bindPopup("I am a polygon.");
+          circulo2.bindPopup("sou um circulo2!")
         }).catch((error) => {
           this.geolocationErrorAlert();
           console.log('Error getting location', error);
         });
       }, 50);
+      var LeafIcon = Icon.extend({
+        options: {
+          shadowUrl: 'leaf-shadow.png',
+          iconSize:     [38, 95],
+          shadowSize:   [50, 64],
+          iconAnchor:   [22, 94],
+          shadowAnchor: [4, 62],
+          popupAnchor:  [-3, -76]
+      }
+    }
   }
 
     /** Remove map when we have multiple map object **/
     ionViewWillLeave() {
       this.map.remove();
     }
+
 
     /** Create an alert when geolocation function fails **/
     async geolocationErrorAlert() {
@@ -67,5 +82,14 @@ export class HomePage {
 
         await alert.present();
       }
+}
+function localAtual() {
+  this.geolocation.getCurrentPosition().then((resp) => {
+    this.lat = resp.coords.latitude;
+    this.long = resp.coords.longitude;
+    this.map = new Map('mapId').setView([this.lat, this.long], 30);
+    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+    }).addTo(this.map);
 
-    }
+}
