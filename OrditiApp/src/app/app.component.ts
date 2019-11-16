@@ -17,7 +17,7 @@ export class AppComponent {
     },
     {
       title: 'Cadastro novo',
-      url: '/home',
+      url: '/cadastro',
     },
     {
       title: 'Autuação',
