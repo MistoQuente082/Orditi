@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyByDLiI0ezSLZIi-sLEvZ0oNnbtwwNwBkA",
+    authDomain: "orditiapp.firebaseapp.com",
+    databaseURL: "https://orditiapp.firebaseio.com",
+    projectId: "orditiapp",
+    storageBucket: "orditiapp.appspot.com",
+    messagingSenderId: "182040608476",
+    measurementId: "G-NP7D7L766N"
+  }
 };
 
 /*
