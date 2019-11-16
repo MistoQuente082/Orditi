@@ -16,20 +16,17 @@ export class AppComponent {
       url: '/home',
     },
     {
-      title: 'Cadastro novo',
+      title: 'Fazer Denuncia',
+      url: '/denuncia',
+    },
+    {
+      title: 'Como me tornar um micro Empreendedor Itinerante?',
       url: '/home',
     },
     {
-      title: 'Autuação',
-      url: '/home',
-    },
-    {
-      title: 'Fiscalização',
-      url: '/home',
-    },
-    {
-      title: 'Eventos temporários',
-      url: '/list',
+      title: 'Sou um fiscal',
+      url: '/login',
+      icon: 'ios-share'
     }
   ];
 
