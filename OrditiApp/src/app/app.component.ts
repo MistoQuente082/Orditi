@@ -24,12 +24,17 @@ export class AppComponent {
       url: '/home',
     },
     {
-      title: 'Fiscalização',
+      title: 'Fazer Denuncia',
+      url: '/denuncia',
+    },
+    {
+      title: 'Como me tornar um micro Empreendedor Itinerante?',
       url: '/home',
     },
     {
-      title: 'Eventos temporários',
-      url: '/list',
+      title: 'Sou um fiscal',
+      url: '/login',
+      icon: 'ios-share'
     }
   ];
 
