@@ -8,7 +8,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+
 
 import { AngularFireModule } from '@angular/fire'; //Necessário para qualquer coisa do Firebase
 import { environment } from '../environments/environment'; //As informações do Arquivo do firebase estão lá
@@ -34,7 +36,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Geolocation
+    Geolocation,
+    Camera
   ],
   bootstrap: [AppComponent]
 })

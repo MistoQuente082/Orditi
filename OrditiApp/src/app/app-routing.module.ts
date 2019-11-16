@@ -14,12 +14,12 @@ const routes: Routes = [
   {
     path: 'list',
     loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
-  },  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'denuncia', loadChildren: './denuncia/denuncia.module#DenunciaPageModule' },
   { path: 'autuacao', loadChildren: './autuacao/autuacao.module#AutuacaoPageModule' },
   { path: 'cadastro', loadChildren: './cadastro/cadastro.module#CadastroPageModule' }
-
-];
+]
 
 @NgModule({
   imports: [
@@ -27,4 +27,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

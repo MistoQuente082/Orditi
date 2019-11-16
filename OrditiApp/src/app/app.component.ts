@@ -23,6 +23,14 @@ export class AppComponent {
       url: '/home',
     },
     {
+      title: 'Cadastro novo',
+      url: '/cadastro',
+    },
+    {
+      title: 'Autuação',
+      url: '/home',
+    },
+    {
       title: 'Fazer Denuncia',
       url: '/denuncia',
     },
