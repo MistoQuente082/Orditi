@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker, circle , Icon , polygon} from 'leaflet';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Map, latLng, tileLayer, Layer, marker, circle , Icon , polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 
@@ -30,7 +30,7 @@ export class HomePage {
           .bindPopup('Você está aqui!')
           .openPopup();
 
-        /** poligono praça gogó */
+        /** poligono praça gogó da ema*/
         var zona1 = polygon( [
           -35.69711476564407,
           -9.66457497487766
@@ -63,8 +63,9 @@ export class HomePage {
           -35.69711476564407,
           -9.66457497487766
         ])
-        zona1.addTo(this.map)
-        zona1.bindPopup("praça gogó do eno")
+        zona1.addTo(this.map);
+        zona1.bindPopup("praça gogó da ema");
+        zona1.openPopup();
         /** poligono praça lions */
         var zona2 = polygon([
           -35.70979356765747,
@@ -86,8 +87,9 @@ export class HomePage {
           -35.70979356765747,
           -9.662660610882655
         ])
-        zona2.addTo(this.map)
-        zona2.bindPopup("praça Lions")
+        zona2.addTo(this.map);
+        zona2.bindPopup("praça Lions");
+        zona2.openPopup();
         /** poligono orla */
         var zona3 = polygon( [
           -35.70312023162842,
@@ -165,8 +167,9 @@ export class HomePage {
           -35.70312023162842,
           -9.66372884848818
         ])
-        zona3.addTo(this.map)
-        zona3.bindPopup("Orla urbana")
+        zona3.addTo(this.map);
+        zona3.bindPopup("Orla urbana");
+        zona3.openPopup();
       }).catch((error) => {
         console.log('Error getting location', error);
         this.geolocationErrorAlert();
