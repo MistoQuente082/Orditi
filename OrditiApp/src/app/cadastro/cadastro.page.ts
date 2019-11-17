@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertasService } from '../services /alertas.service';
+import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
