@@ -74,10 +74,16 @@ export class CadastroPage implements OnInit {
         pontoRef: this.pontoRef,
         produto: this.produto,
         localAtiv: this.localAtiv,
-        imgPessoa: this.imgPessoa
+        //imgPessoa: this.imgPessoa
       };
-      this.alertas.subDados(dados);
-      this.alertas.presentAlert('Deseja adicionar esta pessoa?');
+      //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
+      var resp;
+      resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
+      console.log(resp)
+      if (resp === 'Adicionar') {
+        console.log('Adicionando');
+        this.alertas.subDados(dados, "ambulantes");
+      }
     }
 
   }
