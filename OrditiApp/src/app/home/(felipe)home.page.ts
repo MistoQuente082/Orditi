@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker, circle , Icon } from 'leaflet';
+import { Map, latLng, tileLayer, Layer, marker, circle , Icon , polygon} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 
@@ -29,6 +29,19 @@ export class HomePage {
         marker([this.lat, this.long]).addTo(this.map)
           .bindPopup('Você está aqui!')
           .openPopup();
+
+        /** poligono praça gogó */
+        var zona1 = polygon([])
+        zona1.addTo(this.map)
+        zona1.bindPopup("praça gogó do eno")
+        /** poligono praça lions */
+        var zona2 = polygon([])
+        zona2.addTo(this.map)
+        zona2.bindPopup("praça Lions")
+        /** poligono orla */
+        var zona3 = polygon([])
+        zona3.addTo(this.map)
+        zona3.bindPopup("Orla urbana")
       }).catch((error) => {
         console.log('Error getting location', error);
         this.geolocationErrorAlert();
