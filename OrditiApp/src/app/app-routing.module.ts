@@ -18,7 +18,9 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'denuncia', loadChildren: './denuncia/denuncia.module#DenunciaPageModule' },
   { path: 'autuacao', loadChildren: './autuacao/autuacao.module#AutuacaoPageModule' },
-  { path: 'cadastro', loadChildren: './cadastro/cadastro.module#CadastroPageModule' }
+  { path: 'cadastro', loadChildren: './cadastro/cadastro.module#CadastroPageModule' },
+  { path: 'mapa-modal', loadChildren: './mapa-modal/mapa-modal.module#MapaModalPageModule' }
+
 ]
 
 @NgModule({

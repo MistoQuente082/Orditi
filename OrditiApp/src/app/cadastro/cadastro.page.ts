@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { ModalController } from '@ionic/angular';
+import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 
 @Component({
   selector: 'app-cadastro',
@@ -27,7 +29,8 @@ export class CadastroPage implements OnInit {
 
   constructor(
     public alertas: AlertasService,
-    public camera: Camera
+    public camera: Camera,
+    public modalController: ModalController
   ) {
 
   }
@@ -55,7 +58,10 @@ export class CadastroPage implements OnInit {
 
   // Função que leva a escolher um ponto no mapa
   selectMap() {
-
+    this.modalController.create(
+      {component: MapaModalPage}).then((modalElement)=>{
+        modalElement.present();
+      });
   }
 
   // Botão de cadastro
