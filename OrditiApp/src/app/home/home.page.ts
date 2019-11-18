@@ -13,29 +13,34 @@ import { AppModule } from '../app.module';
 export class HomePage {
   user: any = AppModule.getUsuario();
 
-  map: Map;
+  map: Map = null;
   lat: any;
   long: any;
 
   constructor(private geolocation: Geolocation, public alertController: AlertController) { }
 
   ionViewDidEnter() {
-    /** Get current position **/
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.lat = resp.coords.latitude;
-      this.long = resp.coords.longitude;
-      this.map = new Map('mapId').setView([this.lat, this.long], 30);
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
-      }).addTo(this.map);
-      /** Create a marker on your current position **/
-      marker([this.lat, this.long]).addTo(this.map)
-        .bindPopup('Você está aqui!')
-        .openPopup();
-    }).catch((error) => {
-      console.log('Error getting location', error);
-      this.geolocationErrorAlert();
-    });
+    if (this.map !== 'undefined' && this.map !== null) {
+      this.map.remove();
+    }
+    else{
+      /** Get current position **/
+      this.geolocation.getCurrentPosition().then((resp) => {
+        this.lat = resp.coords.latitude;
+        this.long = resp.coords.longitude;
+        this.map = new Map('mapId').setView([this.lat, this.long], 30);
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        }).addTo(this.map);
+        /** Create a marker on your current position **/
+        marker([this.lat, this.long]).addTo(this.map)
+          .bindPopup('Você está aqui!')
+          .openPopup();
+      }).catch((error) => {
+        console.log('Error getting location', error);
+        this.geolocationErrorAlert();
+      });
+    }
   }
 
   /** Remove map when we have multiple map object **/

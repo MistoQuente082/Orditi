@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./denuncia.page.scss'],
 })
 export class DenunciaPage implements OnInit {
-  map2: Map;
+  map2: Map = null;
   lat: any;
   long: any;
-
+  latLngC: any;
   routes = [
     {
       path: '',
@@ -33,7 +33,7 @@ export class DenunciaPage implements OnInit {
 
   /** Load leaflet map **/
   leafletMap() {
-    if (this.map2) {
+    if (this.map2 !== 'undefined' && this.map2 !== null) {
       this.map2.remove();
     }
     else {
@@ -42,17 +42,24 @@ export class DenunciaPage implements OnInit {
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.map2 = new Map('mapId2').setView([this.lat, this.long], 30);
+        this.map2.on('click', function(e){mapMarker(e);});
+           
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map2);
+
+        function mapMarker(e) {
+          console.log("Objeto: ", e);
+          console.log("Latlng: ", e.latlng);
+          console.log("Lat: ", e.latlng.lat);
+          console.log("Lng: ", e.latlng.lng);
+          marker(e.latlng).addTo(this.map2);
+        }
+
       }).catch((error) => {
         console.log('Error getting location', error);
       });
     }
-    /** Set a time to reload the map **/
-    setTimeout(() => {
-      this.leafletMap();
-    }, 5000);
   }
 
   mapRemove() {

@@ -26,14 +26,14 @@
                 "output": "assets"
               },
               {
-                "glob": "**/*",
-                "input": "./node_modules/leaflet/dist/images",
-                "output": "leaflet/"
-              },
-              {
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/leaflet/dist/images",
+                "output": "leaflet/"
               }
             ],
             "styles": [
@@ -41,10 +41,10 @@
                 "input": "src/theme/variables.scss"
               },
               {
-                 "input": "./node_modules/leaflet/dist/leaflet.css"
+                "input": "src/global.scss"
               },
               {
-                "input": "src/global.scss"
+                 "input": "./node_modules/leaflet/dist/leaflet.css"
               }
             ],
             "scripts": []
