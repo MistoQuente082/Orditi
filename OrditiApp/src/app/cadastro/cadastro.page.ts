@@ -3,6 +3,7 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import undefined = require('firebase/empty-import');
 
 @Component({
   selector: 'app-cadastro',
@@ -27,6 +28,9 @@ export class CadastroPage implements OnInit {
   public pontoRef: string;
   public localAtiv: string;
 
+  //Ponto no MApa
+  private static local: any;
+
   constructor(
     public alertas: AlertasService,
     public camera: Camera,
@@ -34,8 +38,15 @@ export class CadastroPage implements OnInit {
   ) {
 
   }
+  // Gets e Sets do local
+  static getLocal() {
+    return this.local;
+  }
+  static setLocal(ponto) {
+    this.local = ponto;
+  }
 
-  // Função para cemerqa
+  // Função para camera
   cam() {
     const options: CameraOptions = {
       quality: 100,
@@ -58,8 +69,14 @@ export class CadastroPage implements OnInit {
 
   // Função que leva a escolher um ponto no mapa
   selectMap() {
+    var origem = CadastroPage;
     this.modalController.create(
-      {component: MapaModalPage}).then((modalElement)=>{
+      {
+        component: MapaModalPage,
+        componentProps: {
+          origem
+        }
+      }).then((modalElement) => {
         modalElement.present();
       });
   }
@@ -68,8 +85,9 @@ export class CadastroPage implements OnInit {
   cadastrar() {
     if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
       || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-      || this.produto === undefined || this.pontoRef === undefined || this.localAtiv === undefined) {
-      this.alertas.presentToast('Preencha os campos!');
+      || this.produto === undefined || this.pontoRef === undefined || this.localAtiv === undefined
+      || CadastroPage.getLocal() === undefined) {
+      this.alertas.presentToast('Preencha os campos e escolha o local no mapa!');
     } else {
       const dados = {
         nome: this.nome,
@@ -80,6 +98,7 @@ export class CadastroPage implements OnInit {
         pontoRef: this.pontoRef,
         produto: this.produto,
         localAtiv: this.localAtiv,
+        latlong: CadastroPage.getLocal,
         //imgPessoa: this.imgPessoa
       };
       //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
