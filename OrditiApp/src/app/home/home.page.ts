@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon , L} from 'leaflet';
+import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon, L } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 import { AppModule } from '../app.module';
@@ -40,30 +40,26 @@ export class HomePage {
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.map = new Map('mapId').setView([this.lat, this.long], 30);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map);
-        /** Create a marker on your current position **/
-        marker([this.lat, this.long]).addTo(this.map)
-          .bindPopup('Você está aqui!')
-          .openPopup();
+
 
         /** Criar poligonos a partir de dados do firebase */
+        //Código de acesso à coleção das zonas no firebase 
         this.db.collection('zonas').get().toPromise().then(snapshot => {
           snapshot.forEach(doc => {
-            var zona = doc.data().coordenadas;
-            var area = [];
-            for (var ponto in zona) {
-              area.push([zona[ponto].latitude, zona[ponto].longitude])
-            }
-            console.log(area);
-            var regiao = polygon(area);
-            regiao.addTo(this.map);
-            regiao.bindPopup(doc.data().nome);
-            regiao.bindPopup(doc.data().capacidade);
-            
+            this.criarPoligono(doc);
           })
         })
+        //Fim do acesso ao Firebasse
+
+        /** Criar mapa na posição atual do usuário **/
+        marker([this.lat, this.long]).addTo(this.map)
+          .bindPopup('Você está aqui!') //Mensagem do ponto
+          .openPopup(); //Abre a Mensagem
+
+
       }).catch((error) => {
         console.log('Error getting location', error);
         this.geolocationErrorAlert();
@@ -76,6 +72,22 @@ export class HomePage {
     this.map.remove();
   }
 
+  criarPoligono(doc) {
+    var zona = doc.data().coordenadas;
+    var area = [];
+    //Constrói a matriz area com arrays de coordenadas(latitude e longitude)
+    for (var ponto in zona) {
+      //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
+      area.push([zona[ponto].latitude, zona[ponto].longitude])
+    }
+    //Testando
+    console.log(area);
+    //Constrói um poligono com as coordenadas presentes em 'area'
+    var regiao = polygon(area);
+    //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
+    regiao.addTo(this.map);
+    regiao.bindPopup(doc.data().nome + ': ' + doc.data().capacidade);
+  }
 
   /** Create an alert when geolocation function fails **/
   async geolocationErrorAlert() {
