@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
+import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon , L} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 import { AppModule } from '../app.module';
@@ -36,7 +36,6 @@ export class HomePage {
 
 
       /** Get current position **/
-
       this.geolocation.getCurrentPosition().then((resp) => {
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
