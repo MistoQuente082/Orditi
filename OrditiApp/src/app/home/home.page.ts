@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon, L } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { Observable } from 'rxjs';
+import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+import { AlertasService } from '../services/alertas.service';
 
 @Component({
   selector: 'app-home',
@@ -23,9 +25,13 @@ export class HomePage {
   //Zonas da cidade
   locais: any[];
 
+  zona: any;
+
   constructor(private geolocation: Geolocation,
+    public alertas: AlertasService,
     public alertController: AlertController,
-    public db: AngularFirestore) {
+    public db: AngularFirestore,
+    public modalCtrl: ModalController, ) {
   }
 
   ionViewDidEnter() {
@@ -84,6 +90,7 @@ export class HomePage {
     console.log(area);
     //Constrói um poligono com as coordenadas presentes em 'area'
     var regiao = polygon(area);
+    regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
     regiao.addTo(this.map);
     regiao.bindPopup(doc.data().nome + ': ' + doc.data().capacidade);
@@ -97,6 +104,19 @@ export class HomePage {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  async presentModal() {
+    const modal = await this.modalCtrl.create({
+      component: DetalheZonaPage,
+      cssClass: 'modalIncompleto'
+    });
+    return await modal.present();
+  }
+
+  regiaoClicada(doc) {
+    this.zona = doc.data()
+    console.log(doc.data().nome)
   }
 
 }

@@ -16,7 +16,9 @@ const routes: Routes = [
   { path: 'denuncia', loadChildren: './denuncia/denuncia.module#DenunciaPageModule' },
   { path: 'autuacao', loadChildren: './autuacao/autuacao.module#AutuacaoPageModule' },
   { path: 'cadastro', loadChildren: './cadastro/cadastro.module#CadastroPageModule' },
-  { path: 'mapa-modal', loadChildren: './mapa-modal/mapa-modal.module#MapaModalPageModule' }
+  { path: 'mapa-modal', loadChildren: './mapa-modal/mapa-modal.module#MapaModalPageModule' },
+  { path: 'detalhe-zona', loadChildren: './detalhe-zona/detalhe-zona.module#DetalheZonaPageModule' },
+  { path: 'informacoes', loadChildren: './informacoes/informacoes.module#InformacoesPageModule' }
 
 ]
 
