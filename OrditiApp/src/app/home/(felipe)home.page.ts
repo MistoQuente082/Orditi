@@ -15,7 +15,10 @@ export class HomePage {
   lat: any;
   long: any;
 
-  constructor(private geolocation: Geolocation, public alertController: AlertController, public db: AngularFirestore) { }
+  constructor(
+    private geolocation: Geolocation,
+    public alertController: AlertController,
+    public db: AngularFirestore) { }
 
   ionViewDidEnter() {
     /** Get current position **/
@@ -36,7 +39,7 @@ export class HomePage {
 
       const geojsonLayer = new L.GeoJSON(null, {});
 
-      this.db.geojsonLayer.on('featureparse', function (e) {
+      geojsonLayer.on("featureparse", function (e) {
 
         (function (layer, properties) {
 

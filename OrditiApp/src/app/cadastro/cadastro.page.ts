@@ -86,7 +86,7 @@ export class CadastroPage implements OnInit {
       || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
       || this.produto === undefined || this.pontoRef === undefined || this.localAtiv === undefined
       || CadastroPage.getLocal() === undefined) {
-      this.alertas.presentToast('Preencha os campos e escolha o local no mapa!');
+      this.alertas.presentToast('Preencha os campos!');
     } else {
       const dados = {
         nome: this.nome,
@@ -97,7 +97,6 @@ export class CadastroPage implements OnInit {
         pontoRef: this.pontoRef,
         produto: this.produto,
         localAtiv: this.localAtiv,
-        latlong: CadastroPage.getLocal,
         //imgPessoa: this.imgPessoa
       };
       //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
