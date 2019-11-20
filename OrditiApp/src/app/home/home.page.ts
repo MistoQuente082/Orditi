@@ -52,7 +52,7 @@ export class HomePage {
         /** Criar poligonos a partir de dados do firebase */
         this.db.collection('zonas').get().toPromise().then(snapshot => {
           snapshot.forEach(doc => {
-            var zona = doc.data().local;
+            var zona = doc.data().coordenadas;
             var area = [];
             for (var ponto in zona) {
               area.push([zona[ponto].latitude, zona[ponto].longitude])
@@ -61,36 +61,10 @@ export class HomePage {
             var regiao = polygon(area);
             regiao.addTo(this.map);
             regiao.bindPopup(doc.data().nome);
+            regiao.bindPopup(doc.data().capacidade);
+            
           })
         })
-
-        /** poligono praça lions */
-        var zona2 = polygon([
-          [
-            -35.70979356765747,
-            -9.662660610882655
-          ],
-          [
-            -35.709471702575684,
-            -9.663221171633174
-          ],
-          [
-            -35.70867776870727,
-            -9.662888008280808
-          ],
-          [
-            -35.70888698101044,
-            -9.662375041839407
-          ],
-          [
-            -35.70979356765747,
-            -9.662660610882655
-          ]
-        ]);
-        console.log(zona2)
-        zona2.addTo(this.map);
-        zona2.bindPopup("praça Lions");
-
       }).catch((error) => {
         console.log('Error getting location', error);
         this.geolocationErrorAlert();
