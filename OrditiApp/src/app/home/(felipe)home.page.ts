@@ -15,7 +15,8 @@ export class HomePage {
   lat: any;
   long: any;
 
-  constructor(private geolocation: Geolocation,
+  constructor(
+    private geolocation: Geolocation,
     public alertController: AlertController,
     public db: AngularFirestore) { }
 
@@ -33,10 +34,10 @@ export class HomePage {
         .bindPopup('Você está aqui!')
         .openPopup();
 
-      var polyindex = 0;
-      var popup = new L.Popup();
+      let polyindex = 0;
+      const popup = new L.Popup();
 
-      var geojsonLayer = new L.GeoJSON(null, {});
+      const geojsonLayer = new L.GeoJSON(null, {});
 
       geojsonLayer.on("featureparse", function (e) {
 
@@ -44,8 +45,8 @@ export class HomePage {
 
           //click event that triggers the popup and centres it on the polygon
           layer.on("click", function (e) {
-            var bounds = layer.getBounds();
-            var popupContent = "mais um ambulante adicionado!";
+            const bounds = layer.getBounds();
+            const popupContent = "mais um ambulante adicionado!";
             popup.setLatLng(bounds.getCenter());
             popup.setContent(popupContent);
             this.map.openPopup(popup);
