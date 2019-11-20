@@ -1,103 +1,125 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import * as firebase from 'firebase/app';
 
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AppModule } from '../app.module';
 
 @Component({
-	selector: 'app-login',
-	templateUrl: './login.page.html',
-	styleUrls: ['./login.page.scss'],
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
 })
 
 export class LoginPage implements OnInit {
-	loading: HTMLIonLoadingElement;
+  loading: HTMLIonLoadingElement;
 
-	matricula: string;
-	senha: string;
+  tipo: boolean;
 
-	user: any = AppModule.getUsuario();
+  matricula: number;
+  senha: string;
 
-	constructor(public router: Router,
-		public fAuth: AngularFireAuth,
-		public loadingController: LoadingController,
-		public db: AngularFirestore,
-	) { }
+  user: any = AppModule.getUsuario();
 
-	async fazerLogin() {
-		console.log('Tentando fazer login:')
-		const { matricula, senha } = this;
+  constructor(
+    public router: Router,
+    public fAuth: AngularFireAuth,
+    public loadingController: LoadingController,
+    public db: AngularFirestore,
+    public toastCtrl: ToastController
+  ) { }
 
-		var user: any;
+  async fazerLogin() {
+    console.log('Tentando fazer login:');
+    const { matricula, senha } = this;
 
-		await this.presentLoading();//Carregamento enquanto espera
+    let user: any;
 
-		try {
-			//Autenticação por email e senha
-			//await this.fAuth.auth.signInWithEmailAndPassword(email, senha); 
-			//const currentUser = firebase.auth().currentUser; -> Define o usuario como aquele logado
-			user = this.db.collection('fiscais').doc(matricula).get().toPromise()
-				.then(dados => {
-					if (!dados.exists) { //Checa se existe um documento no local indicado
-						console.log('Matrícula não encontrada');
-					} else { //Ou seja, há um fiscal cadastrado com essa matrícula
-						console.log('Matrícula encontrada')
-						user = dados.data();
-						if (senha === user.senha) { //Checa se as senhas batem
-							console.log('Usuário logado!' + user.senha)
-							AppModule.setUsuario(user); //Trocar this.usuario por uma variável global de usuário
+    await this.presentLoading(); // Carregamento enquanto espera
 
-							console.log(AppModule.getUsuario());
+    try {
 
-							this.returnHome();
+      if (this.matricula === undefined || this.senha === undefined) {
+        // Aviso na tela
+        this.presentToast('Preencha os campos');
+        console.log('Campos vazios');
+      }
+      else {
 
-						} else {
-							console.log('Senha Incorreta!')
-						}
-					}
-				})
-				.catch(err => {
-					console.log('Erro encontrado: ' + err);
-				});
+        // Autenticação por email e senha
+        // await this.fAuth.auth.signInWithEmailAndPassword(email, senha);
+        // const currentUser = firebase.auth().currentUser; -> Define o usuario como aquele logado
+        user = this.db.collection('fiscais').doc(matricula.toString()).get().toPromise()
+          .then(dados => {
 
-		} catch (err) {
+            if (!dados.exists) { // Checa se existe um documento no local indicado
+              console.log('Matrícula não encontrada');
+              // Aviso na tela
+              this.presentToast('Matricula ou Senha Incorreta!');
+            } else { // Ou seja, há um fiscal cadastrado com essa matrícula
+              console.log('Matrícula encontrada');
+              user = dados.data();
+              if (senha === user.senha) { // Checa se as senhas batem
+                console.log('Usuário logado!' + user.senha);
+                AppModule.setUsuario(user); // Trocar this.usuario por uma letiável global de usuário
 
-			//Erros usando o FirebaseAuth
-			//if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-			//	console.log('User not found');
-			//	this.loading.dismiss();
-			//	this.presentToast('Email ou senha invalido!');
-			//}
+                console.log(AppModule.getUsuario());
 
-			console.log('Erro encontrado ao conectar-se ao banco de dados: ' + err)
+                this.returnHome();
 
-		} finally {
-			//Encerra o carregamento
-			this.loading.dismiss();
-		}
-	}
+              } else {
+                // Aviso na tela
+                this.presentToast('Matricula ou Senha Incorreta!');
+                console.log('Senha Incorreta!');
+              }
+            }
 
-	async presentLoading() {
-		this.loading = await this.loadingController.create({ message: 'Aguarde...' });
-		return this.loading.present();
-	}
+          })
+          .catch(err => {
+            console.log('Erro encontrado: ' + err);
+          });
+      }
 
-	ngOnInit() {
-	}
+    } catch (err) {
 
-	routes = [
-		{
-			path: '',
-			redirectTo: 'home'
-		}
-	];
+      console.log('Erro encontrado ao conectar-se ao banco de dados: ' + err.code);
 
-	returnHome() {
-		this.router.navigate(['/home']);
-	}
+    } finally {
+      // Encerra o carregamento
+      this.loading.dismiss();
+    }
+
+  }
+
+  // Senha visivel ou não
+  hideShow() {
+    this.tipo = !this.tipo;
+
+  }
+
+  // Carregando
+  async presentLoading() {
+    this.loading = await this.loadingController.create({ message: 'Aguarde...' });
+    return this.loading.present();
+  }
+
+  // Avisos na tela
+  async presentToast(message) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  ngOnInit() {
+  }
+
+
+  returnHome() {
+    this.router.navigate(['/home']);
+  }
 }

@@ -3,7 +3,6 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
-import undefined = require('firebase/empty-import');
 
 @Component({
   selector: 'app-cadastro',

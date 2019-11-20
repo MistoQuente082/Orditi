@@ -1,22 +1,42 @@
 <ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-		<ion-title>Login</ion-title>
-	</ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-	<div id="container">
-		<img id="logo" src="../assets/img/orditi-logo.png">
-		<div id="inputLogin">
-			<ion-input type="text" [(ngModel)]="matricula" placeholder="Matricula"></ion-input>
-			<ion-input type="password" [(ngModel)]="senha" placeholder="Senha"></ion-input>
-		</div>
-		<br>
-		<ion-button (click)="fazerLogin()">Login</ion-button>
-		<ion-button color="danger" (click)="returnHome()">Eita, sou não!
-		</ion-button>
-	</div>
+  <div id="container">
+    <img id="logo" src="../assets/img/orditi-logo.png">
+    <br>
+
+
+    <ion-card>
+      <ion-item>
+        <ion-input type="number" placeholder="Matricula" [(ngModel)]="matricula"></ion-input>
+      </ion-item>
+    </ion-card>
+    <ion-card>
+      <ion-item>
+        <ion-buttons slot="end">
+          <ion-button (click)="hideShow()">
+            <ion-icon slot="icon-only" color="dark" [name]="tipo ? 'md-eye-off' : 'md-eye'">
+            </ion-icon>
+          </ion-button>
+        </ion-buttons>
+
+        <ion-input [type]="tipo ? 'text' : 'password'" type="password" placeholder="Senha" [(ngModel)]="senha">
+        </ion-input>
+
+      </ion-item>
+    </ion-card>
+
+    <br>
+
+    <ion-button expand="block" color="medium" (click)="fazerLogin()">Login</ion-button>
+
+  </div>
+
 </ion-content>
