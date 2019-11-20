@@ -27,7 +27,7 @@ export class CadastroPage implements OnInit {
   public pontoRef: string;
   public localAtiv: string;
 
-  //Ponto no MApa
+  // Ponto no MApa
   private static local: any;
 
   constructor(
@@ -100,9 +100,9 @@ export class CadastroPage implements OnInit {
         //imgPessoa: this.imgPessoa
       };
       //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
-      var resp;
+      let resp;
       resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
-      console.log(resp)
+      console.log(resp);
       if (resp === 'Adicionar') {
         console.log('Adicionando');
         this.alertas.subDados(dados, "ambulantes");

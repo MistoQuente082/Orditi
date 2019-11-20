@@ -3,16 +3,54 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button color="danger" (click)="mapRemove()">
-        Cancelar
-        <!--<ion-icon name="return-left"></ion-icon>-->
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Marque um Ponto</ion-title>
+    
+    <ion-title>Denúncia</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="mapId2" style="width: 100%; height: 100%"></div>
+  <img src="../../assets/img/vetor.png" (click)="cam()">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        Informações
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-item>
+      <ion-label color="medium" position="floating">Período:</ion-label>
+
+      <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
+        ([ngModel])="dataDenuncia" placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
+      </ion-datetime>
+
+
+
+      <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="horaDenuncia"
+        value="horaDenuncia" placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
+      </ion-datetime>
+
+
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label color="medium" position="floating">Local:</ion-label>
+      <ion-input type="text" [(ngModel)]="localDenuncia" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
+      </ion-input>
+
+      <ion-note text-end (click)="selectMap()">
+        Marcar no mapa
+      </ion-note>
+
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="medium" position="floating">Informe a situação:</ion-label>
+      <ion-textarea [(ngModel)]="infoDenuncia" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
+    </ion-item>
+  </ion-card>
+
+  <ion-button (click)="subDenuncia()" expand="block" color="medium">Enviar Denuncia</ion-button>
+
+
 </ion-content>
