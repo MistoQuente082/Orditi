@@ -52,7 +52,12 @@ export class AppComponent {
     },
     {
       title: 'Eventos Temporários',
-      url: '/login',
+      url: '/home',
+    },
+    {
+      title: 'Sair',
+      click: 'sair()',
+      url: '/home',
       icon: 'ios-share'
     }
   ];
@@ -70,6 +75,10 @@ export class AppComponent {
   Fiscal() {
     return AppModule.getUsuarioStatus();
     console.log(AppModule.getUsuarioStatus())
+  }
+
+  sair() {
+    AppModule.setUsuario(null);
   }
 
   initializeApp() {

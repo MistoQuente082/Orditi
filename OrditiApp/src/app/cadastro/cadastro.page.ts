@@ -67,7 +67,18 @@ export class CadastroPage implements OnInit {
 
 
   }
-
+  formataCPF(cpf){
+    //retira os caracteres indesejados...
+    cpf = this.cpf.replace(/[^\d]/g, "");
+    
+    if(cpf.lenght==11){
+    //realizar a formatação...
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+    else{
+      return "valor do campo CPF inválido!"
+    }
+  }
 
   // Função que leva a escolher um ponto no mapa
   selectMap() {
@@ -99,9 +110,10 @@ export class CadastroPage implements OnInit {
       }
 
     } else {
+      
       const dados = {
         nome: this.nome,
-        cpf: this.cpf,
+        cpf: this.formataCPF(this.cpf),
         fone: this.fone,
         escolaridade: this.escolaridade,
         endereco: this.endereco,
