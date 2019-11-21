@@ -9,9 +9,11 @@
 
 <ion-content>
 	<div id="mapId" style="width: 100%; height: 100%"></div>
-	<ion-fab (click)="confirmar()" vertical="bottom" horizontal="end" slot="fixed">
+ 	<ion-fab (click)="confirmar()" vertical="bottom" horizontal="end" slot="fixed">
 		<ion-fab-button>
 			<ion-icon name="checkmark"></ion-icon>
 		</ion-fab-button>
 	</ion-fab>
+
+  <ion-button expand="block" color="medium" (click)="pesquisarMapa()">Pesquisar Local</ion-button>
 </ion-content>
