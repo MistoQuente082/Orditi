@@ -3,13 +3,13 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    
+
     <ion-title>Denúncia</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img src="../../assets/img/vetor.png" (click)="cam()">
+  <img [src]="imgDenuncia" (click)="cam()">
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>

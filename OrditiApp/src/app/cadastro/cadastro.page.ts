@@ -3,6 +3,8 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+
 
 @Component({
   selector: 'app-cadastro',
@@ -26,6 +28,7 @@ export class CadastroPage implements OnInit {
   public produto: string;
   public pontoRef: string;
   public localAtiv: string;
+  public regiao: string;
 
   // Ponto no MApa
   private static local: any;
@@ -84,9 +87,17 @@ export class CadastroPage implements OnInit {
   cadastrar() {
     if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
       || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-      || this.produto === undefined || this.pontoRef === undefined || this.localAtiv === undefined
-      || CadastroPage.getLocal() === undefined) {
+      || this.produto === undefined || this.regiao === undefined) {
       this.alertas.presentToast('Preencha os campos!');
+    }
+
+    if (this.regiao !== 'a1') {
+      if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
+        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
+        || this.produto === undefined || this.localAtiv === undefined) {
+        this.alertas.presentToast('Preencha os campos!');
+      }
+
     } else {
       const dados = {
         nome: this.nome,
