@@ -3,7 +3,7 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+
 
 
 @Component({
