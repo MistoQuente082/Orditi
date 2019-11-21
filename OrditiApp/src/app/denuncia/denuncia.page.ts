@@ -24,7 +24,7 @@ export class DenunciaPage implements OnInit {
   latLngC: any;
 
   // Var Camera
-  public imgDenuncia;
+  public imgDenuncia = '../../assets/img/vetor.png';
 
   public dataDenuncia: Date = new Date();
   public horaDenuncia: Date = new Date();
