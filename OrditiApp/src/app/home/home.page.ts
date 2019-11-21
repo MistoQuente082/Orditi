@@ -50,7 +50,6 @@ export class HomePage {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map);
 
-
         /** Criar poligonos a partir de dados do firebase */
         //Código de acesso à coleção das zonas no firebase 
         this.db.collection('zonas').get().toPromise().then(snapshot => {
@@ -76,6 +75,10 @@ export class HomePage {
   /** Remove map when we have multiple map object **/
   ionViewWillLeave() {
     this.map.remove();
+  }
+  // retornar local atual
+  localAtual(){
+        this.map.setView([this.lat, this.long],30);
   }
 
   criarPoligono(doc) {
