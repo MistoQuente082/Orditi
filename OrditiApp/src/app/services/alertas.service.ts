@@ -31,7 +31,8 @@ export class AlertasService {
           handler: async () => {
             const resp = 'Adicionar'; //Retorna o que deve ser feito
             this.subDados(dados, local)
-            //this.router.navigate(['/']);
+            this.router.navigate(['/home']);
+            this.presentToast('Executado com sucesso!')
             console.log('Executando')
           }
         }
@@ -45,7 +46,11 @@ export class AlertasService {
 
   // Envia ao Banco de Dados
   subDados(dados, local: string) {
-    this.db.collection(local).doc(dados.cpf).set(dados);
+    if (local === 'ambulantes') {
+      this.db.collection(local).doc(dados.cpf).set(dados);
+    } else {
+      this.db.collection(local).add(dados);
+    }
     console.log("Documento adicionado a " + local);
   }
 

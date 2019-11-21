@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import { AlertasService } from '../services/alertas.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class DenunciaPage implements OnInit {
     public alertas: AlertasService,
     public camera: Camera,
     public router: Router,
+    public db: AngularFirestore,
     public modalController: ModalController) { }
 
 
@@ -98,11 +100,11 @@ export class DenunciaPage implements OnInit {
 
 
 
-// ENVIAR DENUNCIA
+  // ENVIAR DENUNCIA
   subDenuncia() {
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
       this.infoDenuncia === undefined || this.localDenuncia === undefined) {
-        this.alertas.presentToast('Preencha os campos!');
+      this.alertas.presentToast('Preencha os campos!');
     } else {
       const dados = {
         dataDenuncia: this.dataDenuncia,
@@ -110,7 +112,7 @@ export class DenunciaPage implements OnInit {
         localDenuncia: this.localDenuncia,
         infoDenuncia: this.infoDenuncia
       };
-
+      this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
       // COLOCA AQUI para envia dados da denuncia ao banco
       // Falta en viar a foto
       // E como tranformar o local no nome da rua

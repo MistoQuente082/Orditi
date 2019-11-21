@@ -45,17 +45,20 @@ import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 })
 export class AppModule {
   private static status: boolean = false;
-  private static usuario: any; //Variável onse se armazena os dados do fiscal logado
+  private static usuario: any = null; //Variável onse se armazena os dados do fiscal logado
   //Função para pegar os dados do fiscal
   static getUsuario() {
     return this.usuario;
   }
   static getUsuarioStatus() {
-    return this.status;
+    if (this.getUsuario() === null) {
+      return false
+    } else {
+      return true
+    }
   }
   //Função para alterar o fiscal logado
   static setUsuario(user: any) {
     this.usuario = user;
-    this.status = true;
   }
 }

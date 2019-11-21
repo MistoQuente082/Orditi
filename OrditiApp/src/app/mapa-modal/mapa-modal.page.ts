@@ -102,6 +102,7 @@ export class MapaModalPage implements OnInit {
 		//Testando
 		//Constrói um poligono com as coordenadas presentes em 'area'
 		var regiao = polygon(area);
+		regiao.on('click', (e) => { this.regiaoClicada(regiao, doc); });
 		//Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
 		regiao.addTo(this.map);
 		regiao.bindPopup(doc.data().nome + ': ' + doc.data().capacidade);
@@ -116,6 +117,13 @@ export class MapaModalPage implements OnInit {
 		});
 
 		await alert.present();
+	}
+
+	regiaoClicada(regiao, doc) {
+		if (this.L !== null) {
+			this.map.removeLayer(this.L);
+		}
+		doc.bindPopup('Você selecionou esse ponto').openPopup();
 	}
 
 }
