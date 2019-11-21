@@ -5,6 +5,7 @@ import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'le
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
 @Component({
 	selector: 'app-mapa-modal',
@@ -23,10 +24,11 @@ export class MapaModalPage implements OnInit {
 	local: any;
 
 	constructor(public modalController: ModalController,
-		private geolocation: Geolocation,
-		public alertController: AlertController,
 		navParams: NavParams,
-		public db: AngularFirestore) {
+		public db: AngularFirestore,
+		private geolocation: Geolocation,
+		private nativeGeocoder: NativeGeocoder,
+		public alertController: AlertController,) {
 		this.origem = navParams.get('origem');
 	}
 
@@ -71,27 +73,6 @@ export class MapaModalPage implements OnInit {
 		}
 	}
 
-	mapMarker(e) {
-		console.log("Objeto: ", e);
-		console.log("Latlng: ", e.latlng);
-		console.log("Lat: ", e.latlng.lat);
-		console.log("Lng: ", e.latlng.lng);
-		if (this.L !== null) {
-			this.map.removeLayer(this.L);
-		}
-		this.L = marker(e.latlng)
-		this.L.addTo(this.map).bindPopup('Você selecionou esse ponto').openPopup();
-		this.local = e.latlng;
-
-		//Faz aparecer no mapa
-	}
-
-	confirmar() {
-		//Põe o alert de confirmação aqui
-		console.log('enviando: ' + this.local);
-		this.origem.setLocal(this.local);
-	}
-
 	criarPoligono(doc) {
 		var zona = doc.data().coordenadas;
 		var area = [];
@@ -123,7 +104,59 @@ export class MapaModalPage implements OnInit {
 		if (this.L !== null) {
 			this.map.removeLayer(this.L);
 		}
-		doc.bindPopup('Você selecionou esse ponto').openPopup();
+		regiao.bindPopup('Você selecionou: ' + doc.data().nome).openPopup();
+	}
+
+	mapMarker(e) {
+		console.log("Objeto: ", e);
+		console.log("Latlng: ", e.latlng);
+		console.log("Lat: ", e.latlng.lat);
+		console.log("Lng: ", e.latlng.lng);
+		if (this.L !== null) {
+			this.map.removeLayer(this.L);
+		}
+		this.L = marker(e.latlng)
+		this.L.addTo(this.map).bindPopup('Você selecionou esse ponto').openPopup();
+		this.local = e.latlng;
+
+		let options: NativeGeocoderOptions = {
+		    useLocale: true,
+		    maxResults: 5
+		};
+
+		this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng , options)
+		  .then((result: NativeGeocoderResult[]) => this.geocoderTeste(result[0].countryName, result[0].postalCode, result[0].administrativeArea, result[0].subAdministrativeArea, result[0].subLocality, result[0].thoroughfare))
+		  .catch((error: any) => this.geocoderTesteError(error));
+
+		//Faz aparecer no mapa
+
+		//Faz aparecer no mapa
+	}
+
+	confirmar() {
+		//Põe o alert de confirmação aqui
+		console.log('enviando: ' + this.local);
+		this.origem.setLocal(this.local);
+	}
+
+	async geocoderTeste(e, f, g, h, i, j) {
+		const alert = await this.alertController.create({
+			header: "Localização: ",
+			message: "  " + e + "  " + f + "  " + g + "  " + h + "  " + i + "  " + j,
+			buttons: ['OK']
+		});
+
+		await alert.present();
+	}
+
+	async geocoderTesteError(e) {
+		const alert = await this.alertController.create({
+			header: 'Deu erro bro',
+			message: 'triste: ' + e,
+			buttons: ['OK']
+		});
+
+		await alert.present();
 	}
 
 }

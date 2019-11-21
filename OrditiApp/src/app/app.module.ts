@@ -19,6 +19,7 @@ import { environment } from '../environments/environment'; //As informações do
 import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database 
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
   providers: [
     StatusBar,
     SplashScreen,
+    NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
     Camera
