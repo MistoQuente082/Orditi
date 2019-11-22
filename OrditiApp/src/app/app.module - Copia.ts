@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { MapaModalPageModule } from './mapa-modal/mapa-modal.module';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 
 import { AngularFireModule } from '@angular/fire'; //Necessário para qualquer coisa do Firebase
@@ -19,7 +20,6 @@ import { environment } from '../environments/environment'; //As informações do
 import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database 
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 
 @NgModule({
@@ -38,29 +38,26 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
   providers: [
     StatusBar,
     SplashScreen,
-    NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
+    NativeGeocoder,
     Camera
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   private static status: boolean = false;
-  private static usuario: any = null; //Variável onse se armazena os dados do fiscal logado
+  private static usuario: any; //Variável onse se armazena os dados do fiscal logado
   //Função para pegar os dados do fiscal
   static getUsuario() {
     return this.usuario;
   }
   static getUsuarioStatus() {
-    if (this.getUsuario() === null) {
-      return false
-    } else {
-      return true
-    }
+    return this.status;
   }
   //Função para alterar o fiscal logado
   static setUsuario(user: any) {
     this.usuario = user;
+    this.status = true;
   }
 }
