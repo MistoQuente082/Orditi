@@ -16,26 +16,25 @@
               <ion-icon name="locate"></ion-icon>
         </ion-fab>
   </div>
-<<<<<<< HEAD
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="qrCode()">
       <ion-icon name="barcode"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <ion-fab *ngIf="zona != undefined" vertical="bottom"  slot="fixed">
-    <ion-card>
+  <ion-fab  *ngIf="zona != undefined" vertical="bottom">
+    <ion-card class="cardZona">
       <ion-card-header>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-        <ion-card-title>Card Title</ion-card-title>
+        <ion-card-subtitle>Capacidade: {{zona.capacidade}}</ion-card-subtitle>
+        <ion-card-title>{{zona.nome}}</ion-card-title>
       </ion-card-header>
     
       <ion-card-content>
-        Keep close to Nature's heart... and break clear away, once in awhile,
-        and climb a mountain or spend a week in the woods. Wash your spirit clean.
+        Aqui serão listadas outras informações e um botão para ver mais detalhes
+        <ion-button>
+          Clique aqui!
+        </ion-button>
       </ion-card-content>
     </ion-card>
   </ion-fab>
-=======
->>>>>>> parent of 8ebb01c... qrCode com erro
 </ion-content>
