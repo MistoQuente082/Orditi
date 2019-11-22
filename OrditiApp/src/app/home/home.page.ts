@@ -9,6 +9,7 @@ import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_
 import { Observable } from 'rxjs';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
+import { QrCodePage } from '../qr-code/qr-code.page';
 
 @Component({
   selector: 'app-home',
@@ -27,11 +28,26 @@ export class HomePage {
 
   zona: any;
 
-  constructor(private geolocation: Geolocation,
+  constructor(
+    private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
-    public modalCtrl: ModalController, ) {
+    public modalCtrl: ModalController) {
+  }
+
+
+
+  async qrCode() {
+    
+    const modal = await this.modalCtrl.create({
+      component: QrCodePage,
+      componentProps: {
+      }
+    });
+
+    return await modal.present();
+
   }
 
   ionViewDidEnter() {
@@ -77,8 +93,8 @@ export class HomePage {
     this.map.remove();
   }
   // retornar local atual
-  localAtual(){
-        this.map.setView([this.lat, this.long],30);
+  localAtual() {
+    this.map.setView([this.lat, this.long], 30);
   }
 
   criarPoligono(doc) {

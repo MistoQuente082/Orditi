@@ -18,7 +18,8 @@ const routes: Routes = [
   { path: 'cadastro', loadChildren: './cadastro/cadastro.module#CadastroPageModule' },
   { path: 'mapa-modal', loadChildren: './mapa-modal/mapa-modal.module#MapaModalPageModule' },
   { path: 'detalhe-zona', loadChildren: './detalhe-zona/detalhe-zona.module#DetalheZonaPageModule' },
-  { path: 'informacoes', loadChildren: './informacoes/informacoes.module#InformacoesPageModule' }
+  { path: 'informacoes', loadChildren: './informacoes/informacoes.module#InformacoesPageModule' },
+  { path: 'qr-code', loadChildren: './qr-code/qr-code.module#QrCodePageModule' }
 
 ]
 

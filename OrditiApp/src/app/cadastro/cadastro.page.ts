@@ -3,6 +3,7 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import { QrCodeService } from '../services/qrCode/qr-code.service';
 
 
 
@@ -12,6 +13,10 @@ import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
   styleUrls: ['./cadastro.page.scss'],
 })
 export class CadastroPage implements OnInit {
+  // qrCode
+  datocodificado: any;
+  datoscaneado: {};
+
 
   // Var Camera
   public imgPessoa;
@@ -22,7 +27,7 @@ export class CadastroPage implements OnInit {
   public escolaridade: string;
   public endereco: string;
   public fone: string;
-
+  public codigo: any;
 
   // Variaveis Do trabalho
   public produto: string;
@@ -36,7 +41,8 @@ export class CadastroPage implements OnInit {
   constructor(
     public alertas: AlertasService,
     public camera: Camera,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public qrCode: QrCodeService
   ) {
 
   }
@@ -47,6 +53,9 @@ export class CadastroPage implements OnInit {
   static setLocal(ponto) {
     this.local = ponto;
   }
+
+
+
 
   // Função para camera
   cam() {
@@ -67,15 +76,15 @@ export class CadastroPage implements OnInit {
 
 
   }
-  formataCPF(cpf){
+  formataCPF(cpf) {
     //retira os caracteres indesejados...
     cpf = this.cpf.replace(/[^\d]/g, "");
-    
-    if(cpf.lenght==11){
-    //realizar a formatação...
+
+    if (cpf.lenght == 11) {
+      //realizar a formatação...
       return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
     }
-    else{
+    else {
       return "valor do campo CPF inválido!"
     }
   }
@@ -102,15 +111,17 @@ export class CadastroPage implements OnInit {
       this.alertas.presentToast('Preencha os campos!');
     }
 
-    if (this.regiao !== 'a1') {
+    if (this.regiao === 'a1') {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
-        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.localAtiv === undefined) {
+        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined || this.localAtiv === undefined) {
         this.alertas.presentToast('Preencha os campos!');
       }
 
     } else {
-      
+      this.qrCode.CodificarTexto(this.cpf);
+      this.codigo = this.qrCode.novoCodigo;
+
+
       const dados = {
         nome: this.nome,
         cpf: this.formataCPF(this.cpf),
@@ -120,8 +131,10 @@ export class CadastroPage implements OnInit {
         pontoRef: this.pontoRef,
         produto: this.produto,
         localAtiv: this.localAtiv,
+        qrCode: this.codigo,
         //imgPessoa: this.imgPessoa
       };
+      console.log(dados);
       //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
       let resp;
       resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
