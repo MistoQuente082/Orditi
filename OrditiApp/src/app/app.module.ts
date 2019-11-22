@@ -20,6 +20,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
     NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
-    Camera
+    Camera,
+    BarcodeScanner
   ],
   bootstrap: [AppComponent]
 })

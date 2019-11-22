@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -29,7 +29,7 @@ export class AlertasService {
         }, {
           text: 'Adicionar',
           handler: async () => {
-            const resp = 'Adicionar'; //Retorna o que deve ser feito
+            resp = 'Adicionar'; //Retorna o que deve ser feito
             this.subDados(dados, local)
             this.router.navigate(['/home']);
             this.presentToast('Executado com sucesso!')
@@ -53,6 +53,11 @@ export class AlertasService {
     }
     console.log("Documento adicionado a " + local);
   }
+
+
+
+ 
+  
 
   // Mostra um toast na tela
   async presentToast(message: string) {

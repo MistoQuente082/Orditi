@@ -5,8 +5,13 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { QrCodePage } from '../qr-code/qr-code.page';
 
 @NgModule({
+  entryComponents: [
+    QrCodePage
+  ],
+
   imports: [
     CommonModule,
     FormsModule,
@@ -18,6 +23,9 @@ import { HomePage } from './home.page';
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [
+    HomePage,
+    QrCodePage
+  ]
 })
-export class HomePageModule {}
+export class HomePageModule { }
