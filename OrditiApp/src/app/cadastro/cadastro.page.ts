@@ -67,15 +67,15 @@ export class CadastroPage implements OnInit {
 
 
   }
-  formataCPF(cpf){
+formataCPF(cpf) {
     //retira os caracteres indesejados...
-    cpf = this.cpf.replace(/[^\d]/g, "");
-    
-    if(cpf.lenght==11){
-    //realizar a formatação...
+    cpf= this.cpf.replace(/[^\d]/g, "");
+
+    if (cpf.lenght == 11) {
+      //realizar a formatação...
       return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
     }
-    else{
+    else {
       return "valor do campo CPF inválido!"
     }
   }
@@ -110,7 +110,7 @@ export class CadastroPage implements OnInit {
       }
 
     } else {
-      
+
       const dados = {
         nome: this.nome,
         cpf: this.formataCPF(this.cpf),
