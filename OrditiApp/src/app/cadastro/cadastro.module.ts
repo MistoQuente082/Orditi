@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { CadastroPage } from './cadastro.page';
+import { BrMaskerModule } from 'br-mask';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    BrMaskerModule,
     CommonModule,
     FormsModule,
     IonicModule,
@@ -23,4 +25,4 @@ const routes: Routes = [
   ],
   declarations: [CadastroPage]
 })
-export class CadastroPageModule {}
+export class CadastroPageModule { }

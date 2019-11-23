@@ -21,6 +21,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, por
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
+import { BrMaskerModule } from 'br-mask';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
   entryComponents: [],
   imports: [
     BrowserModule,
+    BrMaskerModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     MapaModalPageModule,
@@ -42,6 +44,7 @@ import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
     NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
+    BrMaskerModule,
     Camera
   ],
   bootstrap: [AppComponent]

@@ -76,7 +76,7 @@ export class CadastroPage implements OnInit {
       return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
     }
     else {
-      return "valor do campo CPF inválido!"
+      this.alertas.presentToast("Valor do CPF invalido!")
     }
   }
 
@@ -96,39 +96,64 @@ export class CadastroPage implements OnInit {
 
   // Botão de cadastro
   cadastrar() {
-    if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
-      || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-      || this.produto === undefined || this.regiao === undefined) {
-      this.alertas.presentToast('Preencha os campos!');
-    }
-
     if (this.regiao !== 'a1') {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
         || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
         || this.produto === undefined || this.localAtiv === undefined) {
         this.alertas.presentToast('Preencha os campos!');
+      } else {
+        if (this.pontoRef === undefined) {
+          this.pontoRef = " "
+        }
+        const dados = {
+          nome: this.nome,
+          cpf: this.formataCPF(this.cpf),
+          fone: this.fone,
+          escolaridade: this.escolaridade,
+          endereco: this.endereco,
+          pontoRef: this.pontoRef,
+          produto: this.produto,
+          localAtiv: this.localAtiv,
+          //imgPessoa: this.imgPessoa
+        };
+        //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
+        let resp;
+        resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
+        console.log(resp);
+        if (resp === 'Adicionar') {
+          console.log('Adicionando');
+          this.alertas.subDados(dados, "ambulantes");
+        }
       }
-
     } else {
-
-      const dados = {
-        nome: this.nome,
-        cpf: this.formataCPF(this.cpf),
-        fone: this.fone,
-        escolaridade: this.escolaridade,
-        endereco: this.endereco,
-        pontoRef: this.pontoRef,
-        produto: this.produto,
-        localAtiv: this.localAtiv,
-        //imgPessoa: this.imgPessoa
-      };
-      //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
-      let resp;
-      resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
-      console.log(resp);
-      if (resp === 'Adicionar') {
-        console.log('Adicionando');
-        this.alertas.subDados(dados, "ambulantes");
+      if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
+        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
+        || this.produto === undefined || this.regiao === undefined) {
+        this.alertas.presentToast('Preencha os campos!');
+      }
+      else {
+        if (this.pontoRef === undefined) {
+          this.pontoRef = " "
+        }
+        const dados = {
+          nome: this.nome,
+          cpf: this.formataCPF(this.cpf),
+          fone: this.fone,
+          escolaridade: this.escolaridade,
+          endereco: this.endereco,
+          pontoRef: this.pontoRef,
+          produto: this.produto,
+          localAtiv: this.regiao,
+          //imgPessoa: this.imgPessoa
+        };
+        //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
+        let resp;
+        resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
+        console.log(resp);
+        if (resp === 'Adicionar') {
+          console.log('Adicionando');
+          this.alertas.subDados(dados, "ambulantes");
+        }
       }
     }
 
