@@ -27,11 +27,12 @@ export class HomePage {
 
   zona: any;
 
-  constructor(private geolocation: Geolocation,
+  constructor(
+    private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
-    public modalCtrl: ModalController, ) {
+    public modalCtrl: ModalController) {
   }
 
   ionViewDidEnter() {
@@ -77,8 +78,8 @@ export class HomePage {
     this.map.remove();
   }
   // retornar local atual
-  localAtual(){
-        this.map.setView([this.lat, this.long],30);
+  localAtual() {
+    this.map.setView([this.lat, this.long], 30);
   }
 
   criarPoligono(doc) {
@@ -92,7 +93,7 @@ export class HomePage {
     //Testando
     console.log(area);
     //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(area);
+    var regiao = polygon(area,{ color: 'gray', fillColor: '#838b8b'});
     regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
     regiao.addTo(this.map);
