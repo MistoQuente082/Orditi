@@ -20,6 +20,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 
 
 @NgModule({

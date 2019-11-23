@@ -27,7 +27,7 @@ export class CadastroPage implements OnInit {
   // Variaveis Do trabalho
   public produto: string;
   public pontoRef: string;
-  public localAtiv: string;
+  public localAtiv: string = "Anaaaaaa";
   public regiao: string;
 
   // Ponto no MApa
@@ -44,7 +44,7 @@ export class CadastroPage implements OnInit {
   static getLocal() {
     return this.local;
   }
-  static setLocal(ponto) {
+  static setLocal(ponto, json) {
     this.local = ponto;
   }
 
@@ -67,15 +67,15 @@ export class CadastroPage implements OnInit {
 
 
   }
-  formataCPF(cpf){
+  formataCPF(cpf) {
     //retira os caracteres indesejados...
     cpf = this.cpf.replace(/[^\d]/g, "");
-    
-    if(cpf.lenght==11){
-    //realizar a formatação...
+
+    if (cpf.lenght == 11) {
+      //realizar a formatação...
       return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
     }
-    else{
+    else {
       return "valor do campo CPF inválido!"
     }
   }
@@ -110,7 +110,7 @@ export class CadastroPage implements OnInit {
       }
 
     } else {
-      
+
       const dados = {
         nome: this.nome,
         cpf: this.formataCPF(this.cpf),
@@ -133,9 +133,6 @@ export class CadastroPage implements OnInit {
     }
 
   }
-
-
-
 
   ngOnInit() {
   }

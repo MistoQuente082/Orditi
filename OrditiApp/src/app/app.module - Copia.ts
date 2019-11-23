@@ -20,11 +20,12 @@ import { environment } from '../environments/environment'; //As informações do
 import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database 
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
+import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, DetalheZonaPage],
+  entryComponents: [DetalheZonaPage],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

@@ -9,19 +9,19 @@
 </ion-header>
 
 <script type="text/javascript">
-  function fMasc(objeto,mascara) {
-				obj=objeto
-				masc=mascara
-				setTimeout("fMascEx()",1)
-	}
-  function mCPF(cpf){
-          cpf=cpf.replace(/\D/g,"")
-          cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2")
-          cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2")
-          cpf=cpf.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
-          return cpf
-        }
-  </script>
+  function fMasc(objeto, mascara) {
+    obj = objeto
+    masc = mascara
+    setTimeout("fMascEx()", 1)
+  }
+  function mCPF(cpf) {
+    cpf = cpf.replace(/\D/g, "")
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+    return cpf
+  }
+</script>
 <ion-content>
   <!--   <ion-button (click)="cam()">
     Camera
@@ -40,7 +40,8 @@
     </ion-item>
     <ion-item>
       <ion-label color="medium" position="floating">CPF:</ion-label>
-      <ion-input type="text" [(ngModel)]="cpf" placeholder="Ex.: 482.136.418-25" onkeydown="javascript: fMasc( this, mCPF );"></ion-input>
+      <ion-input type="text" [(ngModel)]="cpf" placeholder="Ex.: 482.136.418-25"
+        onkeydown="javascript: fMasc( this, mCPF );"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -89,7 +90,7 @@
         <ion-select-option value="a2">Praça Lions</ion-select-option>
         <ion-select-option value="a3">Posto 7</ion-select-option>
         <!--
-            Coloca aqui a lista de ambulantes a partir do firebase.
+            Coloca aqui a lista de lugares a partir do firebase.
             Você já fez isso no da AMA na parte de enviar mensagem.         
             <ion-select-option *ngFor="let pessoa of pessoas | async">{{pessoa.nome}}: {{pessoa.email}}</ion-select-option>-->
       </ion-select>
@@ -102,13 +103,10 @@
 
 
     <div *ngIf="regiao == 'a1'">
-      <a>
-        ddsjk
-
-      </a>
       <ion-item>
         <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
         <ion-input type="text" [(ngModel)]="localAtiv" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
+          <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
         </ion-input>
 
         <ion-note text-end (click)="selectMap()">

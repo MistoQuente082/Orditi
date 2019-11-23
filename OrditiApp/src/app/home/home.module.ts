@@ -5,8 +5,12 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 @NgModule({
+  entryComponents: [
+    DetalheZonaPage
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -18,6 +22,9 @@ import { HomePage } from './home.page';
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [
+    DetalheZonaPage,
+    HomePage
+  ]
 })
-export class HomePageModule {}
+export class HomePageModule { }

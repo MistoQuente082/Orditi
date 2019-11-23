@@ -12,29 +12,35 @@
 
 <ion-content>
   <div id="mapId" style="width: 100%; height: 100%">
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()">
-              <ion-icon name="locate"></ion-icon>
-        </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()">
+      <ion-icon name="locate"></ion-icon>
+    </ion-fab>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button >
+  <ion-fab *ngIf="Fiscal()" vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button>
       <ion-icon name="barcode"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <ion-fab  *ngIf="zona != undefined" vertical="bottom">
+
+  <ion-fab *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">
       <ion-card-header>
+        <ion-buttons style="float: right;">
+          <ion-button (click)="fecharCard()">
+            <ion-icon style="float: right;" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
         <ion-card-subtitle>Capacidade: {{zona.capacidade}}</ion-card-subtitle>
         <ion-card-title>{{zona.nome}}</ion-card-title>
       </ion-card-header>
-    
       <ion-card-content>
-        Aqui serão listadas outras informações e um botão para ver mais detalhes
-        <ion-button>
-          Clique aqui!
+        {{zona.detalhes}} Atualmente contem {{zona.ocupantes}} ambulantes alocados.
+        <ion-button style="float: right;" fill="outline" (click)="mostraDetalhes()">
+          Mais informações
         </ion-button>
       </ion-card-content>
     </ion-card>
   </ion-fab>
+
 </ion-content>

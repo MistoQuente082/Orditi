@@ -25,7 +25,7 @@ export class HomePage {
   //Zonas da cidade
   locais: any[];
 
-  zona: any;
+  zona: any = null;
 
   constructor(
     private geolocation: Geolocation,
@@ -33,6 +33,11 @@ export class HomePage {
     public alertController: AlertController,
     public db: AngularFirestore,
     public modalCtrl: ModalController) {
+  }
+
+  Fiscal() {
+    return AppModule.getUsuarioStatus();
+    console.log(AppModule.getUsuarioStatus())
   }
 
   ionViewDidEnter() {
@@ -93,7 +98,7 @@ export class HomePage {
     //Testando
     console.log(area);
     //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(area,{ color: 'gray', fillColor: '#838b8b'});
+    var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
     regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
     regiao.addTo(this.map);
@@ -110,17 +115,26 @@ export class HomePage {
     await alert.present();
   }
 
-  async presentModal() {
+  async mostraDetalhes() {
+    var zona = this.zona;
+    console.log('click')
     const modal = await this.modalCtrl.create({
       component: DetalheZonaPage,
-      cssClass: 'modalIncompleto'
+      componentProps: {
+        info: zona
+      }
     });
     return await modal.present();
+    //this.alertas.presentModal(DetalheZonaPage, this.zona);
   }
 
   regiaoClicada(doc) {
     this.zona = doc.data()
     console.log(doc.data().nome)
+  }
+
+  fecharCard() {
+    this.zona = null;
   }
 
 }

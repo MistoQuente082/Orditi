@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavParams, ModalController } from '@ionic/angular';
+import { AlertasService } from '../services/alertas.service';
 
 @Component({
   selector: 'app-detalhe-zona',
@@ -6,10 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./detalhe-zona.page.scss'],
 })
 export class DetalheZonaPage implements OnInit {
+  local: any;
 
-  constructor() { }
-
+  constructor(
+    navParams: NavParams,
+    public alertas: AlertasService,
+    public modalCtrl: ModalController,
+  ) {
+    this.local = navParams.get('info');
+  }
+  
   ngOnInit() {
+  }
+
+  async fechar() {
+    await this.modalCtrl.dismiss();
   }
 
 }

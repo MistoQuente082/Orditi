@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>detalhe-zona</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fechar()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{local.nome}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <p>{{local.capacidade}}</p>
 
 </ion-content>

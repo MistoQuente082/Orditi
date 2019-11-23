@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -10,6 +10,7 @@ export class AlertasService {
 
   constructor(
     public db: AngularFirestore,
+    public modalCtrl: ModalController,
     public alertController: AlertController,
     public toastController: ToastController,
     public router: Router
@@ -61,5 +62,18 @@ export class AlertasService {
       duration: 2000
     });
     toast.present();
+  }
+  //fUNCOES UTEIS QUE NAO PODEM SER REAPRIVEITADAS - USA PRA COPIAR
+  async presentModal(pagina, componentes) {
+    const modal = await this.modalCtrl.create({
+      component: pagina,
+      componentProps: {
+        info: componentes
+      }
+    });
+    return await modal.present();
+  }
+  async dismiss(pagina) {
+    await pagina.modalCtrl.dismiss();
   }
 }
