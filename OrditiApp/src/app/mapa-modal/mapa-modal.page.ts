@@ -73,6 +73,44 @@ export class MapaModalPage implements OnInit {
 		}
 	}
 
+	pesquisarMapaMarker(e){
+		console.log("Cidade: ", e);
+		let options: NativeGeocoderOptions = {
+		    useLocale: true,
+		    maxResults: 5
+		};
+
+		this.nativeGeocoder.forwardGeocode(e, options)
+		  .then((result: NativeGeocoderResult[]) => {
+		  		console.log("Geocoder result: ", result);
+				if (this.L !== null) {
+					this.map.removeLayer(this.L);
+				}
+				this.L = marker(result[0].latitude, result[0].longitude);
+				this.L.addTo(this.map).bindPopup('Você selecionou esse ponto').openPopup();
+			}).catch((error: any) => {console.log(error);});
+	}
+
+	async pesquisarMapa() {
+		const alert = await this.alertController.create({
+			header: 'Pesquisar local',
+			inputs: [
+				{
+					name: "cidade",
+					placeholder: "Cidade",
+				},
+			],
+			buttons: [
+				{
+					text: "Salvar",
+					handler: data => {this.pesquisarMapaMarker(data.cidade);}
+				}
+			]
+		});
+
+		await alert.present();
+	}
+
 	criarPoligono(doc) {
 		var zona = doc.data().coordenadas;
 		var area = [];
@@ -117,17 +155,27 @@ export class MapaModalPage implements OnInit {
 		}
 		this.L = marker(e.latlng)
 		this.L.addTo(this.map).bindPopup('Você selecionou esse ponto').openPopup();
-		this.local = e.latlng;
+		// this.local = e.latlng;
 
 		let options: NativeGeocoderOptions = {
 		    useLocale: true,
 		    maxResults: 5
 		};
 
-		this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng , options)
-		  .then((result: NativeGeocoderResult[]) => this.geocoderTeste(result[0].countryName, result[0].postalCode, result[0].administrativeArea, result[0].subAdministrativeArea, result[0].subLocality, result[0].thoroughfare))
-		  .catch((error: any) => this.geocoderTesteError(error));
+		var objeto;
 
+		this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng , options)
+		  .then((result: NativeGeocoderResult[]) => {
+		  	this.geocoderTeste(result[0].countryName, result[0].postalCode, result[0].administrativeArea, result[0].subAdministrativeArea, result[0].subLocality, result[0].thoroughfare);
+		  	objeto = JSON.parse('{"latitude": '+ e.latlng.lat +', "longitude": '+ e.latlng.lng +',"pais": '+ result[0].countryName +', "cep": '+ result[0].postalCode +', "estado": '+ result[0].administrativeArea +', "cidade": '+ result[0].subAdministrativeArea +', "conjunto": '+ result[0].subLocality +', "rua": '+ result[0].thoroughfare +'}');
+		  })
+		  .catch((error: any) => {
+		  	this.geocoderTesteError(error);
+		  });
+
+		  var data = JSON.stringify(objeto);
+		  // this.origem.setLocal(data);
+		  this.local = data;
 		//Faz aparecer no mapa
 
 		//Faz aparecer no mapa
@@ -151,8 +199,8 @@ export class MapaModalPage implements OnInit {
 
 	async geocoderTesteError(e) {
 		const alert = await this.alertController.create({
-			header: 'Deu erro bro',
-			message: 'triste: ' + e,
+			header: 'Erro',
+			message: '' + e,
 			buttons: ['OK']
 		});
 
