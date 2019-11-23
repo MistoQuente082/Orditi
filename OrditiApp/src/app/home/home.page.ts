@@ -9,6 +9,7 @@ import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_
 import { Observable } from 'rxjs';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
+import { QrCodeService } from '../services/qrCode/qr-code.service';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,14 @@ export class HomePage {
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public qrcode: QrCodeService) {
+  }
+
+
+  // Função para ler o codigo do ambulante
+  lerCodigo() {
+    this.qrcode.LeerCode();
   }
 
   Fiscal() {

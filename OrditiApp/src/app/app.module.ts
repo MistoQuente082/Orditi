@@ -22,6 +22,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 import { BrMaskerModule } from 'br-mask';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { BrMaskerModule } from 'br-mask';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
     BrMaskerModule,
-    Camera
+    Camera,
+    BarcodeScanner
   ],
   bootstrap: [AppComponent]
 })

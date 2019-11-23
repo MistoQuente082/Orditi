@@ -3,6 +3,7 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import { QrCodeService } from '../services/qrCode/qr-code.service';
 
 
 
@@ -36,8 +37,8 @@ export class CadastroPage implements OnInit {
   constructor(
     public alertas: AlertasService,
     public camera: Camera,
-    public modalController: ModalController
-  ) {
+    public modalController: ModalController,
+    public qrcode: QrCodeService  ) {
 
   }
   // Gets e Sets do local
@@ -47,6 +48,10 @@ export class CadastroPage implements OnInit {
   static setLocal(ponto, json) {
     this.local = ponto;
   }
+  
+
+
+
 
   // Função para camera
   cam() {
@@ -105,6 +110,14 @@ export class CadastroPage implements OnInit {
         if (this.pontoRef === undefined) {
           this.pontoRef = " "
         }
+
+
+        // CHAMA A FUNÇÃO PARA GERAR QRCODE
+        this.qrcode.CodificarTexto(this.cpf);
+
+
+
+
         const dados = {
           nome: this.nome,
           cpf: this.formataCPF(this.cpf),
@@ -114,6 +127,7 @@ export class CadastroPage implements OnInit {
           pontoRef: this.pontoRef,
           produto: this.produto,
           localAtiv: this.localAtiv,
+          qrCode: this.qrcode.datocodificado
           //imgPessoa: this.imgPessoa
         };
         //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
