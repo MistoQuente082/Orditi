@@ -26,7 +26,7 @@
     </ion-item>
     <ion-item>
       <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
-      <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}" max-length="11">
+      <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}" maxlength="14">
       </ion-input>
     </ion-item>
 
@@ -75,10 +75,7 @@
         <ion-select-option value="a1">Ponto Independente</ion-select-option>
         <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
         </ion-select-option>
-        <!--
-            Coloca aqui a lista de lugares a partir do firebase.
-            Você já fez isso no da AMA na parte de enviar mensagem.         
-            <ion-select-option *ngFor="let pessoa of pessoas | async">{{pessoa.nome}}: {{pessoa.email}}</ion-select-option>-->
+
       </ion-select>
     </ion-item>
 
@@ -92,6 +89,7 @@
       <ion-item>
         <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
         <ion-input type="text" [(ngModel)]="localAtiv" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
+          <h1>{{getLugar()}}</h1>
           <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
         </ion-input>
 

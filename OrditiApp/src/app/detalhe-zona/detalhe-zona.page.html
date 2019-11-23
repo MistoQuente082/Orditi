@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content>
+  <img [src]="local.foto">
   <p>{{local.ocupantes}} / {{local.capacidade}}</p>
   <ion-item *ngFor="let pessoa of ambulantes | async">
     <ion-avatar slot="start">

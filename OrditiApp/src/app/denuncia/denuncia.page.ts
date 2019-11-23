@@ -39,7 +39,7 @@ export class DenunciaPage implements OnInit {
   static getLocal() {
     return this.local;
   }
-  static setLocal(ponto, json) {
+  static setLocal(ponto) {
     this.local = ponto;
   }
 
@@ -103,7 +103,7 @@ export class DenunciaPage implements OnInit {
       {
         component: MapaModalPage,
         componentProps: {
-          origem
+          origem: "denuncia"
         }
       }).then((modalElement) => {
         modalElement.present();

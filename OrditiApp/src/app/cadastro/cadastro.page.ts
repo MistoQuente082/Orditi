@@ -33,7 +33,7 @@ export class CadastroPage implements OnInit {
   public regiao: string;
 
   // Ponto no MApa
-  private static local: any;
+  public static local: any = { Rua: "Ana", Cep: "Amelia" };
   static localJson: any;
 
   //lista de locais
@@ -53,12 +53,17 @@ export class CadastroPage implements OnInit {
   }
   static setLocal(ponto) {
     this.local = ponto;
+    console.log(this.local);
   }
   static getLocalJson() {
     if (this.localJson === null) {
       return false
     }
     return this.localJson
+  }
+
+  getLugar() {
+    return "Abcd"
   }
 
   // Função para camera
@@ -88,7 +93,7 @@ export class CadastroPage implements OnInit {
       {
         component: MapaModalPage,
         componentProps: {
-          origem: CadastroPage
+          origem: "cadastro"
         }
       }).then((modalElement) => {
         modalElement.present();
