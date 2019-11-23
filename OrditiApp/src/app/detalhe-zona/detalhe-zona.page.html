@@ -10,6 +10,15 @@
 </ion-header>
 
 <ion-content>
-  <p>{{local.capacidade}}</p>
+  <p>{{local.ocupantes}} / {{local.capacidade}}</p>
+  <ion-item *ngFor="let pessoa of ambulantes | async">
+    <ion-avatar slot="start">
+      <img src="{{pessoa.foto}}">
+    </ion-avatar>
+    <ion-label>
+      <h3>{{pessoa.nome}}</h3>
+      <p>{{pessoa.produto}}</p>
+    </ion-label>
+  </ion-item>
 
 </ion-content>

@@ -48,7 +48,14 @@ export class AlertasService {
   // Envia ao Banco de Dados
   subDados(dados, local: string) {
     if (local === 'ambulantes') {
-      this.db.collection(local).doc(dados.cpf).set(dados);
+      this.db.collection(local).doc(dados.cpf).get().toPromise().then(doc => {
+        if (!doc.exists) {
+          this.db.collection(local).doc(dados.cpf).set(dados);
+        }
+        else {
+          this.presentToast("Ja existe um ambulante cadastrado com esse CPF!")
+        }
+      })
     } else {
       this.db.collection(local).add(dados);
     }

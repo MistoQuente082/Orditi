@@ -20,13 +20,13 @@
       <ion-label color="medium" position="floating">Período:</ion-label>
 
       <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
-        ([ngModel])="dataDenuncia" placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
+        ([ngModel])="dataDenuncia.toISOString()" placeholder="Seleciona o Dia" (ionChange)="mudaData( $event )">
       </ion-datetime>
 
 
 
       <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="horaDenuncia"
-        value="horaDenuncia" placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
+        placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
       </ion-datetime>
 
 
@@ -37,7 +37,7 @@
       <ion-label color="medium" position="floating">Local:</ion-label>
       <ion-input type="text" [(ngModel)]="localDenuncia" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
       </ion-input>
-
+      <!--Poe aqui tammbem o coisa de buscar local-->
       <ion-note text-end (click)="selectMap()">
         Marcar no mapa
       </ion-note>

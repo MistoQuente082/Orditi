@@ -11,6 +11,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AlertasService } from '../services/alertas.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-denuncia',
@@ -30,6 +32,16 @@ export class DenunciaPage implements OnInit {
   public horaDenuncia: Date = new Date();
   public localDenuncia;
   public infoDenuncia;
+
+  static local: any;
+
+  // Gets e Sets do local
+  static getLocal() {
+    return this.local;
+  }
+  static setLocal(ponto, json) {
+    this.local = ponto;
+  }
 
   routes = [
     {

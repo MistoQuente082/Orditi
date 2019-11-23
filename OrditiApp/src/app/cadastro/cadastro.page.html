@@ -73,8 +73,8 @@
       <ion-label color="medium" position="floating">Região</ion-label>
       <ion-select placeholder="Selecione a zona" [(ngModel)]="regiao">
         <ion-select-option value="a1">Ponto Independente</ion-select-option>
-        <ion-select-option value="a2">Praça Lions</ion-select-option>
-        <ion-select-option value="a3">Posto 7</ion-select-option>
+        <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
+        </ion-select-option>
         <!--
             Coloca aqui a lista de lugares a partir do firebase.
             Você já fez isso no da AMA na parte de enviar mensagem.         

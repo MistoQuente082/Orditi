@@ -3,6 +3,8 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 
 
@@ -32,20 +34,31 @@ export class CadastroPage implements OnInit {
 
   // Ponto no MApa
   private static local: any;
+  static localJson: any;
+
+  //lista de locais
+  locais: Observable<any[]>;
 
   constructor(
+    public db: AngularFirestore,
     public alertas: AlertasService,
     public camera: Camera,
     public modalController: ModalController
   ) {
-
+    this.locais = db.collection("zonas").valueChanges();
   }
   // Gets e Sets do local
   static getLocal() {
     return this.local;
   }
-  static setLocal(ponto, json) {
+  static setLocal(ponto) {
     this.local = ponto;
+  }
+  static getLocalJson() {
+    if (this.localJson === null) {
+      return false
+    }
+    return this.localJson
   }
 
   // Função para camera
@@ -67,18 +80,6 @@ export class CadastroPage implements OnInit {
 
 
   }
-  formataCPF(cpf) {
-    //retira os caracteres indesejados...
-    cpf = this.cpf.replace(/[^\d]/g, "");
-
-    if (cpf.lenght == 11) {
-      //realizar a formatação...
-      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-    }
-    else {
-      this.alertas.presentToast("Valor do CPF invalido!")
-    }
-  }
 
   // Função que leva a escolher um ponto no mapa
   selectMap() {
@@ -87,7 +88,7 @@ export class CadastroPage implements OnInit {
       {
         component: MapaModalPage,
         componentProps: {
-          origem
+          origem: CadastroPage
         }
       }).then((modalElement) => {
         modalElement.present();
@@ -107,23 +108,16 @@ export class CadastroPage implements OnInit {
         }
         const dados = {
           nome: this.nome,
-          cpf: this.formataCPF(this.cpf),
+          cpf: this.cpf,
           fone: this.fone,
           escolaridade: this.escolaridade,
           endereco: this.endereco,
           pontoRef: this.pontoRef,
           produto: this.produto,
           localAtiv: this.localAtiv,
-          //imgPessoa: this.imgPessoa
+          zona: this.regiao,
         };
-        //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
-        let resp;
-        resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
-        console.log(resp);
-        if (resp === 'Adicionar') {
-          console.log('Adicionando');
-          this.alertas.subDados(dados, "ambulantes");
-        }
+        this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
       }
     } else {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
@@ -137,23 +131,16 @@ export class CadastroPage implements OnInit {
         }
         const dados = {
           nome: this.nome,
-          cpf: this.formataCPF(this.cpf),
+          cpf: this.cpf,
           fone: this.fone,
           escolaridade: this.escolaridade,
           endereco: this.endereco,
           pontoRef: this.pontoRef,
           produto: this.produto,
-          localAtiv: this.regiao,
-          //imgPessoa: this.imgPessoa
+          localAtiv: this.localAtiv,
+          regiao: "Independente"
         };
-        //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
-        let resp;
-        resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
-        console.log(resp);
-        if (resp === 'Adicionar') {
-          console.log('Adicionando');
-          this.alertas.subDados(dados, "ambulantes");
-        }
+        this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
       }
     }
 
