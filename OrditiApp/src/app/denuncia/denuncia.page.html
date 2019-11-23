@@ -20,13 +20,15 @@
       <ion-label color="medium" position="floating">Período:</ion-label>
 
       <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
-        ([ngModel])="dataDenuncia" placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
+         [value]="campoDiaDenuncia" placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
+         <!-- ([ngModel])="dataDenuncia" -->
       </ion-datetime>
 
 
 
-      <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="horaDenuncia"
-        value="horaDenuncia" placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
+      <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher"
+        [value]="campoHoraDenuncia" placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
+        <!-- ([ngModel])="horaDenuncia" -->
       </ion-datetime>
 
 
@@ -35,10 +37,11 @@
 
     <ion-item>
       <ion-label color="medium" position="floating">Local:</ion-label>
-      <ion-input type="text" [(ngModel)]="localDenuncia" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
+      <ion-input id="local" type="text"  placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde" [value]="localMarcado">
+      <!-- [(ngModel)]="localDenuncia" -->
       </ion-input>
 
-      <ion-note text-end (click)="selectMap()">
+      <ion-note class="ion-text-end" (click)="selectMap()">
         Marcar no mapa
       </ion-note>
 
@@ -46,7 +49,8 @@
 
     <ion-item>
       <ion-label color="medium" position="floating">Informe a situação:</ion-label>
-      <ion-textarea [(ngModel)]="infoDenuncia" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
+      <ion-textarea id="campoInfoDenuncia" [value]="campoInfoDenuncia" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
+      <!-- [(ngModel)]="infoDenuncia" -->
     </ion-item>
   </ion-card>
 

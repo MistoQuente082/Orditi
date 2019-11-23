@@ -12,7 +12,7 @@
   <!--   <ion-button (click)="cam()">
     Camera
   </ion-button> -->
-  <img src="../../assets/img/vetor.png" (click)="cam()">
+  <img [src]="imgPessoa" (click)="cam()" *ngIf="imgPessoa">
   <!-- <img [src]="imagemPath"> -->
   <ion-card>
     <ion-card-header>

@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
 	selector: 'app-mapa-modal',
@@ -17,6 +18,10 @@ export class MapaModalPage implements OnInit {
 	lat: any;
 	long: any;
 	latlng: any;
+	public localizacao: Local[] = [];
+	rua: any;
+	regiao: any;
+
 
 	origem: any;
 
@@ -26,6 +31,7 @@ export class MapaModalPage implements OnInit {
 	constructor(public modalController: ModalController,
 		navParams: NavParams,
 		public db: AngularFirestore,
+		private storage: Storage,
 		private geolocation: Geolocation,
 		private nativeGeocoder: NativeGeocoder,
 		public alertController: AlertController,) {
@@ -146,7 +152,6 @@ export class MapaModalPage implements OnInit {
 	}
 
 	mapMarker(e) {
-		console.log("Objeto: ", e);
 		console.log("Latlng: ", e.latlng);
 		console.log("Lat: ", e.latlng.lat);
 		console.log("Lng: ", e.latlng.lng);
@@ -167,7 +172,9 @@ export class MapaModalPage implements OnInit {
 		this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng , options)
 		  .then((result: NativeGeocoderResult[]) => {
 		  	this.geocoderTeste(result[0].countryName, result[0].postalCode, result[0].administrativeArea, result[0].subAdministrativeArea, result[0].subLocality, result[0].thoroughfare);
-		  	objeto = JSON.parse('{"latitude": '+ e.latlng.lat +', "longitude": '+ e.latlng.lng +',"pais": '+ result[0].countryName +', "cep": '+ result[0].postalCode +', "estado": '+ result[0].administrativeArea +', "cidade": '+ result[0].subAdministrativeArea +', "conjunto": '+ result[0].subLocality +', "rua": '+ result[0].thoroughfare +'}');
+		  	objeto = JSON.parse('{"latitude": "'+ e.latlng.lat +'", "longitude": "'+ e.latlng.lng +'","pais": "'+ result[0].countryName +'", "cep": "'+ result[0].postalCode +'", "estado": "'+ result[0].administrativeArea +'", "cidade": "'+ result[0].subAdministrativeArea +'", "conjunto": "'+ result[0].subLocality +'", "rua": "'+ result[0].thoroughfare +'"}');
+			this.rua = result[0].thoroughfare;
+			this.regiao = result[0].subLocality; 
 		  })
 		  .catch((error: any) => {
 		  	this.geocoderTesteError(error);
@@ -182,9 +189,9 @@ export class MapaModalPage implements OnInit {
 	}
 
 	confirmar() {
-		//Põe o alert de confirmação aqui
+		location.reload();
 		console.log('enviando: ' + this.local);
-		this.origem.setLocal(this.local);
+		// this.origem.setLocal(this.local);
 	}
 
 	async geocoderTeste(e, f, g, h, i, j) {
@@ -207,4 +214,9 @@ export class MapaModalPage implements OnInit {
 		await alert.present();
 	}
 
+}
+
+class Local{
+	rua: any;
+	regiao: any;
 }

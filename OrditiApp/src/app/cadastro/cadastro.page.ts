@@ -106,6 +106,7 @@ export class CadastroPage implements OnInit {
           this.pontoRef = " "
         }
         const dados = {
+          data: this.imgPessoa,
           nome: this.nome,
           cpf: this.formataCPF(this.cpf),
           fone: this.fone,
@@ -136,6 +137,7 @@ export class CadastroPage implements OnInit {
           this.pontoRef = " "
         }
         const dados = {
+          data: this.imgPessoa,
           nome: this.nome,
           cpf: this.formataCPF(this.cpf),
           fone: this.fone,
