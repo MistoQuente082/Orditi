@@ -8,20 +8,6 @@
   </ion-toolbar>
 </ion-header>
 
-<script type="text/javascript">
-  function fMasc(objeto, mascara) {
-    obj = objeto
-    masc = mascara
-    setTimeout("fMascEx()", 1)
-  }
-  function mCPF(cpf) {
-    cpf = cpf.replace(/\D/g, "")
-    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
-    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
-    return cpf
-  }
-</script>
 <ion-content>
   <!--   <ion-button (click)="cam()">
     Camera
@@ -40,8 +26,8 @@
     </ion-item>
     <ion-item>
       <ion-label color="medium" position="floating">CPF:</ion-label>
-      <ion-input type="text" [(ngModel)]="cpf" placeholder="Ex.: 482.136.418-25"
-        onkeydown="javascript: fMasc( this, mCPF );"></ion-input>
+      <ion-input type="text" [(ngModel)]="cpf" placeholder="Ex.: 482.136.418-25" onKeyDown="Mascara(this,Cpf);">
+      </ion-input>
     </ion-item>
 
     <ion-item>
