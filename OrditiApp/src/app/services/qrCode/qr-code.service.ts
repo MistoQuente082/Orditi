@@ -38,15 +38,17 @@ export class QrCodeService {
   }
 
   CodificarTexto(cpf) {
+    let dato;
     this.barcodeScanner.encode(this.barcodeScanner.Encode.TEXT_TYPE, cpf).then(
       encodedData => {
         this.datocodificado = encodedData;
-        
+        dato = encodedData;
       },
       err => {
         console.log("Un error ha ocurrido: " + err);
       }
     );
+    return dato;
   }
 
   async presentModal() {

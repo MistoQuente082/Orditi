@@ -113,9 +113,7 @@ export class CadastroPage implements OnInit {
 
 
         // CHAMA A FUNÇÃO PARA GERAR QRCODE
-        this.qrcode.CodificarTexto(this.cpf);
-
-
+        const dato = this.qrcode.CodificarTexto(this.cpf);
 
 
         const dados = {
@@ -127,9 +125,11 @@ export class CadastroPage implements OnInit {
           pontoRef: this.pontoRef,
           produto: this.produto,
           localAtiv: this.localAtiv,
-          qrCode: this.qrcode.datocodificado
+          qrCode: dato
           //imgPessoa: this.imgPessoa
         };
+
+        console.log(dados);
         //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
         let resp;
         resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
