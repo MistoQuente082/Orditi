@@ -13,39 +13,37 @@
   <img [src]="local.foto">
 
   <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>
-        {{local.nome}}
+    <ion-card-header style="background-color: rgb(54, 53, 53);">
+      <ion-card-subtitle style="color:white">
+        Informações da zona
       </ion-card-subtitle>
     </ion-card-header>
-
-    <ion-item>
-      <ion-label color="medium" position="floating">Endereço</ion-label>
-      <p>{{local.detalhes}}</p>
-    </ion-item>
-
-
-    <ion-item>
-      <ion-label color="medium" position="floating">Ambulantes alocados</ion-label>
-      <p>{{local.ocupantes}}</p>
-    </ion-item>
-
-    <ion-item>
-      <ion-label color="medium" position="floating">Capacidade</ion-label>
-      <p>{{local.capacidade - local.ocupantes}}</p>
-    </ion-item>
-
+    <br>
+    <ion-label style="margin-left: 8%; color:black">Ocupantes: {{local.ocupantes}}</ion-label>
+    <br>
+    <ion-label style="margin-left: 8%; color:black">Capacidade: {{local.capacidade}}</ion-label>
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile,
+      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+    </ion-card-content>
   </ion-card>
-  <p>{{local.ocupantes}} / {{local.capacidade}}</p>
-  <ion-item *ngFor="let pessoa of ambulantes | async">
-    <ion-avatar slot="start">
-      <img src="{{pessoa.foto}}">
-    </ion-avatar>
-    <ion-label>
-      <h3>{{pessoa.nome}}</h3>
-      <p>{{pessoa.produto}}</p>
-    </ion-label>
-  </ion-item>
+
+  <ion-card>
+    <ion-card-header style="background-color: rgb(54, 53, 53);">
+      <ion-card-subtitle style="color:white">
+        Ambulantes da zona
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-item *ngFor="let pessoa of ambulantes | async">
+      <ion-avatar slot="start">
+        <img src="{{pessoa.foto}}">
+      </ion-avatar>
+      <ion-label>
+        <h3>{{pessoa.nome}}</h3>
+        <h4>{{pessoa.produto}}</h4>
+      </ion-label>
+    </ion-item>
+  </ion-card>
 
 
 
