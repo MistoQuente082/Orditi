@@ -11,7 +11,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AlertasService } from '../services/alertas.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-import * as moment from 'moment';
+
 
 
 @Component({

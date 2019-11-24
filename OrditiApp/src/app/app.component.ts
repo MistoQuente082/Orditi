@@ -21,23 +21,29 @@ export class AppComponent {
     {
       title: 'Mapa',
       url: '/home',
-    },
-    {
-      title: 'Fazer Denuncia',
-      url: '/denuncia',
-    },
-    {
-      title: 'Como me tornar um micro Empreendedor Itinerante?',
-      url: '/home',
+      icon: 'map'
     },
     {
       title: 'Buscar Regiao',
       url: '/busca',
+      icon: 'search'
+    },
+
+    {
+      title: 'Como me tornar um micro Empreendedor Itinerante?',
+      url: '/home',
+      icon: 'information-circle'
     },
     {
+      title: 'Fazer Denuncia',
+      url: '/denuncia',
+      icon: 'hand'
+    },
+    {
+
       title: 'Sou um fiscal',
       url: '/login',
-      icon: 'ios-share'
+      icon: 'log-in'
     }
   ];
 
@@ -45,30 +51,40 @@ export class AppComponent {
     {
       title: 'Mapa',
       url: '/home',
+      icon: 'map'
     },
+
     {
-      title: 'Autuação',
-      url: '/autuacao',
+      title: 'Buscar Pessoa ou Regiao',
+      url: '/busca',
+      icon: 'search'
     },
     {
       title: 'Cadastro de Ambulante',
       url: '/cadastro',
+      icon: 'person-add'
     },
+    {
+      title: 'Autuação',
+      url: '/autuacao',
+      icon: 'hand'
+    },
+
     {
       title: 'Eventos Temporários',
       url: '/home',
+      icon: 'calendar'
     },
-    {
-      title: 'Buscar Pessoa ou Regiao',
-      url: '/busca',
-    },
-    {
-      title: 'Sair',
-      click: 'sair()',
-      url: '/home',
-      icon: 'ios-share'
-    }
+
+
   ];
+
+  public out = {
+    title: 'Sair',
+    click: 'sair()',
+    url: '/home',
+    icon: 'log-out'
+  };
 
   constructor(
     private platform: Platform,

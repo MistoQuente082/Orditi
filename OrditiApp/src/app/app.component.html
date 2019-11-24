@@ -19,16 +19,28 @@
         </ion-list>
         <ion-list *ngIf="Fiscal() == true">
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPagesFiscais">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item [routerDirection]="'root'" ([click])="p.click" [routerLink]="[p.url]">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
             </ion-item>
+
+            
           </ion-menu-toggle>
-          <ion-button block (click)="sair()">
-            Sair
-          </ion-button>
+          
+          <ion-menu-toggle>
+            <ion-item [routerDirection]="'root'" (click)="sair()" [routerLink]="[out.url]">
+              <ion-icon slot="start" [name]="out.icon"></ion-icon>
+              <ion-label>
+                {{out.title}}
+              </ion-label>
+            </ion-item>
+
+            
+          </ion-menu-toggle>
+          
+
         </ion-list>
       </ion-content>
     </ion-menu>
