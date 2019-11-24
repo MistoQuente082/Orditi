@@ -5,6 +5,8 @@ import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { AlertController } from '@ionic/angular';
 
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
 import { Router } from '@angular/router';
@@ -65,7 +67,9 @@ export class CadastroPage implements OnInit {
 
   constructor(
     private geolocation: Geolocation,
+    private nativeGeocoder: NativeGeocoder,
     public db: AngularFirestore,
+    public alertController: AlertController,
     public alertas: AlertasService,
     public camera: Camera,
     public modalController: ModalController,
@@ -117,7 +121,18 @@ export class CadastroPage implements OnInit {
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
 
-    this.localAtual('Selecionado')
+    let options: NativeGeocoderOptions = {
+      useLocale: true,
+      maxResults: 5
+    };
+
+    this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng, options)
+    .then((result: NativeGeocoderResult[]) => {
+        this.localAtual(""+ result[0].subAdministrativeArea + " "+ result[0].subLocality + " " + result[0].thoroughfare);
+      })
+      .catch((error: any) => {
+        this.geocoderTesteError(error);
+      });
   }
 
   localAtual(endereco) {
@@ -196,11 +211,19 @@ export class CadastroPage implements OnInit {
         }
       }
     }
-
-
   }
 
   ngOnInit() {
+  }
+
+  async geocoderTesteError(e) {
+    const alert = await this.alertController.create({
+      header: 'Erro',
+      message: '' + e,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }
