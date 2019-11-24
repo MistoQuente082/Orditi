@@ -12,6 +12,7 @@ import { AlertasService } from '../services/alertas.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 import * as firebase from 'firebase';
+import { AppModule } from '../app.module';
 
 @Component({
   selector: 'app-denuncia',
@@ -25,12 +26,15 @@ export class DenunciaPage implements OnInit {
 
   public dataDenuncia: Date = new Date();
   public horaDenuncia: Date = new Date();
-  public localDenuncia: any = " ";
+  public localDenuncia: any;
   public infoDenuncia;
   public local: any;
 
   //Variaveis do mapa
   L: any = null;
+  mostraMapa: boolean = false;
+
+
 
   map2: Map = null;
   lat: any;
@@ -56,11 +60,12 @@ export class DenunciaPage implements OnInit {
     public modalController: ModalController) { }
 
   ngOnInit() {
-    this.leafletMap();
   }
 
   /** Load leaflet map **/
   leafletMap() {
+    this.mostraMapa = true;
+    console.log('Mostrando mapa')
     if (this.map2 !== 'undefined' && this.map2 !== null) {
       this.map2.remove();
     }
@@ -99,9 +104,13 @@ export class DenunciaPage implements OnInit {
     this.L = marker(e.latlng)
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
+
+    this.localAtual('Local selecionado')
   }
 
-
+  localAtual(endereco) {
+    this.localDenuncia = endereco;
+  }
 
   // Função para camera
   cam() {
@@ -136,7 +145,6 @@ export class DenunciaPage implements OnInit {
     console.log('Chegada:', this.horaDenuncia);
   }
 
-
   // ENVIAR DENUNCIA
   subDenuncia() {
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
@@ -156,5 +164,11 @@ export class DenunciaPage implements OnInit {
       // Falta en viar a foto
       // E como tranformar o local no nome da rua
     }
+
+  }
+
+  Fiscal() {
+    return AppModule.getUsuarioStatus();
+    console.log(AppModule.getUsuarioStatus())
   }
 }

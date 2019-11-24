@@ -176,9 +176,6 @@ export class MapaModalPage implements OnInit {
 			});
 
 		var data = JSON.stringify(objeto);
-		if (this.origem === "cadastro") {
-			CadastroPage.setLocal(data)
-		}
 		this.local = data;
 		console.log('enviando: ' + this.local + "Para: " + this.origem);
 	}

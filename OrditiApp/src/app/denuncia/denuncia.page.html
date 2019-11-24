@@ -35,11 +35,13 @@
 
     <ion-item>
       <ion-label color="medium" position="floating">Local:</ion-label>
-      <ion-label>{{localDenuncia}}</ion-label>
-      <ion-note text-end (click)="mostraMapa()">
-        Marque no mapa abaixo
+      <ion-input ype="text" [(ngModel)]="localDenuncia" disabled="{{mostraMapa}}"
+        placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde"></ion-input>
+      <ion-note text-end (click)="leafletMap()">
+        Marcar no mapa
       </ion-note>
     </ion-item>
+
 
     <ion-item>
       <ion-label color="medium" position="floating">Informe a situação:</ion-label>
@@ -47,12 +49,7 @@
     </ion-item>
   </ion-card>
 
-  <ion-card id="mapId2" style="height: 300px">
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()" style="margin-bottom: 5%;">
-      <ion-button style="border-radius: 0px; width: 89%;">
-        <p>Coloca aqui um icon</p>
-      </ion-button>
-    </ion-fab>
+  <ion-card *ngIf="mostraMapa" id="mapId2" style="height: 300px">
   </ion-card>
 
   <ion-button (click)="subDenuncia()" expand="block" color="medium">Enviar Denuncia</ion-button>
