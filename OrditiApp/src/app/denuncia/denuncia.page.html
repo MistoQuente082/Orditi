@@ -20,13 +20,12 @@
       <ion-label color="medium" position="floating">Período:</ion-label>
 
       <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
-         ([ngModel])="dataDenuncia" placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
+        ([ngModel])="dataDenuncia.toISOString()" placeholder="Seleciona o Dia" (ionChange)="mudaData( $event )">
       </ion-datetime>
 
 
-
-      <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher"
-        ([ngModel])="horaDenuncia" placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
+      <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="horaDenuncia"
+        placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
       </ion-datetime>
 
 
@@ -35,19 +34,21 @@
 
     <ion-item>
       <ion-label color="medium" position="floating">Local:</ion-label>
-      <ion-input id="local" type="text"  placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde" [(ngModel)]="localDenuncia">
-      </ion-input>
-
-      <ion-note class="ion-text-end" (click)="selectMap()">
+      <ion-input ype="text" [(ngModel)]="localDenuncia" disabled="{{mostraMapa}}"
+        placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde"></ion-input>
+      <ion-note text-end (click)="leafletMap()">
         Marcar no mapa
       </ion-note>
-
     </ion-item>
+
 
     <ion-item>
       <ion-label color="medium" position="floating">Informe a situação:</ion-label>
       <ion-textarea [(ngModel)]="infoDenuncia" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
     </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="mostraMapa" id="mapId2" style="height: 300px">
   </ion-card>
 
   <ion-button (click)="subDenuncia()" expand="block" color="medium">Enviar Denuncia</ion-button>

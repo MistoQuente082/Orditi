@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertasService } from '../services/alertas.service';
+import { NavParams, ModalController } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-perfil-ambulante',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PerfilAmbulantePage implements OnInit {
 
-  constructor() { }
-
+  ambulante: any;
+  // Variaveis da pessoa
+  constructor(
+    public db: AngularFirestore,
+    public alertas: AlertasService,
+    public modalController: ModalController
+    ){ 
+            //this.ambulante= NavParams.get("");
+  }
   ngOnInit() {
+    
+
   }
 
 }

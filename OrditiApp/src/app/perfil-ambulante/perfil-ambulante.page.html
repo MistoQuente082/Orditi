@@ -10,26 +10,60 @@
       <img />
     </ion-avatar>
 
-    <ion-list>
-
-      <ion-list-header>
-        <ion-label>Informações pessoais</ion-label>
-      </ion-list-header>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          Informações do ambulante
+        </ion-card-subtitle>
+      </ion-card-header>
       <ion-item>
-        <ion-label>
-          <p>Nome:</p>
-          <h2>Joao</h2>
-        </ion-label>
+        <ion-label color="medium" position="floating">Nome:</ion-label>
       </ion-item>
 
       <ion-item>
-        <ion-label>
-          <p>Responsavel:</p>
-          <h2>informacoes</h2>
-        </ion-label>
+        <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
       </ion-item>
 
-    </ion-list>
+      <ion-item>
+        <ion-label color="medium" position="floating">Escolaridade: </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="medium" position="floating">Endereço: </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="medium" position="floating">Telefone: </ion-label>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          Informações do local de trabalho
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-item>
+        <ion-label color="medium" position="floating">Produto: </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="medium" position="floating">Região: </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="medium" position="floating">Ponto de referência: </ion-label>
+      </ion-item>
+
+      <div *ngIf="regiao == 'a1'">
+        <ion-item>
+          <ion-label color="medium" position="floating">Local de Atividade: </ion-label>
+        </ion-item>
+      </div>
+
+    </ion-card>
+
     <ion-button expand="block" color="medium">Editar dados</ion-button>
 
   </ion-content>

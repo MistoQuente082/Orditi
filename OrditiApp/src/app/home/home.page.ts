@@ -106,6 +106,7 @@ export class HomePage {
   ionViewWillLeave() {
     this.map.remove();
   }
+
   // retornar local atual
   localAtual() {
     this.map.setView([this.lat, this.long], 30);
@@ -193,5 +194,6 @@ export class HomePage {
   fecharCard() {
     this.zona = null;
   }
+
 
 }

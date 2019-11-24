@@ -17,7 +17,7 @@
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>
-        Informações da pessoa
+        Informações do ambulante
       </ion-card-subtitle>
     </ion-card-header>
     <ion-item>
@@ -26,7 +26,7 @@
     </ion-item>
     <ion-item>
       <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
-      <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}" max-length="11">
+      <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}" maxlength="14">
       </ion-input>
     </ion-item>
 
@@ -72,13 +72,10 @@
     <ion-item>
       <ion-label color="medium" position="floating">Região</ion-label>
       <ion-select placeholder="Selecione a zona" [(ngModel)]="regiao">
-        <ion-select-option value="a1">Ponto Independente</ion-select-option>
-        <ion-select-option value="a2">Praça Lions</ion-select-option>
-        <ion-select-option value="a3">Posto 7</ion-select-option>
-        <!--
-            Coloca aqui a lista de lugares a partir do firebase.
-            Você já fez isso no da AMA na parte de enviar mensagem.         
-            <ion-select-option *ngFor="let pessoa of pessoas | async">{{pessoa.nome}}: {{pessoa.email}}</ion-select-option>-->
+        <ion-select-option value="a1" (click)="leafletMap()">Ponto Independente</ion-select-option>
+        <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
+        </ion-select-option>
+
       </ion-select>
     </ion-item>
 
@@ -91,16 +88,18 @@
     <div *ngIf="regiao == 'a1'">
       <ion-item>
         <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
-        <ion-input type="text" [(ngModel)]="localAtiv" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
+        <ion-input type="text" [(ngModel)]="localAtiv" disabled="{{mostrarMapa}}"
+          placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
           <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
         </ion-input>
-
-        <ion-note text-end (click)="selectMap()">
-          Marcar no mapa
+        <ion-note text-end (click)="leafletMap()">
+          Marque no mapa
         </ion-note>
-
       </ion-item>
     </div>
+  </ion-card>
+
+  <ion-card *ngIf="mostrarMapa" id="mapId3" style="height: 300px">
   </ion-card>
 
   <ion-button expand="block" color="medium" (click)="cadastrar()">

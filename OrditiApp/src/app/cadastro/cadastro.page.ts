@@ -3,7 +3,14 @@ import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 
+import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
+import { Router } from '@angular/router';
+
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import * as firebase from 'firebase'
 
 
 @Component({
@@ -27,25 +34,94 @@ export class CadastroPage implements OnInit {
   // Variaveis Do trabalho
   public produto: string;
   public pontoRef: string;
-  public localAtiv: string = "Anaaaaaa";
+  public localAtiv: string;
   public regiao: string;
+  public local: any;
 
-  // Ponto no MApa
-  private static local: any;
+  //Variaveis do mapa
+  L: any = null;
+
+  mostrarMapa: boolean = false;
+
+
+
+  map2: Map = null;
+  lat: any;
+  long: any;
+  latLngC: any;
+  routes = [
+    {
+      path: '',
+      redirectTo: 'home'
+    }
+  ];
+
+  returnHome() {
+    this.router.navigate(['/home']);
+  }
+
+  //lista de locais
+  locais: Observable<any[]>;
 
   constructor(
+    private geolocation: Geolocation,
+    public db: AngularFirestore,
     public alertas: AlertasService,
     public camera: Camera,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public router: Router,
   ) {
+    this.locais = db.collection("zonas").valueChanges();
+  }
+  //Funcoes para o mapa
 
+  /** Load leaflet map **/
+  leafletMap() {
+    this.mostrarMapa = true;
+    if (this.map2 !== 'undefined' && this.map2 !== null) {
+      this.map2.remove();
+    }
+    else {
+      /** Get current position **/
+      this.geolocation.getCurrentPosition().then((resp) => {
+        this.lat = resp.coords.latitude;
+        this.long = resp.coords.longitude;
+
+        this.map2 = new Map('mapId3').setView([this.lat, this.long], 18);
+        this.map2.on('click', (e) => { this.mapMarker(e); });
+
+        tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        }).addTo(this.map2);
+
+      }).catch((error) => {
+        console.log('Error getting location', error);
+      });
+    }
   }
-  // Gets e Sets do local
-  static getLocal() {
-    return this.local;
+
+  mapRemove() {
+    //this.map2.remove(); -> Isso tava fazendo dar um erro bem grande
+    this.returnHome();
   }
-  static setLocal(ponto, json) {
-    this.local = ponto;
+
+  mapMarker(e) {
+    console.log("Objeto: ", e);
+    console.log("Latlng: ", e.latlng);
+    console.log("Lat: ", e.latlng.lat);
+    console.log("Lng: ", e.latlng.lng);
+    if (this.L !== null) {
+      this.map2.removeLayer(this.L);
+    }
+    this.L = marker(e.latlng)
+    this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
+    this.local = e.latlng;
+
+    this.localAtual('Selecionado')
+  }
+
+  localAtual(endereco) {
+    this.localAtiv = endereco;
   }
 
   // Função para camera
@@ -64,34 +140,6 @@ export class CadastroPage implements OnInit {
     }, (err) => {
       // Handle error
     });
-
-
-  }
-  formataCPF(cpf) {
-    //retira os caracteres indesejados...
-    cpf = this.cpf.replace(/[^\d]/g, "");
-
-    if (cpf.lenght == 11) {
-      //realizar a formatação...
-      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-    }
-    else {
-      this.alertas.presentToast("Valor do CPF invalido!")
-    }
-  }
-
-  // Função que leva a escolher um ponto no mapa
-  selectMap() {
-    var origem = CadastroPage;
-    this.modalController.create(
-      {
-        component: MapaModalPage,
-        componentProps: {
-          origem
-        }
-      }).then((modalElement) => {
-        modalElement.present();
-      });
   }
 
   // Botão de cadastro
@@ -108,23 +156,16 @@ export class CadastroPage implements OnInit {
         const dados = {
           data: this.imgPessoa,
           nome: this.nome,
-          cpf: this.formataCPF(this.cpf),
+          cpf: this.cpf,
           fone: this.fone,
           escolaridade: this.escolaridade,
           endereco: this.endereco,
           pontoRef: this.pontoRef,
           produto: this.produto,
           localAtiv: this.localAtiv,
-          //imgPessoa: this.imgPessoa
+          zona: this.regiao,
         };
-        //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
-        let resp;
-        resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
-        console.log(resp);
-        if (resp === 'Adicionar') {
-          console.log('Adicionando');
-          this.alertas.subDados(dados, "ambulantes");
-        }
+        this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
       }
     } else {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
@@ -133,31 +174,29 @@ export class CadastroPage implements OnInit {
         this.alertas.presentToast('Preencha os campos!');
       }
       else {
-        if (this.pontoRef === undefined) {
-          this.pontoRef = " "
-        }
-        const dados = {
-          data: this.imgPessoa,
-          nome: this.nome,
-          cpf: this.formataCPF(this.cpf),
-          fone: this.fone,
-          escolaridade: this.escolaridade,
-          endereco: this.endereco,
-          pontoRef: this.pontoRef,
-          produto: this.produto,
-          localAtiv: this.regiao,
-          //imgPessoa: this.imgPessoa
-        };
-        //this.alertas.subDados(dados); //Pq ele mandaria os dados antes de confirmar?
-        let resp;
-        resp = this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
-        console.log(resp);
-        if (resp === 'Adicionar') {
-          console.log('Adicionando');
-          this.alertas.subDados(dados, "ambulantes");
+        if (this.localAtiv === undefined) {
+          this.alertas.presentToast('Confirme o local!');
+        } else {
+          if (this.pontoRef === undefined) {
+            this.pontoRef = " "
+          }
+          const dados = {
+            nome: this.nome,
+            cpf: this.cpf,
+            fone: this.fone,
+            escolaridade: this.escolaridade,
+            endereco: this.endereco,
+            pontoRef: this.pontoRef,
+            produto: this.produto,
+            localAtiv: this.localAtiv,
+            local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng),
+            regiao: "Independente"
+          };
+          this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
         }
       }
     }
+
 
   }
 

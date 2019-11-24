@@ -6,6 +6,8 @@ import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { CadastroPage } from '../cadastro/cadastro.page';
+import { DenunciaPage } from '../denuncia/denuncia.page';
 
 @Component({
 	selector: 'app-mapa-modal',
@@ -31,7 +33,7 @@ export class MapaModalPage implements OnInit {
 		public db: AngularFirestore,
 		private geolocation: Geolocation,
 		private nativeGeocoder: NativeGeocoder,
-		public alertController: AlertController,) {
+		public alertController: AlertController, ) {
 		this.origem = navParams.get('origem');
 	}
 
@@ -76,22 +78,22 @@ export class MapaModalPage implements OnInit {
 		}
 	}
 
-	pesquisarMapaMarker(e){
+	pesquisarMapaMarker(e) {
 		console.log("Cidade: ", e);
 		let options: NativeGeocoderOptions = {
-		    useLocale: true,
-		    maxResults: 5
+			useLocale: true,
+			maxResults: 5
 		};
 
 		this.nativeGeocoder.forwardGeocode(e, options)
-		  .then((result: NativeGeocoderResult[]) => {
-		  		console.log("Geocoder result: ", result);
+			.then((result: NativeGeocoderResult[]) => {
+				console.log("Geocoder result: ", result);
 				if (this.L !== null) {
 					this.map.removeLayer(this.L);
 				}
 				this.L = marker(result[0].latitude, result[0].longitude);
 				this.L.addTo(this.map).bindPopup('Você selecionou esse ponto').openPopup();
-			}).catch((error: any) => {console.log(error);});
+			}).catch((error: any) => { console.log(error); });
 	}
 
 	async pesquisarMapa() {
@@ -106,7 +108,7 @@ export class MapaModalPage implements OnInit {
 			buttons: [
 				{
 					text: "Salvar",
-					handler: data => {this.pesquisarMapaMarker(data.cidade);}
+					handler: data => { this.pesquisarMapaMarker(data.cidade); }
 				}
 			]
 		});
@@ -160,33 +162,28 @@ export class MapaModalPage implements OnInit {
 		// this.local = e.latlng;
 
 		let options: NativeGeocoderOptions = {
-		    useLocale: true,
-		    maxResults: 5
+			useLocale: true,
+			maxResults: 5
 		};
 
 		var objeto;
 
-		this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng , options)
-		  .then((result: NativeGeocoderResult[]) => {
-		  	this.geocoderTeste(result[0].countryName, result[0].postalCode, result[0].administrativeArea, result[0].subAdministrativeArea, result[0].subLocality, result[0].thoroughfare);
-		  	objeto = JSON.parse('{"latitude": "'+ e.latlng.lat +'", "longitude": "'+ e.latlng.lng +'","pais": "'+ result[0].countryName +'", "cep": "'+ result[0].postalCode +'", "estado": "'+ result[0].administrativeArea +'", "cidade": "'+ result[0].subAdministrativeArea +'", "conjunto": "'+ result[0].subLocality +'", "rua": "'+ result[0].thoroughfare +'"}');
-			this.rua = result[0].thoroughfare;
-			this.regiao = result[0].subLocality; 
-		  })
-		  .catch((error: any) => {
-		  	this.geocoderTesteError(error);
-		  });
+		this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng, options)
+			.then((result: NativeGeocoderResult[]) => {
+				this.geocoderTeste(result[0].countryName, result[0].postalCode, result[0].administrativeArea, result[0].subAdministrativeArea, result[0].subLocality, result[0].thoroughfare);
+				objeto = JSON.parse('{"latitude": ' + e.latlng.lat + ', "longitude": ' + e.latlng.lng + ',"pais": ' + result[0].countryName + ', "cep": ' + result[0].postalCode + ', "estado": ' + result[0].administrativeArea + ', "cidade": ' + result[0].subAdministrativeArea + ', "conjunto": ' + result[0].subLocality + ', "rua": ' + result[0].thoroughfare + '}');
+			})
+			.catch((error: any) => {
+				this.geocoderTesteError(error);
+			});
 
-		  var data = JSON.stringify(objeto);
-		  // this.origem.setLocal(data);
-		  this.local = data;
-		//Faz aparecer no mapa
-
-		//Faz aparecer no mapa
+		var data = JSON.stringify(objeto);
+		this.local = data;
+		console.log('enviando: ' + this.local + "Para: " + this.origem);
 	}
 
 	confirmar() {
-		console.log('enviando: ' + this.local);
+		//Põe o alert de confirmação aqui
 		this.origem.setLocal(this.local);
 	}
 
