@@ -11,6 +11,31 @@
 
 <ion-content>
   <img [src]="local.foto">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        {{local.nome}}
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-item>
+      <ion-label color="medium" position="floating">Endereço</ion-label>
+      <p>{{local.detalhes}}</p>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label color="medium" position="floating">Ambulantes alocados</ion-label>
+      <p>{{local.ocupantes}}</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="medium" position="floating">Capacidade</ion-label>
+      <p>{{local.capacidade - local.ocupantes}}</p>
+    </ion-item>
+
+  </ion-card>
   <p>{{local.ocupantes}} / {{local.capacidade}}</p>
   <ion-item *ngFor="let pessoa of ambulantes | async">
     <ion-avatar slot="start">
@@ -21,5 +46,7 @@
       <p>{{pessoa.produto}}</p>
     </ion-label>
   </ion-item>
+
+
 
 </ion-content>

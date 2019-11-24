@@ -19,7 +19,8 @@ const routes: Routes = [
   { path: 'mapa-modal', loadChildren: './mapa-modal/mapa-modal.module#MapaModalPageModule' },
   { path: 'detalhe-zona', loadChildren: './detalhe-zona/detalhe-zona.module#DetalheZonaPageModule' },
   { path: 'informacoes', loadChildren: './informacoes/informacoes.module#InformacoesPageModule' },
-  { path: 'perfil-ambulante', loadChildren: './perfil-ambulante/perfil-ambulante.module#PerfilAmbulantePageModule' }
+  { path: 'perfil-ambulante', loadChildren: './perfil-ambulante/perfil-ambulante.module#PerfilAmbulantePageModule' },
+  { path: 'busca', loadChildren: './busca/busca.module#BuscaPageModule' }
 
 ]
 

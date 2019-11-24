@@ -31,6 +31,10 @@ export class AppComponent {
       url: '/home',
     },
     {
+      title: 'Buscar Regiao',
+      url: '/busca',
+    },
+    {
       title: 'Sou um fiscal',
       url: '/login',
       icon: 'ios-share'
@@ -53,6 +57,10 @@ export class AppComponent {
     {
       title: 'Eventos Temporários',
       url: '/home',
+    },
+    {
+      title: 'Buscar Pessoa ou Regiao',
+      url: '/busca',
     },
     {
       title: 'Sair',
