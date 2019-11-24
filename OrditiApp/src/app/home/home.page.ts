@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon, L } from 'leaflet';
+import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController, ModalController } from '@ionic/angular';
 import { AppModule } from '../app.module';
@@ -9,6 +9,22 @@ import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_
 import { Observable } from 'rxjs';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
+import * as L from 'leaflet';
+
+const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
+const iconUrl = '../../assets/leaflet/images/marker-icon.png';
+const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
+const iconDefault = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
   selector: 'app-home',
@@ -18,10 +34,9 @@ import { AlertasService } from '../services/alertas.service';
 export class HomePage {
   user: any = AppModule.getUsuario();
 
-  map: Map = null;
+  map: L.map = null;
   lat: any;
   long: any;
-  L: any = null;
 
   //Zonas da cidade
   locais: any[];
@@ -75,7 +90,7 @@ export class HomePage {
         //Fim do acesso ao Firebasse
 
         /** Criar mapa na posição atual do usuário **/
-        marker([this.lat, this.long]).addTo(this.map)
+        const marker = L.marker([this.lat, this.long]).addTo(this.map)
           .bindPopup('Você está aqui!') //Mensagem do ponto
           .openPopup(); //Abre a Mensagem
 
@@ -107,11 +122,11 @@ export class HomePage {
     var ambulanteFoto = geo.data().foto;
     var ambulanteNome = geo.data().nome;
     var ambulanteProduto = geo.data().produto;
-    var ambulanteLat = geo.data().localAtiv._lat;
-    var ambulantLong = geo.data().localAtiv._long;
+    var ambulanteLat = geo.data().local._lat;
+    var ambulantLong = geo.data().local._long;
     var zona = geo.data().zona;
 
-    var amb = marker([ambulanteLat, ambulantLong]).bindPopup('<img src="'+ ambulanteFoto +'"><br>'+'Ambulante: <strong>'+ ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    var amb = L.marker([ambulanteLat, ambulantLong]).bindPopup('<img src="'+ ambulanteFoto +'"><br>'+'Ambulante: <strong>'+ ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
 
     if(zona == "praça lions"){
