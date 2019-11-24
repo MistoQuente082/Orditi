@@ -19,6 +19,9 @@ export class MapaModalPage implements OnInit {
 	lat: any;
 	long: any;
 	latlng: any;
+	rua: any;
+	regiao: any;
+
 
 	origem: any;
 
@@ -148,7 +151,6 @@ export class MapaModalPage implements OnInit {
 	}
 
 	mapMarker(e) {
-		console.log("Objeto: ", e);
 		console.log("Latlng: ", e.latlng);
 		console.log("Lat: ", e.latlng.lat);
 		console.log("Lng: ", e.latlng.lng);
@@ -182,7 +184,6 @@ export class MapaModalPage implements OnInit {
 
 	confirmar() {
 		//Põe o alert de confirmação aqui
-
 		this.origem.setLocal(this.local);
 	}
 

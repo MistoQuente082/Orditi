@@ -27,7 +27,7 @@
               },
               {
                 "glob": "**/*.svg",
-                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "input": "./node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
               },
               {
@@ -118,6 +118,16 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/leaflet/dist/images",
+                "output": "leaflet/"
+              },              
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets"
               }
             ]
           },

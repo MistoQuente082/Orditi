@@ -128,8 +128,6 @@ export class DenunciaPage implements OnInit {
     }, (err) => {
       // Handle error
     });
-
-
   }
 
 
@@ -139,7 +137,6 @@ export class DenunciaPage implements OnInit {
     console.log('DIA', this.dataDenuncia);
 
   }
-
   mudaHora(event) {
     this.horaDenuncia = new Date(event.detail.value);
     console.log('Chegada:', this.horaDenuncia);
@@ -161,7 +158,7 @@ export class DenunciaPage implements OnInit {
       console.log(dados)
       this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
       // COLOCA AQUI para envia dados da denuncia ao banco
-      // Falta en viar a foto
+      // Falta enviar a foto
       // E como tranformar o local no nome da rua
     }
 

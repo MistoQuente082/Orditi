@@ -154,6 +154,7 @@ export class CadastroPage implements OnInit {
           this.pontoRef = " "
         }
         const dados = {
+          data: this.imgPessoa,
           nome: this.nome,
           cpf: this.cpf,
           fone: this.fone,

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <img [src]="imgAut" (click)="cam()">
+  <img [src]="imgAut" (click)="cam()" *ngIf="imgAut">
 
   <!-- <img [src]="imagemPath"> -->
   <ion-card>

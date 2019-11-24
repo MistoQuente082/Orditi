@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { MapaModalPageModule } from './mapa-modal/mapa-modal.module';
-
+import { IonicStorageModule } from '@ionic/storage';
 
 import { AngularFireModule } from '@angular/fire'; //Necessário para qualquer coisa do Firebase
 import { environment } from '../environments/environment'; //As informações do Arquivo do firebase estão lá
@@ -32,6 +32,7 @@ import { BrMaskerModule } from 'br-mask';
     BrMaskerModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    IonicStorageModule.forRoot(),
     MapaModalPageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
