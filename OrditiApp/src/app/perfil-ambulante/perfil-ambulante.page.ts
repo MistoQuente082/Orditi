@@ -17,9 +17,8 @@ export class PerfilAmbulantePage implements OnInit {
     public alertas: AlertasService,
     public modalController: ModalController
     ){ 
-      this.ambulante= NavParams.get("");
+            //this.ambulante= NavParams.get("");
   }
-  
   ngOnInit() {
     
 
