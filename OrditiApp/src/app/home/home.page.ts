@@ -21,9 +21,14 @@ export class HomePage {
   map: Map = null;
   lat: any;
   long: any;
+  L: any = null;
 
   //Zonas da cidade
   locais: any[];
+  pracaLions: number = 0;
+  pracaSinimbu: number = 0;
+  pracaGogoEma: number = 0;
+  orlaUrbana: number = 0;
 
   zona: any = null;
 
@@ -45,8 +50,6 @@ export class HomePage {
       this.map.remove();
     }
     else {
-
-
       /** Get current position **/
       this.geolocation.getCurrentPosition().then((resp) => {
         this.lat = resp.coords.latitude;
@@ -62,7 +65,13 @@ export class HomePage {
           snapshot.forEach(doc => {
             this.criarPoligono(doc);
           })
-        })
+        });
+
+        this.db.collection('ambulantes').get().toPromise().then(snapshot => {
+          snapshot.forEach(geo => {
+            this.criarMarkerAmbulantes(geo);
+          })
+        });
         //Fim do acesso ao Firebasse
 
         /** Criar mapa na posição atual do usuário **/
@@ -85,6 +94,39 @@ export class HomePage {
   // retornar local atual
   localAtual() {
     this.map.setView([this.lat, this.long], 30);
+  }
+
+  criarMarkerAmbulantes(geo){
+    console.log("----------");
+    console.log("Lions: ", this.pracaLions);
+    console.log("Orla urbana: ", this.orlaUrbana);
+    console.log("Gogó da ema: ", this.pracaGogoEma);
+    console.log("Sinimbu: ", this.pracaSinimbu);
+    console.log("----------");
+
+    var ambulanteFoto = geo.data().foto;
+    var ambulanteNome = geo.data().nome;
+    var ambulanteProduto = geo.data().produto;
+    var ambulanteLat = geo.data().localAtiv._lat;
+    var ambulantLong = geo.data().localAtiv._long;
+    var zona = geo.data().zona;
+
+    var amb = marker([ambulanteLat, ambulantLong]).bindPopup('<img src="'+ ambulanteFoto +'"><br>'+'Ambulante: <strong>'+ ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    amb.addTo(this.map);
+
+    if(zona == "praça lions"){
+      this.pracaLions++;
+      console.log("Lions att: ", this.pracaLions);
+    }else if(zona == "orla urbana"){
+      this.orlaUrbana++;
+      console.log("Orla urbana att: ", this.orlaUrbana);
+    }else if(zona == "praça gogó da ema"){
+      this.pracaGogoEma++;
+      console.log("Gogó da ema att: ", this.pracaGogoEma);
+    }else if(zona == "praça sinimbu"){
+      this.pracaSinimbu++;
+      console.log("Sinimbu att: ", this.pracaSinimbu);
+    } 
   }
 
   criarPoligono(doc) {
