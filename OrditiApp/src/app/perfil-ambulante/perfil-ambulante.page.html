@@ -17,32 +17,24 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-item>
-      <ion-label color="medium" position="floating">Nome:</ion-label>
-      <ion-input type="text" [(ngModel)]="nome" placeholder="Ex.: Maria das Dores"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
-      <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}" maxlength="14">
-      </ion-input>
+      <ion-label color="medium" position="floating">Nome:{{ambulante.nome}}</ion-label>
     </ion-item>
 
     <ion-item>
-
-      <ion-label color="medium" position="floating">Escolaridade</ion-label>
-      <ion-select [(ngModel)]="escolaridade">
+      <ion-label color="medium" position="floating" >CPF/CNPJ:{{ambulante.cpf}}</ion-label>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Endereço</ion-label>
-      <ion-input type="text" [(ngModel)]="endereco" placeholder="Ex.: Rua Domingues 22 - Jaragua"></ion-input>
+      <ion-label color="medium" position="floating">Escolaridade: {{ambulante.escolaridade}}</ion-label>
     </ion-item>
-
 
     <ion-item>
-      <ion-label color="medium" position="floating">Telefone</ion-label>
-      <ion-input type="text" [(ngModel)]="fone" placeholder="(12) 34567-8910" [brmasker]="{phone: true}"></ion-input>
+      <ion-label color="medium" position="floating">Endereço: {{ambulante.endereco}}</ion-label>
     </ion-item>
 
+    <ion-item>
+      <ion-label color="medium" position="floating">Telefone: {{ambulante.telefone}}</ion-label>
+    </ion-item>
   </ion-card>
 
   <ion-card>
@@ -52,38 +44,24 @@
       </ion-card-subtitle>
     </ion-card-header>
 
-
     <ion-item>
-      <ion-label color="medium" position="floating">Produto:</ion-label>
-      <ion-input type="text" [(ngModel)]="produto" placeholder="Ex.: Churros"></ion-input>
+      <ion-label color="medium" position="floating">Produto: {{ambulante.produto}}</ion-label>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Região</ion-label>
-      <ion-select placeholder="Selecione a zona" [(ngModel)]="regiao">
-        <ion-select-option value="a1">Ponto Independente</ion-select-option>
-        <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
-        </ion-select-option>
-
-      </ion-select>
+      <ion-label color="medium" position="floating">Região: {{ambulante.região}}</ion-label>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Ponto de referência:</ion-label>
-      <ion-input type="text" [(ngModel)]="pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
+      <ion-label color="medium" position="floating">Ponto de referência: {{ambulante.referencia}}</ion-label>
     </ion-item>
-
 
     <div *ngIf="regiao == 'a1'">
       <ion-item>
-        <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
-        <ion-input type="text" [(ngModel)]="localAtiv" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
-          <h1>{{getLugar()}}</h1>
-          <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
-        </ion-input>
-
+        <ion-label color="medium" position="floating">Local de Atividade: {{ambulante.local_de_atividade}}</ion-label>
       </ion-item>
     </div>
+
   </ion-card>
 
     <ion-button expand="block" color="medium">Editar dados</ion-button>
