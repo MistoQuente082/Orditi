@@ -179,9 +179,6 @@ export class MapaModalPage implements OnInit {
 		if (this.origem === "cadastro") {
 			CadastroPage.setLocal(data)
 		}
-		if (this.origem === "denuncia") {
-			DenunciaPage.setLocal(data);
-		}
 		this.local = data;
 		console.log('enviando: ' + this.local + "Para: " + this.origem);
 	}

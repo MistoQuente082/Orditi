@@ -35,19 +35,24 @@
 
     <ion-item>
       <ion-label color="medium" position="floating">Local:</ion-label>
-      <ion-input type="text" [(ngModel)]="localDenuncia" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
-      </ion-input>
-      <!--Poe aqui tammbem o coisa de buscar local-->
-      <ion-note text-end (click)="selectMap()">
-        Marcar no mapa
+      <ion-label>{{localDenuncia}}</ion-label>
+      <ion-note text-end (click)="mostraMapa()">
+        Marque no mapa abaixo
       </ion-note>
-
     </ion-item>
 
     <ion-item>
       <ion-label color="medium" position="floating">Informe a situação:</ion-label>
       <ion-textarea [(ngModel)]="infoDenuncia" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
     </ion-item>
+  </ion-card>
+
+  <ion-card id="mapId2" style="height: 300px">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()" style="margin-bottom: 5%;">
+      <ion-button style="border-radius: 0px; width: 89%;">
+        <p>Coloca aqui um icon</p>
+      </ion-button>
+    </ion-fab>
   </ion-card>
 
   <ion-button (click)="subDenuncia()" expand="block" color="medium">Enviar Denuncia</ion-button>

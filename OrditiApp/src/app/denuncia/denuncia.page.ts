@@ -11,8 +11,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AlertasService } from '../services/alertas.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-import * as moment from 'moment';
-
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-denuncia',
@@ -20,29 +19,23 @@ import * as moment from 'moment';
   styleUrls: ['./denuncia.page.scss'],
 })
 export class DenunciaPage implements OnInit {
-  map2: Map = null;
-  lat: any;
-  long: any;
-  latLngC: any;
 
   // Var Camera
   public imgDenuncia = '../../assets/img/vetor.png';
 
   public dataDenuncia: Date = new Date();
   public horaDenuncia: Date = new Date();
-  public localDenuncia;
+  public localDenuncia: any = " ";
   public infoDenuncia;
+  public local: any;
 
-  static local: any;
+  //Variaveis do mapa
+  L: any = null;
 
-  // Gets e Sets do local
-  static getLocal() {
-    return this.local;
-  }
-  static setLocal(ponto) {
-    this.local = ponto;
-  }
-
+  map2: Map = null;
+  lat: any;
+  long: any;
+  latLngC: any;
   routes = [
     {
       path: '',
@@ -61,6 +54,52 @@ export class DenunciaPage implements OnInit {
     public router: Router,
     public db: AngularFirestore,
     public modalController: ModalController) { }
+
+  ngOnInit() {
+    this.leafletMap();
+  }
+
+  /** Load leaflet map **/
+  leafletMap() {
+    if (this.map2 !== 'undefined' && this.map2 !== null) {
+      this.map2.remove();
+    }
+    else {
+      /** Get current position **/
+      this.geolocation.getCurrentPosition().then((resp) => {
+        this.lat = resp.coords.latitude;
+        this.long = resp.coords.longitude;
+
+        this.map2 = new Map('mapId2').setView([this.lat, this.long], 18);
+        this.map2.on('click', (e) => { this.mapMarker(e); });
+
+        tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        }).addTo(this.map2);
+
+      }).catch((error) => {
+        console.log('Error getting location', error);
+      });
+    }
+  }
+
+  mapRemove() {
+    //this.map2.remove(); -> Isso tava fazendo dar um erro bem grande
+    this.returnHome();
+  }
+
+  mapMarker(e) {
+    console.log("Objeto: ", e);
+    console.log("Latlng: ", e.latlng);
+    console.log("Lat: ", e.latlng.lat);
+    console.log("Lng: ", e.latlng.lng);
+    if (this.L !== null) {
+      this.map2.removeLayer(this.L);
+    }
+    this.L = marker(e.latlng)
+    this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
+    this.local = e.latlng;
+  }
 
 
 
@@ -97,20 +136,6 @@ export class DenunciaPage implements OnInit {
     console.log('Chegada:', this.horaDenuncia);
   }
 
-  selectMap() {
-    const origem = DenunciaPage;
-    this.modalController.create(
-      {
-        component: MapaModalPage,
-        componentProps: {
-          origem: "denuncia"
-        }
-      }).then((modalElement) => {
-        modalElement.present();
-      });
-  }
-
-
 
   // ENVIAR DENUNCIA
   subDenuncia() {
@@ -122,22 +147,14 @@ export class DenunciaPage implements OnInit {
         dataDenuncia: this.dataDenuncia,
         horaDenuncia: this.horaDenuncia,
         localDenuncia: this.localDenuncia,
-        infoDenuncia: this.infoDenuncia
+        infoDenuncia: this.infoDenuncia,
+        local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng)
       };
+      console.log(dados)
       this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
       // COLOCA AQUI para envia dados da denuncia ao banco
       // Falta en viar a foto
       // E como tranformar o local no nome da rua
     }
-  }
-
-  ngOnInit() {
-
-  }
-
-
-  mapRemove() {
-    //this.map2.remove(); -> Isso tava fazendo dar um erro bem grande
-    this.returnHome();
   }
 }

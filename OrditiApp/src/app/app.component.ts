@@ -35,6 +35,10 @@ export class AppComponent {
       url: '/busca',
     },
     {
+      title: 'Eventos Temporarios',
+      url: '/informacoes',
+    },
+    {
       title: 'Sou um fiscal',
       url: '/login',
       icon: 'ios-share'
@@ -48,7 +52,7 @@ export class AppComponent {
     },
     {
       title: 'Autuação',
-      url: '/autuacao',
+      url: '/denuncia',
     },
     {
       title: 'Cadastro de Ambulante',
@@ -64,7 +68,6 @@ export class AppComponent {
     },
     {
       title: 'Sair',
-      click: 'sair()',
       url: '/home',
       icon: 'ios-share'
     }
