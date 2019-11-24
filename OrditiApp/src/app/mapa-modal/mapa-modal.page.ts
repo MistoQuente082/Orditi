@@ -6,7 +6,6 @@ import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
-import { Storage } from '@ionic/storage';
 
 @Component({
 	selector: 'app-mapa-modal',
@@ -18,7 +17,6 @@ export class MapaModalPage implements OnInit {
 	lat: any;
 	long: any;
 	latlng: any;
-	public localizacao: Local[] = [];
 	rua: any;
 	regiao: any;
 
@@ -31,7 +29,6 @@ export class MapaModalPage implements OnInit {
 	constructor(public modalController: ModalController,
 		navParams: NavParams,
 		public db: AngularFirestore,
-		private storage: Storage,
 		private geolocation: Geolocation,
 		private nativeGeocoder: NativeGeocoder,
 		public alertController: AlertController,) {
@@ -189,9 +186,8 @@ export class MapaModalPage implements OnInit {
 	}
 
 	confirmar() {
-		location.reload();
 		console.log('enviando: ' + this.local);
-		// this.origem.setLocal(this.local);
+		this.origem.setLocal(this.local);
 	}
 
 	async geocoderTeste(e, f, g, h, i, j) {
@@ -214,9 +210,4 @@ export class MapaModalPage implements OnInit {
 		await alert.present();
 	}
 
-}
-
-class Local{
-	rua: any;
-	regiao: any;
 }

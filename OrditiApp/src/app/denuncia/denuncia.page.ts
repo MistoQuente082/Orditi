@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { ModalController } from '@ionic/angular';
 
-import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import { AlertasService } from '../services/alertas.service';
@@ -23,12 +22,6 @@ export class DenunciaPage implements OnInit {
   lat: any;
   long: any;
   latLngC: any;
-  localizacao: any = [];
-  localMarcado: any = [];
-  public campos: Campos[] = [];
-  campoDiaDenuncia: any = [];
-  campoHoraDenuncia: any = [];
-  campoInfoDenuncia: any = [];
 
   // Var Camera
   public imgDenuncia = '../../assets/img/vetor.png';
@@ -54,7 +47,6 @@ export class DenunciaPage implements OnInit {
     public alertas: AlertasService,
     public camera: Camera,
     public router: Router,
-    private storage: Storage,
     public db: AngularFirestore,
     public modalController: ModalController) { }
 
@@ -92,7 +84,6 @@ export class DenunciaPage implements OnInit {
   }
 
   selectMap() {
-    this.infoDenuncia = (document.getElementById("campoInfoDenuncia") as HTMLInputElement).value;
     const origem = DenunciaPage;
     this.modalController.create(
       {
@@ -103,21 +94,12 @@ export class DenunciaPage implements OnInit {
       }).then((modalElement) => {
         modalElement.present();
       });
-
-      this.campos.push({
-          dia: this.dataDenuncia,
-          hora: this.horaDenuncia,
-          info: this.infoDenuncia
-      });   
-      this.storage.set('campos', this.campos);
   }
 
 
 
   // ENVIAR DENUNCIA
   subDenuncia() {
-    this.storage.clear();
-    this.infoDenuncia = (document.getElementById("campoInfoDenuncia") as HTMLInputElement).value;
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
       this.infoDenuncia === undefined || this.localDenuncia === undefined) {
       this.alertas.presentToast('Preencha os campos!');
@@ -130,37 +112,20 @@ export class DenunciaPage implements OnInit {
       };
       this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
       // COLOCA AQUI para envia dados da denuncia ao banco
-      // Falta en viar a foto
+      // Falta enviar a foto
       // E como tranformar o local no nome da rua
     }
   }
 
   ngOnInit() {
-    this.storage.get('localizacao').then((localizacao) => {
-      this.localizacao = localizacao || [];
-      this.localMarcado = "" + this.localizacao[0].rua + " " + this.localizacao[0].regiao;
-    });
-
-    this.storage.get('campos').then((campos) => {
-      this.campos = campos || [];
-      this.campoDiaDenuncia = "" + this.campos[0].dia;
-      this.campoHoraDenuncia = "" + this.campos[0].hora;
-      this.campoInfoDenuncia = "" + this.campos[0].info;
-    });
   }
 
   ngOnDestroy(){
-    this.storage.clear();    
+
   }
 
   mapRemove() {
     //this.map2.remove(); -> Isso tava fazendo dar um erro bem grande
     this.returnHome();
   }
-}
-
-class Campos{
-  dia: any;
-  hora: any;
-  info: any;
 }
