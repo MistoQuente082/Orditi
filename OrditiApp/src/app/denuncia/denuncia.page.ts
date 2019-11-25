@@ -13,8 +13,33 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AlertasService } from '../services/alertas.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
+import * as L from 'leaflet';
+
 import * as firebase from 'firebase';
 import { AppModule } from '../app.module';
+
+//Configuração dos markers do leaflet
+const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
+const iconUrl = '../../assets/leaflet/images/marker-icon.png';
+const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
+
+const LeafIcon = L.Icon.extend({
+  // iconRetinaUrl,
+  // iconUrl,
+  options: {
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+  }
+});
+
+const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-icon.png'}),
+    ambulanteIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png'}),
+    denunciaIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png'});
+// L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
   selector: 'app-denuncia',
@@ -105,7 +130,8 @@ export class DenunciaPage implements OnInit {
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
-    this.L = marker(e.latlng)
+    this.L = marker(e.latlng, {icon: ambulanteIcon})
+    
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
 
@@ -160,9 +186,12 @@ export class DenunciaPage implements OnInit {
   // ENVIAR DENUNCIA
   subDenuncia() {
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
-      this.infoDenuncia === undefined || this.localDenuncia === undefined) {
+      this.infoDenuncia === undefined || this.local === undefined) {
       this.alertas.presentToast('Preencha os campos!');
     } else {
+      if( this.localDenuncia === undefined){
+        this.localDenuncia = " ";
+      }
       const dados = {
         dataDenuncia: this.dataDenuncia,
         horaDenuncia: this.horaDenuncia,

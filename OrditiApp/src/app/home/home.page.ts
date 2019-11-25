@@ -14,10 +14,11 @@ import * as L2 from 'leaflet';
 
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
-
+//Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
+
 const LeafIcon = L.Icon.extend({
   // iconRetinaUrl,
   // iconUrl,
@@ -173,7 +174,7 @@ export class HomePage {
     var denunciaLong = den.data().local._long;
 
     var denMarker = L.marker([denunciaLat, denunciaLong], {icon: denunciaIcon}).bindPopup('<strong>Denuncia</strong>').openPopup();
-    denMarker.addTo(this.map);    
+    denMarker.addTo(this.map);
   }
 
   criarPoligono(doc) {
