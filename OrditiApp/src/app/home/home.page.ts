@@ -11,6 +11,12 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx'
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx'
+
+import { NgModule } from '@angular/core';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
@@ -32,6 +38,10 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  QRteste = '123.123.123-12'
+  QRtesteRec = null;
+  elementType = 'img';
+
   user: any = AppModule.getUsuario();
 
   map: L.map = null;
@@ -44,6 +54,8 @@ export class HomePage {
   zona: any = null;
 
   constructor(
+    private barcodeScanner: BarcodeScanner,
+    private base64toGallery: Base64ToGallery,
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
@@ -171,5 +183,13 @@ export class HomePage {
     this.zona = null;
   }
 
+  lerQRCode() {
+    this.barcodeScanner.scan().then(
+      dados => {
+        this.QRtesteRec = dados.text;
+        this.alertas.presentToast(dados.text);
+      }
+    )
+  }
 
 }

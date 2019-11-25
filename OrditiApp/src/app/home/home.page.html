@@ -19,7 +19,7 @@
     </ion-fab>
   </div>
 
-  <ion-fab *ngIf="Fiscal()" vertical="top" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="Fiscal()" (click)='lerQRCode()' vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="barcode"></ion-icon>
     </ion-fab-button>
@@ -44,6 +44,11 @@
         </ion-button>
       </ion-card-content>
     </ion-card>
+  </ion-fab>
+
+  <ion-fab vertical="bottom">
+    <ngx-qrcode [qrc-element-type]="elementType" [qrc-value]="QRteste">
+    </ngx-qrcode>
   </ion-fab>
 
 </ion-content>

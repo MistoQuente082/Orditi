@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+
 @NgModule({
   entryComponents: [
     DetalheZonaPage
@@ -15,6 +17,7 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    NgxQRCodeModule,
     RouterModule.forChild([
       {
         path: '',

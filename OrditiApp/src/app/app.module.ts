@@ -24,12 +24,17 @@ import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
+
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    NgxQRCodeModule,
     BrowserModule,
     BrMaskerModule,
     IonicModule.forRoot(),
@@ -43,6 +48,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
   ],
   providers: [
     StatusBar,
+    BarcodeScanner,
+    Base64ToGallery,
     SplashScreen,
     NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
