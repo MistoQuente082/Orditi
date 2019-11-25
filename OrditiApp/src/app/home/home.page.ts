@@ -40,10 +40,6 @@ export class HomePage {
 
   //Zonas da cidade
   locais: any[];
-  pracaLions: number = 0;
-  pracaSinimbu: number = 0;
-  pracaGogoEma: number = 0;
-  orlaUrbana: number = 0;
 
   zona: any = null;
 
@@ -112,13 +108,7 @@ export class HomePage {
     this.map.setView([this.lat, this.long], 30);
   }
 
-  criarMarkerAmbulantes(geo){
-    console.log("----------");
-    console.log("Lions: ", this.pracaLions);
-    console.log("Orla urbana: ", this.orlaUrbana);
-    console.log("Gogó da ema: ", this.pracaGogoEma);
-    console.log("Sinimbu: ", this.pracaSinimbu);
-    console.log("----------");
+  criarMarkerAmbulantes(geo) {
 
     var ambulanteFoto = geo.data().foto;
     var ambulanteNome = geo.data().nome;
@@ -127,22 +117,8 @@ export class HomePage {
     var ambulantLong = geo.data().local._long;
     var zona = geo.data().zona;
 
-    var amb = L.marker([ambulanteLat, ambulantLong]).bindPopup('<img src="'+ ambulanteFoto +'"><br>'+'Ambulante: <strong>'+ ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    var amb = L.marker([ambulanteLat, ambulantLong]).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
-
-    if(zona == "praça lions"){
-      this.pracaLions++;
-      console.log("Lions att: ", this.pracaLions);
-    }else if(zona == "orla urbana"){
-      this.orlaUrbana++;
-      console.log("Orla urbana att: ", this.orlaUrbana);
-    }else if(zona == "praça gogó da ema"){
-      this.pracaGogoEma++;
-      console.log("Gogó da ema att: ", this.pracaGogoEma);
-    }else if(zona == "praça sinimbu"){
-      this.pracaSinimbu++;
-      console.log("Sinimbu att: ", this.pracaSinimbu);
-    } 
   }
 
   criarPoligono(doc) {

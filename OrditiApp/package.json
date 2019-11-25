@@ -101,8 +101,7 @@
       },
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-nativegeocoder": {},
-
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
       "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
