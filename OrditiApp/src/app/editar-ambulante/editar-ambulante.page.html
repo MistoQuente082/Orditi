@@ -9,20 +9,23 @@
     <ion-card-header>
       <ion-card-subtitle>Editar as Informações</ion-card-subtitle>
     </ion-card-header>
+
+    <img *ngIf="imgPessoa" [src]="imgPessoa" (click)="cam()">
+    
     <ion-item>
       <ion-label color="medium" position="floating">Nome:</ion-label>
       <ion-input type="text" [(ngModel)]="nome"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
-      <ion-input type="text" [(ngModel)]="cpf" [brmasker]="{person: true}" maxlength="14">
+      <ion-input type="text" [(ngModel)]="ambulante.cpf" [brmasker]="{person: true}" maxlength="14">
       </ion-input>
     </ion-item>
 
     <ion-item>
 
       <ion-label color="medium" position="floating">Escolaridade</ion-label>
-      <ion-select [(ngModel)]="escolaridade">
+      <ion-select [(ngModel)]="ambulante.escolaridade">
         <ion-select-option value="analfabeto">Sem escolaridade</ion-select-option>
         <ion-select-option value="efi">Fundamental incompleto</ion-select-option>
         <ion-select-option value="efc">Fundamental completo</ion-select-option>
@@ -34,13 +37,13 @@
 
     <ion-item>
       <ion-label color="medium" position="floating">Endereço</ion-label>
-      <ion-input type="text" [(ngModel)]="endereco"></ion-input>
+      <ion-input type="text" [(ngModel)]="ambulante.endereco"></ion-input>
     </ion-item>
 
 
     <ion-item>
       <ion-label color="medium" position="floating">Telefone</ion-label>
-      <ion-input type="text" [(ngModel)]="fone" [brmasker]="{phone: true}"></ion-input>
+      <ion-input type="text" [(ngModel)]="ambulante.fone" [brmasker]="{phone: true}"></ion-input>
     </ion-item>
   </ion-card>
 
@@ -53,12 +56,12 @@
 
   <ion-item>
     <ion-label color="medium" position="floating">Produto:</ion-label>
-    <ion-input type="text" [(ngModel)]="produto" placeholder="Ex.: Churros"></ion-input>
+    <ion-input type="text" [(ngModel)]="ambulante.produto" placeholder="Ex.: Churros"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label color="medium" position="floating">Região</ion-label>
-    <ion-select placeholder="Selecione a zona" [(ngModel)]="regiao">
+    <ion-select placeholder="Selecione a zona" [(ngModel)]="ambulante.regiao">
       <ion-select-option value="a1">Ponto Independente</ion-select-option>
       <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
       </ion-select-option>
@@ -68,7 +71,11 @@
 
   <ion-item>
     <ion-label color="medium" position="floating">Ponto de referência:</ion-label>
-    <ion-input type="text" [(ngModel)]="pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
+    <ion-input type="text" [(ngModel)]="ambulante.pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
   </ion-item>
+
+  <ion-button expand="block" color="medium" (click)="alterarDados()">
+    Salvar
+  </ion-button>
 
 </ion-content>
