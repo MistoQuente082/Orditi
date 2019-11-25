@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import { Router } from '@angular/router';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { ModalController } from '@ionic/angular';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { AlertController } from '@ionic/angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
@@ -54,6 +56,8 @@ export class DenunciaPage implements OnInit {
   constructor(
     private geolocation: Geolocation,
     public alertas: AlertasService,
+    private nativeGeocoder: NativeGeocoder,
+    public alertController: AlertController,     
     public camera: Camera,
     public router: Router,
     public db: AngularFirestore,
@@ -105,7 +109,18 @@ export class DenunciaPage implements OnInit {
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
 
-    this.localAtual('Local selecionado')
+    let options: NativeGeocoderOptions = {
+      useLocale: true,
+      maxResults: 5
+    };
+
+    this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng, options)
+      .then((result: NativeGeocoderResult[]) => {
+        this.localAtual(""+result[0].subAdministrativeArea+" "+result[0].subLocality+ " "+result[0].thoroughfare);
+      })
+      .catch((error: any) => {
+        this.geocoderTesteError(error);
+      });
   }
 
   localAtual(endereco) {
@@ -167,5 +182,15 @@ export class DenunciaPage implements OnInit {
   Fiscal() {
     return AppModule.getUsuarioStatus();
     console.log(AppModule.getUsuarioStatus())
+  }
+
+  async geocoderTesteError(e) {
+    const alert = await this.alertController.create({
+      header: 'Erro',
+      message: '' + e,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

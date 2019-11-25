@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
+import * as L2 from 'leaflet';
 
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
@@ -17,17 +18,23 @@ import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
-const iconDefault = L.icon({
-  iconRetinaUrl,
-  iconUrl,
+const LeafIcon = L.Icon.extend({
+  // iconRetinaUrl,
+  // iconUrl,
+  options: {
   shadowUrl,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
   shadowSize: [41, 41]
+  }
 });
-L.Marker.prototype.options.icon = iconDefault;
+
+const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-icon.png'}),
+    ambulanteIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png'}),
+    denunciaIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png'});
+// L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
   selector: 'app-home',
@@ -102,6 +109,8 @@ export class HomePage {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map);
 
+        // var markers = L.markerClusterGroup();
+
         /** Criar poligonos a partir de dados do firebase */
         //Código de acesso à coleção das zonas no firebase 
         this.db.collection('zonas').get().toPromise().then(snapshot => {
@@ -115,10 +124,16 @@ export class HomePage {
             this.criarMarkerAmbulantes(geo);
           })
         });
+
+        this.db.collection('denuncias').get().toPromise().then(snapshot => {
+          snapshot.forEach(den => {
+            this.criarMarkerDenuncias(den);
+          })
+        });
         //Fim do acesso ao Firebasse
 
         /** Criar mapa na posição atual do usuário **/
-        const marker = L.marker([this.lat, this.long]).addTo(this.map)
+        const marker = L.marker([this.lat, this.long], {icon: defaultIcon}).addTo(this.map)
           .bindPopup('Você está aqui!') //Mensagem do ponto
           .openPopup(); //Abre a Mensagem
 
@@ -149,8 +164,16 @@ export class HomePage {
     var ambulantLong = geo.data().local._long;
     var zona = geo.data().zona;
 
-    var amb = L.marker([ambulanteLat, ambulantLong]).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    var amb = L.marker([ambulanteLat, ambulantLong], {icon: ambulanteIcon}).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
+  }
+
+  criarMarkerDenuncias(den){
+    var denunciaLat = den.data().local._lat;
+    var denunciaLong = den.data().local._long;
+
+    var denMarker = L.marker([denunciaLat, denunciaLong], {icon: denunciaIcon}).bindPopup('<strong>Denuncia</strong>').openPopup();
+    denMarker.addTo(this.map);    
   }
 
   criarPoligono(doc) {
