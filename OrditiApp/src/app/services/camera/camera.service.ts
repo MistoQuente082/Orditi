@@ -44,7 +44,7 @@ export class CameraService {
   escolherFoto() {
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
@@ -55,7 +55,8 @@ export class CameraService {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64 (DATA_URL):
 
-        this.imgPessoa = this.webView.convertFileSrc(imageData);
+        //this.imgPessoa = this.webView.convertFileSrc(imageData);
+        this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
       }, (err) => {
         // Handle error
       });
@@ -67,7 +68,7 @@ export class CameraService {
     tirarFoto() {
       const options: CameraOptions = {
         quality: 100,
-        destinationType: this.camera.DestinationType.FILE_URI,
+        destinationType: this.camera.DestinationType.DATA_URL,
         encodingType: this.camera.EncodingType.JPEG,
         mediaType: this.camera.MediaType.PICTURE,
         sourceType: this.camera.PictureSourceType.CAMERA
@@ -78,7 +79,8 @@ export class CameraService {
           // imageData is either a base64 encoded string or a file URI
           // If it's base64 (DATA_URL):
   
-          this.imgPessoa = this.webView.convertFileSrc(imageData);
+          //this.imgPessoa = this.webView.convertFileSrc(imageData);
+          this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
         }, (err) => {
           // Handle error
         });

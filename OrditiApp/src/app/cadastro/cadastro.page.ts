@@ -214,9 +214,18 @@ export class CadastroPage implements OnInit {
           endereco: this.endereco,
           pontoRef: this.pontoRef,
           produto: this.produto,
+          foto: "",
           zona: this.regiao,
         };
-        this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
+        try{
+          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamara.imgPessoa, 'base64');
+          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url =>{
+            dados.foto = url;
+          });
+          console.log("upou a imagem")
+          }catch{
+            console.log("não deu")
+          }
       }
     } else {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
@@ -231,7 +240,7 @@ export class CadastroPage implements OnInit {
           if (this.pontoRef === undefined) {
             this.pontoRef = " "
           }
-          const dados = {
+          var dados = {
             nome: this.nome,
             cpf: this.cpf,
             fone: this.fone,
@@ -240,9 +249,19 @@ export class CadastroPage implements OnInit {
             pontoRef: this.pontoRef,
             produto: this.produto,
             localAtiv: this.localAtiv,
+            foto: "",
             local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng),
             regiao: "Independente"
           };
+          try{
+          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamara.imgPessoa, 'base64');
+          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url =>{
+            dados.foto = url;
+          });
+          console.log("upou a imagem")
+          }catch{
+            console.log("não deu")
+          }
           this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
         }
       }
