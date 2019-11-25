@@ -41,7 +41,8 @@ export class EditarAmbulantePage implements OnInit {
     public navParams: NavParams,
   ) {
     this.ambulante= navParams.get("perfil");
-    this.imgPessoa = "../../assets/img/avatar.svg"; }
+    this.imgPessoa = this.ambulante.foto 
+    }
 
   ngOnInit() {
   }

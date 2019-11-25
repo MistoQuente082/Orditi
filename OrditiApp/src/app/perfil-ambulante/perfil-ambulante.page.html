@@ -2,9 +2,6 @@
   <ion-toolbar>
     <ion-title>Nome do ambulante</ion-title>
   </ion-toolbar>
-  <ion-button horizontal="end">
-    <ion-icon name="create" (click)="enviarEditar()"></ion-icon>
-  </ion-button>
 </ion-header>
 
 <ion-content>
@@ -19,9 +16,11 @@
           Informações do ambulante
         </ion-card-subtitle>
       </ion-card-header>
+
+      <img *ngIf="imgPessoa" [src]="imgPessoa">
+
       <ion-item>
         <ion-label color="medium" >Nome:</ion-label>
-        <ion-note>42</ion-note>
       </ion-item>
 
       <ion-item>
@@ -68,6 +67,6 @@
 
     </ion-card>
 
-    <ion-button expand="block" color="medium">Editar dados</ion-button>
+    <ion-button expand="block" color="medium" (click)="enviarEditar()">Editar dados</ion-button>
 
   </ion-content>
