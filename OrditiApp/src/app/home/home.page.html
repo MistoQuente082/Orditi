@@ -27,8 +27,8 @@
 
   <ion-fab *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">
-      <ion-card-header>
-        <ion-buttons style="float: right;">
+      <ion-card-header >
+        <ion-buttons (click)="fecharCard()" style="float: right;">
           <ion-button (click)="fecharCard()">
             <ion-icon (click)="fecharCard()" style="float: right;" name="close"></ion-icon>
           </ion-button>

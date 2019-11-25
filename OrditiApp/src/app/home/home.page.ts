@@ -65,9 +65,11 @@ export class HomePage {
 
   escanear() {
     console.log('entrou na funcao');
+    
     this.qrScanner.prepare()
       .then((status: QRScannerStatus) => {
         if (status.authorized) {
+          console.log('check 1')
           // camera permission was granted
 
 
@@ -125,12 +127,14 @@ export class HomePage {
             this.criarMarkerAmbulantes(geo);
           })
         });
-
+        if (this.Fiscal()){
+          
         this.db.collection('denuncias').get().toPromise().then(snapshot => {
           snapshot.forEach(den => {
             this.criarMarkerDenuncias(den);
           })
         });
+      }
         //Fim do acesso ao Firebasse
 
         /** Criar mapa na posição atual do usuário **/
