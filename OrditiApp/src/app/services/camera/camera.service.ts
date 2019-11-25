@@ -8,6 +8,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 })
 export class CameraService {
   public imgPessoa: string;
+  public imgDato: string;
 
 
   constructor(
@@ -57,6 +58,7 @@ export class CameraService {
 
         //this.imgPessoa = this.webView.convertFileSrc(imageData);
         this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
+        this.imgDato = imageData;
       }, (err) => {
         // Handle error
       });
