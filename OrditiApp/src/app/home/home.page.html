@@ -27,11 +27,6 @@
 
   <ion-fab *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">
-      <ion-buttons style="float: right;">
-        <ion-button (click)="fecharCard()">
-          <ion-icon style="float: right;" name="close"></ion-icon>
-        </ion-button>
-      </ion-buttons>
       <ion-card-header>
         <ion-buttons style="float: right;">
           <ion-button (click)="fecharCard()">
@@ -41,11 +36,6 @@
         <ion-card-title>{{zona.nome}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-buttons style="float: right;">
-          <ion-button (click)="fecharCard()">
-            <ion-icon style="float: right;" name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
         <ion-card-subtitle>Capacidade: {{zona.capacidade}}</ion-card-subtitle>
         {{zona.detalhes}} Atualmente contem {{zona.ocupantes}} ambulantes alocados.
         <br>

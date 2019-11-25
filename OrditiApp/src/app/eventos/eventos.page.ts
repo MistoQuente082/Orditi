@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
-  selector: 'app-informacoes',
-  templateUrl: './informacoes.page.html',
-  styleUrls: ['./informacoes.page.scss'],
+  selector: 'app-eventos',
+  templateUrl: './eventos.page.html',
+  styleUrls: ['./eventos.page.scss'],
 })
-export class InformacoesPage implements OnInit {
+export class EventosPage implements OnInit {
+
   public eventos: Observable<any[]>;
 
   constructor(public db: AngularFirestore, ) {

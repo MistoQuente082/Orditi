@@ -21,9 +21,10 @@ const routes: Routes = [
   { path: 'informacoes', loadChildren: './informacoes/informacoes.module#InformacoesPageModule' },
   { path: 'perfil-ambulante', loadChildren: './perfil-ambulante/perfil-ambulante.module#PerfilAmbulantePageModule' },
   { path: 'busca', loadChildren: './busca/busca.module#BuscaPageModule' },
-  { path: 'editar-ambulante', loadChildren: './editar-ambulante/editar-ambulante.module#EditarAmbulantePageModule' }
+  { path: 'editar-ambulante', loadChildren: './editar-ambulante/editar-ambulante.module#EditarAmbulantePageModule' },
+  { path: 'eventos', loadChildren: './eventos/eventos.module#EventosPageModule' }
 
-]
+];
 
 @NgModule({
   imports: [

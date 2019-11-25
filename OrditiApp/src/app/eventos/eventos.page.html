@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Eventos futuros
+    </ion-title>
+  </ion-toolbar>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor='let evento of eventos | async'>
+    <ion-card-header>
+      <ion-card-title>{{evento.nome}}</ion-card-title>
+      <ion-card-subtitle>de {{ evento.dataInicio.toDate() | date:'dd/MM/yyyy'}} a
+        {{ evento.dataFim.toDate() | date:'dd/MM/yyyy'}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-subtitle>Locais de ocorrencia: </ion-card-subtitle>
+      <p *ngFor='let lugar of evento.Locais'>{{lugar}}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
