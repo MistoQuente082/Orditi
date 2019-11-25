@@ -27,18 +27,18 @@ const LeafIcon = L.Icon.extend({
   // iconRetinaUrl,
   // iconUrl,
   options: {
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
   }
 });
 
-const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-icon.png'}),
-    ambulanteIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png'}),
-    denunciaIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png'});
+const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 
@@ -88,6 +88,10 @@ export class CadastroPage implements OnInit {
   returnHome() {
     this.router.navigate(['/home']);
   }
+  //tipo de dado - Firebase
+  metadata = {
+    contentType: 'image/jpeg',
+  };
 
   //lista de locais
   locais: Observable<any[]>;
@@ -98,7 +102,7 @@ export class CadastroPage implements OnInit {
     public alertas: AlertasService,
     public camera: Camera,
     private nativeGeocoder: NativeGeocoder,
-    public alertController: AlertController,    
+    public alertController: AlertController,
     public modalController: ModalController,
     public router: Router,
     public webView: WebView,
@@ -157,7 +161,7 @@ export class CadastroPage implements OnInit {
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
-    this.L = marker(e.latlng, {icon: ambulanteIcon});
+    this.L = marker(e.latlng, { icon: ambulanteIcon });
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
 
@@ -167,7 +171,7 @@ export class CadastroPage implements OnInit {
     };
     this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng, options)
       .then((result: NativeGeocoderResult[]) => {
-        this.localAtual(""+result[0].subAdministrativeArea+" "+result[0].subLocality+ " "+result[0].thoroughfare);
+        this.localAtual("" + result[0].subAdministrativeArea + " " + result[0].subLocality + " " + result[0].thoroughfare);
       })
       .catch((error: any) => {
         this.geocoderTesteError(error);
@@ -217,25 +221,18 @@ export class CadastroPage implements OnInit {
           foto: "",
           zona: this.regiao,
         };
-        try{
-          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamara.imgPessoa, 'base64');
-          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url =>{
-            dados.foto = url;
-          });
-          console.log("upou a imagem")
-          }catch{
-            console.log("não deu")
-          }
+        this.presentAlertCadastro(dados);
       }
     } else {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
         || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.regiao === undefined) {
-        this.alertas.presentToast('Preencha os campos!');
+        || this.produto === undefined || this.regiao === undefined || this.usarCamara.imgDato === undefined) {
+        this.alertas.presentToast('Preencha os campos e escolha uma imagem!');
       }
       else {
         if (this.localAtiv === undefined) {
-          this.alertas.presentToast('Selecione um ponto no mapa!');
+          this.localAtiv = " "
+          //this.alertas.presentToast('Selecione um ponto no mapa!');
         } else {
           if (this.pontoRef === undefined) {
             this.pontoRef = " "
@@ -253,22 +250,15 @@ export class CadastroPage implements OnInit {
             local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng),
             regiao: "Independente"
           };
-          try{
-          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamara.imgPessoa, 'base64');
-          firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url =>{
-            dados.foto = url;
-          });
-          console.log("upou a imagem")
-          }catch{
-            console.log("não deu")
-          }
-          this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
+          this.presentAlertCadastro(dados);
         }
       }
     }
 
 
   }
+
+
 
   ngOnInit() {
 
@@ -282,6 +272,46 @@ export class CadastroPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentAlertCadastro(dados) {
+    var resp: string = ' ';
+
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: "Deseja adicionar essa pessoa?",
+      buttons: [
+        {
+          text: 'Fechar',
+          role: 'cancel',
+
+        }, {
+          text: 'Adicionar',
+          handler: async () => {
+            try {
+              //Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
+              firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamara.imgDato, 'base64', this.metadata).then(doc => {
+                firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url => {
+                  dados.foto = url;
+                  this.db.collection("ambulantes").doc(dados.cpf).set(dados);
+                  this.router.navigate(['/home']);
+                  this.alertas.presentToast('Executado com sucesso!')
+                  console.log('Executando')
+                });
+              }
+              )
+            } catch (erro) {
+              this.alertas.presentToast('Não foi possível realizar o cadastro!')
+              console.log('Executando, mas com erro')
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    return resp;
+    console.log(resp);
   }
 
 }
