@@ -15,12 +15,13 @@ export class PerfilAmbulantePage implements OnInit {
   constructor(
     public db: AngularFirestore,
     public alertas: AlertasService,
-    public modalController: ModalController
-    ){ 
-            //this.ambulante= NavParams.get("");
+    public modalController: ModalController,
+    public NavParam: NavParams
+  ) {
+    // this.ambulante = NavParams.get('item');
   }
   ngOnInit() {
-    
+
 
   }
 

@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ActionSheetController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
 import { Router } from '@angular/router';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as firebase from 'firebase'
+import { CameraService } from '../services/camera/camera.service';
 
 
 @Component({
@@ -21,7 +23,7 @@ import * as firebase from 'firebase'
 export class CadastroPage implements OnInit {
 
   // Var Camera
-  public imgPessoa;
+  public imgPessoa: string;
 
   // Variaveis da pessoa
   public nome: string;
@@ -70,9 +72,22 @@ export class CadastroPage implements OnInit {
     public camera: Camera,
     public modalController: ModalController,
     public router: Router,
+    public webView: WebView,
+    public actionSheetController: ActionSheetController,
+    public usarCamara: CameraService
   ) {
     this.locais = db.collection("zonas").valueChanges();
+    this.imgPessoa = "../../assets/img/avatar.svg";
   }
+
+
+  cam() {
+    this.usarCamara.presentActionSheet();
+    if (this.usarCamara.imgPessoa) {
+      this.imgPessoa = this.usarCamara.imgPessoa;
+    }
+  }
+
   //Funcoes para o mapa
 
   /** Load leaflet map **/
@@ -124,22 +139,20 @@ export class CadastroPage implements OnInit {
     this.localAtiv = endereco;
   }
 
-  // Função para camera
-  cam() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
 
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
+
+  // Função que leva a escolher um ponto no mapa
+  selectMap() {
+    var origem = CadastroPage;
+    this.modalController.create(
+      {
+        component: MapaModalPage,
+        componentProps: {
+          origem: "cadastro"
+        }
+      }).then((modalElement) => {
+        modalElement.present();
+      });
   }
 
   // Botão de cadastro
@@ -201,6 +214,7 @@ export class CadastroPage implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
 }

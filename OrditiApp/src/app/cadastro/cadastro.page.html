@@ -9,11 +9,10 @@
 </ion-header>
 
 <ion-content>
-  <!--   <ion-button (click)="cam()">
-    Camera
-  </ion-button> -->
-  <img [src]="imgPessoa" (click)="cam()" *ngIf="imgPessoa">
-  <!-- <img [src]="imagemPath"> -->
+
+
+    <img *ngIf="imgPessoa" [src]="imgPessoa" (click)="cam()">
+
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>

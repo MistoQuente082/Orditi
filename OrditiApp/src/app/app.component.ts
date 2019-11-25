@@ -39,6 +39,12 @@ export class AppComponent {
       url: '/denuncia',
       icon: 'hand'
     },
+
+    {
+      title: 'perfil',
+      url: '/perfil-ambulante',
+      icon: 'hand'
+    },
     {
       title: 'Eventos Temporarios',
       url: '/informacoes',
