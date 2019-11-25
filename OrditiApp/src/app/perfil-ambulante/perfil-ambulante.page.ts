@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as firebase from 'firebase'
 import { CameraService } from '../services/camera/camera.service';
+import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
 
 @Component({
   selector: 'app-perfil-ambulante',
@@ -35,4 +36,17 @@ export class PerfilAmbulantePage implements OnInit {
   }
   ngOnInit() {}
 
+  enviarEditar(){
+  var perfil = PerfilAmbulantePage;
+  this.modalController.create(
+    {
+      component: EditarAmbulantePage,
+      componentProps: {
+        perfil: "perfil"
+      }
+    }).then((modalElement) => {
+      modalElement.present();
+    });
+  }
 }
+

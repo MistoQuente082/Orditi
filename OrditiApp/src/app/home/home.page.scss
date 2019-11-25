@@ -12,6 +12,24 @@ ion-toolbar ion-title{
 	text-align: center;
 	right: 8%;
 }
+.tamanho_mapa{
+	width: 100%;
+	height: 100%
+}
+
+.icon_gps{
+	font-size:x-large;
+}
+
+.float_direita{
+	float: right;
+}
+.float_esquerda{
+	float: left;
+}
+.btn_gps{
+	margin-bottom: 5%;
+}
 
 .modalIncompleto{
 	background: rgba(0, 0, 0, 0.5) !important;
