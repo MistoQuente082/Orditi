@@ -200,6 +200,7 @@ export class DenunciaPage implements OnInit {
         local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng)
       };
       console.log(dados)
+      
       this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
       // COLOCA AQUI para envia dados da denuncia ao banco
       // Falta enviar a foto

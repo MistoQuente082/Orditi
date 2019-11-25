@@ -68,12 +68,6 @@ export class HomePage {
     
     this.qrScanner.prepare()
       .then((status: QRScannerStatus) => {
-<<<<<<< Updated upstream
-        if (status.authorized) {
-          console.log('check 1')
-=======
->>>>>>> Stashed changes
-          // camera permission was granted
 
 
           // start scanning
@@ -84,7 +78,8 @@ export class HomePage {
             this.qrScanner.hide(); // hide camera preview
             scanSub.unsubscribe(); // stop scanning
           });
-      })
+      } 
+      )
       .catch((e: any) => console.log('Error is', e));
   }
 
