@@ -4,14 +4,15 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-    <ion-title>Cadastrar Pessoa</ion-title>
+    <ion-title>Cadastrar Ambulante</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-
-  <img *ngIf="imgPessoa" [src]="imgPessoa" (click)="cam()">
+  <div class="centro">
+    <img *ngIf="imgPessoa" class="conteudo" [src]="imgPessoa" (click)="cam()">
+  </div>
 
   <ion-card>
     <ion-card-header>
@@ -19,6 +20,7 @@
         Informações do ambulante
       </ion-card-subtitle>
     </ion-card-header>
+
     <ion-item>
       <ion-label color="medium" position="floating">Nome:</ion-label>
       <ion-input type="text" [(ngModel)]="nome" placeholder="Ex.: Maria das Dores"></ion-input>
@@ -105,5 +107,3 @@
     Cadastrar
   </ion-button>
 
-
-</ion-content>
