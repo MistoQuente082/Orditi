@@ -11,10 +11,10 @@
 </ion-header>
 
 <ion-content>
-  <div id="mapId" style="width: 100%; height: 100%">
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()" style="margin-bottom: 5%;">
-      <ion-fab-button size="small" style="border-radius: 0px; width: 89%;">
-        <ion-icon name="locate" style="font-size:x-large;"></ion-icon>
+  <div id="mapId" class="tamanho_mapa">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()" class="btn_gps">
+      <ion-fab-button size="small">
+        <ion-icon name="locate" class="icon_gps"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </div>
@@ -28,9 +28,9 @@
   <ion-fab *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">
       <ion-card-header>
-        <ion-buttons style="float: right;">
+        <ion-buttons class="float_direita">
           <ion-button (click)="fecharCard()">
-            <ion-icon (click)="fecharCard()" style="float: right;" name="close"></ion-icon>
+            <ion-icon (click)="fecharCard()" class="float_direita" name="close"></ion-icon>
           </ion-button>
         </ion-buttons>
         <ion-card-title>{{zona.nome}}</ion-card-title>
@@ -39,7 +39,7 @@
         <ion-card-subtitle>Capacidade: {{zona.capacidade}}</ion-card-subtitle>
         {{zona.detalhes}} Atualmente contem {{zona.ocupantes}} ambulantes alocados.
         <br>
-        <ion-button style="float: left;" fill="outline" (click)="mostraDetalhes()">
+        <ion-button class="float_esquerda" fill="outline" (click)="mostraDetalhes()">
           Mais informações
         </ion-button>
       </ion-card-content>
