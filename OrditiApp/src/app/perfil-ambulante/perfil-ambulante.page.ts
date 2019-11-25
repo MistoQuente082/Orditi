@@ -30,7 +30,8 @@ export class PerfilAmbulantePage implements OnInit {
     public db: AngularFirestore,
     public alertas: AlertasService,
     public modalController: ModalController,
-    public NavParam: NavParams
+    public NavParam: NavParams,
+    public router: Router,
   ) {
     // this.ambulante = NavParams.get('item');
   }
@@ -47,6 +48,7 @@ export class PerfilAmbulantePage implements OnInit {
     }).then((modalElement) => {
       modalElement.present();
     });
+    this.router.navigate["/editar-ambulante"]
   }
 }
 

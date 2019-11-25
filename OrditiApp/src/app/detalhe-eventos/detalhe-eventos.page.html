@@ -1,9 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>detalhe-eventos</ion-title>
+    <ion-title>Eventos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <img [src]="evento.img">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{evento.nome}}</ion-card-title>
+        <ion-card-subtitle>de {{ evento.dataInicio.toDate() | date:'dd/MM/yyyy'}}
+          {{ evento.dataFim.toDate() | date:'dd/MM/yyyy'}}</ion-card-subtitle>
+          <ion-card-subtitle>Locais de ocorrencia: </ion-card-subtitle>
+          <p>{{evento.lugar}}</p>
+      </ion-card-header>
+      <ion-card-content>
+        {{evento.descrição}}
+      </ion-card-content>
+    </ion-card>
 </ion-content>
