@@ -160,7 +160,7 @@ export class CadastroPage implements OnInit {
     if (this.regiao !== 'a1') {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
         || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.localAtiv === undefined) {
+        || this.produto === undefined || this.regiao === undefined) {
         this.alertas.presentToast('Preencha os campos!');
       } else {
         if (this.pontoRef === undefined) {
@@ -175,7 +175,6 @@ export class CadastroPage implements OnInit {
           endereco: this.endereco,
           pontoRef: this.pontoRef,
           produto: this.produto,
-          localAtiv: this.localAtiv,
           zona: this.regiao,
         };
         this.alertas.presentAlert('Deseja adicionar esta pessoa?', dados, 'ambulantes');
@@ -188,7 +187,7 @@ export class CadastroPage implements OnInit {
       }
       else {
         if (this.localAtiv === undefined) {
-          this.alertas.presentToast('Confirme o local!');
+          this.alertas.presentToast('Selecione um ponto no mapa!');
         } else {
           if (this.pontoRef === undefined) {
             this.pontoRef = " "
@@ -214,7 +213,7 @@ export class CadastroPage implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

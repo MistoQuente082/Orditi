@@ -23,6 +23,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 
 
 
@@ -45,6 +46,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     StatusBar,
     SplashScreen,
     NativeGeocoder,
+    QRScanner,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
     BrMaskerModule,

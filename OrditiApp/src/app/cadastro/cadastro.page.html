@@ -11,7 +11,7 @@
 <ion-content>
 
 
-    <img *ngIf="imgPessoa" [src]="imgPessoa" (click)="cam()">
+  <img *ngIf="imgPessoa" [src]="imgPessoa" (click)="cam()">
 
   <ion-card>
     <ion-card-header>
@@ -84,14 +84,14 @@
     </ion-item>
 
 
-    <div *ngIf="regiao == 'a1'">
+    <div *ngIf="regiao == 'a1'" (click)="leafletMap()">
       <ion-item>
         <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
         <ion-input type="text" [(ngModel)]="localAtiv" disabled="{{mostrarMapa}}"
           placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
           <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
         </ion-input>
-        <ion-note text-end (click)="leafletMap()">
+        <ion-note text-end>
           Marque no mapa
         </ion-note>
       </ion-item>

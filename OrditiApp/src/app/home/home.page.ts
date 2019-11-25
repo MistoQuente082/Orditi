@@ -11,6 +11,9 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+
+
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
@@ -44,11 +47,40 @@ export class HomePage {
   zona: any = null;
 
   constructor(
+    private qrScanner: QRScanner,
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
     public modalCtrl: ModalController) {
+  }
+
+  escanear() {
+    console.log('entrou na funcao');
+    this.qrScanner.prepare()
+      .then((status: QRScannerStatus) => {
+        if (status.authorized) {
+          // camera permission was granted
+
+
+          // start scanning
+          let scanSub = this.qrScanner.scan().subscribe((text: string) => {
+            console.log('Scanned something', text);
+            this.alertas.presentToast(text);
+
+            this.qrScanner.hide(); // hide camera preview
+            scanSub.unsubscribe(); // stop scanning
+          });
+
+        } else if (status.denied) {
+          // camera permission was permanently denied
+          // you must use QRScanner.openSettings() method to guide the user to the settings page
+          // then they can grant the permission from there
+        } else {
+          // permission was denied, but not permanently. You can ask for permission again at a later time.
+        }
+      })
+      .catch((e: any) => console.log('Error is', e));
   }
 
   Fiscal() {
