@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 import * as firebase from 'firebase';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+//import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 
 
@@ -189,18 +189,18 @@ export class HomePage {
     await alert.present();
   }
 
-  async mostraDetalhes() {
-    var zona = this.zona;
-    console.log('click')
-    const modal = await this.modalCtrl.create({
-      component: DetalheZonaPage,
-      componentProps: {
-        'info': zona
-      }
-    });
-    return await modal.present();
-    //this.alertas.presentModal(DetalheZonaPage, this.zona);
-  }
+  //async mostraDetalhes() {
+  //  var zona = this.zona;
+  //  console.log('click')
+  //  const modal = await this.modalCtrl.create({
+  //    component: DetalheZonaPage,
+  //    componentProps: {
+  //      'info': zona
+  //    }
+  //  });
+  //  return await modal.present();
+  //  //this.alertas.presentModal(DetalheZonaPage, this.zona);
+  //}
 
   regiaoClicada(doc) {
     this.count = 0;

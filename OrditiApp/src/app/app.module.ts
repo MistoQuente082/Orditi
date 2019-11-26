@@ -20,12 +20,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
-import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
-import { PerfilAmbulantePageModule } from './perfil-ambulante/perfil-ambulante.module';
 
 
 
@@ -33,8 +30,6 @@ import { PerfilAmbulantePageModule } from './perfil-ambulante/perfil-ambulante.m
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    DetalheZonaPageModule,
-    PerfilAmbulantePageModule,
     BrowserModule,
     BrMaskerModule,
     IonicModule.forRoot(),

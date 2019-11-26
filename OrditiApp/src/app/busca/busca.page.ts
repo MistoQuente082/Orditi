@@ -6,7 +6,7 @@ import { AppModule } from '../app.module';
 import _ from "lodash";
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 import { ModalController } from '@ionic/angular';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+//import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 @Component({
   selector: 'app-busca',
@@ -70,27 +70,27 @@ export class BuscaPage implements OnInit {
     }
   }
 
-  async verMais(item) {
-    const modal = await this.modalCtrl.create({
-      component: PerfilAmbulantePage,
-      componentProps: {
-        'info': item
-      }
-    });
-    return await modal.present();
-  }
+  //async verMais(item) {
+  //  const modal = await this.modalCtrl.create({
+  //    component: PerfilAmbulantePage,
+  //    componentProps: {
+  //      'info': item
+  //    }
+  //  });
+  //  return await modal.present();
+  //}
 
-  async mostraDetalhes(zona) {
-    console.log('click')
-    const modal = await this.modalCtrl.create({
-      component: DetalheZonaPage,
-      componentProps: {
-        'info': zona
-      }
-    });
-    return await modal.present();
-    //this.alertas.presentModal(DetalheZonaPage, this.zona);
-  }
+  //async mostraDetalhes(zona) {
+  //  console.log('click')
+  //  const modal = await this.modalCtrl.create({
+  //    component: DetalheZonaPage,
+  //    componentProps: {
+  //      'info': zona
+  //    }
+  //  });
+  //  return await modal.present();
+  //  //this.alertas.presentModal(DetalheZonaPage, this.zona);
+  //}
 
   ngOnInit() {
   }

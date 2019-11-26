@@ -17,17 +17,18 @@ export class DetalheZonaPage implements OnInit {
 
   constructor(
     public db: AngularFirestore,
-    private navParams: NavParams,
+    //private navParams: NavParams,
     public alertas: AlertasService,
     private modalCtrl: ModalController,
   ) {
+    //this.local = this.navParams.get('info');
+    //this.ambulantes = this.db.collection("ambulantes", ref =>
+    //  ref.where('regiao', '==', this.local.nome)).valueChanges();
 
   }
 
   ngOnInit() {
-    this.local = this.navParams.get('info');
-    this.ambulantes = this.db.collection("ambulantes", ref =>
-      ref.where('regiao', '==', this.local.nome)).valueChanges();
+
   }
 
   async fechar() {
