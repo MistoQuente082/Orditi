@@ -8,8 +8,9 @@
 </ion-header>
 
 <ion-content>
-  <img [src]="imgAut" (click)="cam()" *ngIf="imgAut">
-
+  <div class="centro">
+    <img *ngIf="imgAut" class="conteudo" [src]="imgAut" (click)="cam()">
+  </div>
   <!-- <img [src]="imagemPath"> -->
   <ion-card>
     <ion-card-header>
@@ -20,8 +21,8 @@
     <ion-item>
       <ion-label color="medium" position="floating">Período:</ion-label>
 
-      <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
-        ([ngModel])="dataAut" placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
+      <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="dataAut"
+        placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
       </ion-datetime>
 
       <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="horaAut"
@@ -29,7 +30,7 @@
       </ion-datetime>
     </ion-item>
 
-    
+
     <ion-item>
       <ion-label color="medium" position="floating">Local:</ion-label>
       <ion-input type="text" [(ngModel)]="localAut" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">

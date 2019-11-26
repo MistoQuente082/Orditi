@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+Simport { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -22,6 +22,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 
 
@@ -32,6 +34,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
   imports: [
     BrowserModule,
     BrMaskerModule,
+
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
@@ -49,7 +52,9 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     Geolocation,
     BrMaskerModule,
     Camera,
-    WebView
+    WebView,
+    NgxQRCodeModule,
+    BarcodeScanner
   ],
   bootstrap: [AppComponent]
 })

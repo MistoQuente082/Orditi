@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ModalController, ActionSheetController } from '@ionic/angular';
@@ -59,6 +59,11 @@ export class CadastroPage implements OnInit {
   public endereco: string;
   public fone: string;
 
+  // QrCode
+  public qrCodeAmbulante: string;
+  public elementType: 'canvas';
+
+
 
   // Variaveis Do trabalho
   public produto: string;
@@ -107,19 +112,30 @@ export class CadastroPage implements OnInit {
     public router: Router,
     public webView: WebView,
     public actionSheetController: ActionSheetController,
-    public usarCamara: CameraService
+    public usarCamera: CameraService
   ) {
     this.locais = db.collection("zonas").valueChanges();
     this.imgPessoa = "../../assets/img/avatar.svg";
   }
+  // Obtem a imagem a partir do cpf do ambulante
+  // Envia pro banco de Dados 
+  obterImg() {
+    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+    const imageData = canvas.toDataURL('image/jpeg').toString();
+    const formatado = imageData.split(',');
+    const resultado = formatado[1]; // Imagem
+
+    console.log('image', resultado);
+  }
 
 
   cam() {
-    this.usarCamara.presentActionSheet();
-    if (this.usarCamara.imgPessoa) {
-      this.imgPessoa = this.usarCamara.imgPessoa;
+    this.usarCamera.presentActionSheet();
+    if (this.usarCamera.imgPessoa) {
+      this.imgPessoa = this.usarCamera.imgPessoa;
     }
   }
+
 
   //Funcoes para o mapa
 
@@ -207,8 +223,12 @@ export class CadastroPage implements OnInit {
         this.alertas.presentToast('Preencha os campos!');
       } else {
         if (this.pontoRef === undefined) {
-          this.pontoRef = " "
+          this.pontoRef = ' ';
         }
+
+        this.obterImg();
+
+
         const dados = {
           data: this.imgPessoa,
           nome: this.nome,
@@ -226,7 +246,7 @@ export class CadastroPage implements OnInit {
     } else {
       if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
         || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.regiao === undefined || this.usarCamara.imgDato === undefined) {
+        || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined) {
         this.alertas.presentToast('Preencha os campos e escolha uma imagem!');
       }
       else {
@@ -290,7 +310,7 @@ export class CadastroPage implements OnInit {
           handler: async () => {
             try {
               //Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
-              firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamara.imgDato, 'base64', this.metadata).then(doc => {
+              firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamera.imgDato, 'base64', this.metadata).then(doc => {
                 firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url => {
                   dados.foto = url;
                   this.db.collection("ambulantes").doc(dados.cpf).set(dados);

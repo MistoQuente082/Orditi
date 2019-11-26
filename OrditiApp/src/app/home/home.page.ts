@@ -10,6 +10,10 @@ import { Observable } from 'rxjs';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
+import * as L2 from 'leaflet';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
+
 import * as firebase from 'firebase';
 //import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
@@ -56,24 +60,58 @@ export class HomePage {
 
   zona: any = null;
 
+
+  //  qrCode
+  qrData = 'Hola Mundo';
+  scannedCode = null;
+
+  elementType: 'url' | 'canvas' | 'img' = 'canvas';
   constructor(
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    private barcodeScanner: BarcodeScanner) {
+  }
+
+
+
+
+  LeerCode() {
+
+    this.barcodeScanner.scan().then(barcodeData => {
+      this.scannedCode = barcodeData;
+      console.log(barcodeData.text);
+      alert(barcodeData.text);
+
+      this.db.collection('ambulantes').doc(this.scannedCode.text).get().toPromise()
+        .then(doc => {
+          if (doc.exists) {
+            this.irPerfis(doc.data());
+            console.log('Entreou');
+          } else {
+            this.alertas.presentToast('Nenhum usuário com esse código');
+            console.log('Não rolou');
+          }
+
+        })
+        .catch(err => {
+          console.log("Error", err);
+        });
+
+    });
   }
 
   Fiscal() {
     return AppModule.getUsuarioStatus();
-    console.log(AppModule.getUsuarioStatus())
+    console.log(AppModule.getUsuarioStatus());
   }
 
   ionViewDidEnter() {
     if (this.map !== 'undefined' && this.map !== null) {
       this.map.remove();
-    }
-    else {
+    } else {
       /** Get current position **/
       this.geolocation.getCurrentPosition().then((resp) => {
         this.lat = resp.coords.latitude;
@@ -100,7 +138,6 @@ export class HomePage {
             this.criarMarkerAmbulantes(geo);
           })
         });
-        //Criar Pins de denuncias
         if (this.Fiscal()) {
 
           this.db.collection('denuncias').get().toPromise().then(snapshot => {
@@ -217,6 +254,21 @@ export class HomePage {
   fecharCard() {
     this.zona = null;
   }
+
+
+  async irPerfis(item) {
+    const modal = await this.modalCtrl.create({
+      component: PerfilAmbulantePage,
+      componentProps: {
+        item
+      }
+    });
+
+    await modal.present();
+
+
+  }
+
 
 
 }

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CadastroPage } from './cadastro.page';
 import { BrMaskerModule } from 'br-mask';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
   imports: [
     BrMaskerModule,
     CommonModule,
+    NgxQRCodeModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)

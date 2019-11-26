@@ -1,7 +1,11 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>Mapa</ion-title>
-		<ion-note slot='end' (click)="closeModal()">CANCELAR </ion-note>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+			  <ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		  </ion-buttons>
+		  <ion-title>Perfil</ion-title>
 	</ion-toolbar>
 </ion-header>
 

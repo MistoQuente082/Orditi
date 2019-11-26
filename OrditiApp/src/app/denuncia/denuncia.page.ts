@@ -17,6 +17,7 @@ import * as L from 'leaflet';
 
 import * as firebase from 'firebase';
 import { AppModule } from '../app.module';
+import { CameraService } from '../services/camera/camera.service';
 
 //Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -27,18 +28,18 @@ const LeafIcon = L.Icon.extend({
   // iconRetinaUrl,
   // iconUrl,
   options: {
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
   }
 });
 
-const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-icon.png'}),
-    ambulanteIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png'}),
-    denunciaIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png'});
+const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
@@ -56,6 +57,8 @@ export class DenunciaPage implements OnInit {
   public localDenuncia: any;
   public infoDenuncia;
   public local: any;
+
+  public imgAut;
 
   //Variaveis do mapa
   L: any = null;
@@ -82,11 +85,28 @@ export class DenunciaPage implements OnInit {
     private geolocation: Geolocation,
     public alertas: AlertasService,
     private nativeGeocoder: NativeGeocoder,
-    public alertController: AlertController,     
+    public alertController: AlertController,
     public camera: Camera,
     public router: Router,
     public db: AngularFirestore,
-    public modalController: ModalController) { }
+    public modalController: ModalController,
+    public usarCamera: CameraService
+  ) {
+    this.imgAut = "../../assets/img/avatar.svg";
+  }
+
+
+
+
+  // Função para camera
+
+  cam() {
+    this.usarCamera.presentActionSheet();
+
+    this.imgAut = this.usarCamera.imgPessoa;
+
+  }
+
 
   ngOnInit() {
   }
@@ -130,8 +150,8 @@ export class DenunciaPage implements OnInit {
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
-    this.L = marker(e.latlng, {icon: ambulanteIcon})
-    
+    this.L = marker(e.latlng, { icon: ambulanteIcon })
+
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
 
@@ -142,7 +162,7 @@ export class DenunciaPage implements OnInit {
 
     this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng, options)
       .then((result: NativeGeocoderResult[]) => {
-        this.localAtual(""+result[0].subAdministrativeArea+" "+result[0].subLocality+ " "+result[0].thoroughfare);
+        this.localAtual("" + result[0].subAdministrativeArea + " " + result[0].subLocality + " " + result[0].thoroughfare);
       })
       .catch((error: any) => {
         this.geocoderTesteError(error);
@@ -153,23 +173,6 @@ export class DenunciaPage implements OnInit {
     this.localDenuncia = endereco;
   }
 
-  // Função para camera
-  cam() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.imgDenuncia = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
-  }
 
 
   // DATA DO OCORRIDO
@@ -189,7 +192,7 @@ export class DenunciaPage implements OnInit {
       this.infoDenuncia === undefined || this.local === undefined) {
       this.alertas.presentToast('Preencha os campos!');
     } else {
-      if( this.localDenuncia === undefined){
+      if (this.localDenuncia === undefined) {
         this.localDenuncia = " ";
       }
       const dados = {
@@ -200,7 +203,7 @@ export class DenunciaPage implements OnInit {
         local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng)
       };
       console.log(dados)
-      
+
       this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
       // COLOCA AQUI para envia dados da denuncia ao banco
       // Falta enviar a foto

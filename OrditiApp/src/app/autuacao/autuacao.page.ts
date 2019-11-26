@@ -4,6 +4,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 import { ModalController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
+import { CameraService } from '../services/camera/camera.service';
 
 
 
@@ -22,38 +23,32 @@ export class AutuacaoPage implements OnInit {
   public localAut;
 
   // Var Camera
-  public imgAut = '../../assets/img/vetor.png';
+  public imgAut;
 
 
 
   constructor(
     public alertas: AlertasService,
     public camera: Camera,
-    public modalController: ModalController
-  ) { }
+    public modalController: ModalController,
+    public usarCamera: CameraService
+  ) {
+    this.imgAut = "../../assets/img/denuncias.png";
+  }
 
 
 
 
   // Função para camera
+
   cam() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
+    this.usarCamera.presentActionSheet();
 
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.imgAut = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
-
+    this.imgAut = this.usarCamera.imgPessoa;
 
   }
+
+
 
 
 
@@ -71,7 +66,7 @@ export class AutuacaoPage implements OnInit {
 
   subAut() {
     if (this.dataAut === undefined || this.horaAut === undefined ||
-      this.infoAut === undefined || this.localAut === undefined || 
+      this.infoAut === undefined || this.localAut === undefined ||
       this.ambulante === undefined) {
       this.alertas.presentToast('Preencha os campos!');
     } else {

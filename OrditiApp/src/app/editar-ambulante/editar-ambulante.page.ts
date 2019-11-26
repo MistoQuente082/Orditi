@@ -40,11 +40,11 @@ export class EditarAmbulantePage implements OnInit {
     public usarCamara: CameraService,
     public navParams: NavParams,
   ) {
-    this.ambulante= navParams.get("perfil");
-    this.imgPessoa = this.ambulante.foto 
+    this.ambulante = navParams.get('item');
     }
 
   ngOnInit() {
+    console.log(this.ambulante);
   }
 
   Editar(){

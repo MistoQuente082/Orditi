@@ -1,14 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Nome do ambulante</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-content>
-    <ion-avatar>
-      <img />
-    </ion-avatar>
+    <div class="centro">
+      <img class="conteudo" [src]="ambulante.foto" (click)="cam()">
+    </div>
 
     <ion-card>
       <ion-card-header>
@@ -20,23 +25,33 @@
       <img *ngIf="imgPessoa" [src]="imgPessoa">
 
       <ion-item>
-        <ion-label color="medium" >Nome:</ion-label>
+        <ion-label position="floating" color="medium">Nome:</ion-label>
+        <br>
+        <p>{{ambulante.nome}}</p>
       </ion-item>
 
       <ion-item>
         <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
+        <br>
+        <p>{{ambulante.cpf}}</p>
       </ion-item>
 
       <ion-item>
-        <ion-label color="medium" position="floating">Escolaridade: </ion-label>
+        <ion-label color="medium" position="floating">Escolaridade:</ion-label>
+        <br>
+        <p>{{ambulante.escolaridade}}</p>
       </ion-item>
 
       <ion-item>
-        <ion-label color="medium" position="floating">Endereço: </ion-label>
+        <ion-label color="medium" position="floating">Endereço:</ion-label>
+        <br>
+        <p>{{ambulante.endereco}}</p>
       </ion-item>
 
       <ion-item>
-        <ion-label color="medium" position="floating">Telefone: </ion-label>
+        <ion-label color="medium" position="floating">Telefone:</ion-label>
+        <br>
+        <p>{{ambulante.fone}}</p>
       </ion-item>
     </ion-card>
 
@@ -48,25 +63,26 @@
       </ion-card-header>
 
       <ion-item>
-        <ion-label color="medium" position="floating">Produto: </ion-label>
+        <ion-label color="medium" position="floating">Produto:</ion-label>
+        <br>
+        <p>{{ambulante.produto}}</p>
       </ion-item>
 
       <ion-item>
-        <ion-label color="medium" position="floating">Região: </ion-label>
+        <ion-label color="medium" position="floating">Região:</ion-label>
+        <br>
+        <p>{{ambulante.regiao}}</p>
       </ion-item>
 
-      <ion-item>
-        <ion-label color="medium" position="floating">Ponto de referência: </ion-label>
+      <ion-item *ngIf="ambulante.pontoRef != ' ' || ambulante.pontoRef != ''">
+        <ion-label color="medium" position="floating">Ponto de referência:</ion-label>
+        <br>
+        <p>{{ambulante.pontoRef}}</p>
       </ion-item>
-
-      <div *ngIf="regiao == 'a1'">
-        <ion-item>
-          <ion-label color="medium" position="floating">Local de Atividade: </ion-label>
-        </ion-item>
-      </div>
 
     </ion-card>
 
-    <ion-button expand="block" color="medium" (click)="enviarEditar()" >Editar dados</ion-button>
+   
+    
 
   </ion-content>

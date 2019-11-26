@@ -33,22 +33,28 @@ export class PerfilAmbulantePage implements OnInit {
     public navParam: NavParams,
     public router: Router,
   ) {
-     this.ambulante = this.navParam.get('item');
+    this.ambulante = this.navParam.get('item');
   }
-  ngOnInit() {}
 
-  enviarEditar(){
-  var perfil = PerfilAmbulantePage;
-  this.modalController.create(
-    {
+
+  async dismiss() {
+    await this.modalController.dismiss();
+  }
+  ngOnInit() { }
+
+  async enviarEditar() {
+    const modal = await this.modalController.create({
       component: EditarAmbulantePage,
       componentProps: {
-        perfil: "perfil"
+        item: this.ambulante
       }
-    }).then((modalElement) => {
-      modalElement.present();
     });
-    this.router.navigate["/editar-ambulante"];
+
+    await modal.present();
+
+
+
   }
+
 }
 
