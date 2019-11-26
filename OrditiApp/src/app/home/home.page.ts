@@ -263,7 +263,7 @@ export class HomePage {
     const modal = await this.modalCtrl.create({
       component: PerfilAmbulantePage,
       componentProps: {
-        item
+        info: item
       }
     });
 
