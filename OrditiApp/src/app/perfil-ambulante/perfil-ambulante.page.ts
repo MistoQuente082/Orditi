@@ -29,11 +29,11 @@ export class PerfilAmbulantePage implements OnInit {
   constructor(
     public db: AngularFirestore,
     public alertas: AlertasService,
-    public modalController: ModalController,
     public navParam: NavParams,
+    public modalController: ModalController,
     public router: Router,
   ) {
-    this.ambulante = this.navParam.get('item');
+    this.ambulante = this.navParam.get('info');
   }
 
 

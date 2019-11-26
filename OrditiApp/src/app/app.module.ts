@@ -1,4 +1,4 @@
-Simport { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -24,6 +24,11 @@ import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { DetalheZonaPageModule } from './detalhe-zona/detalhe-zona.module';
+import { PerfilAmbulantePageModule } from './perfil-ambulante/perfil-ambulante.module';
+import { HomePageModule } from './home/home.module';
+
+
 
 
 
@@ -34,6 +39,10 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
   imports: [
     BrowserModule,
     BrMaskerModule,
+
+    HomePageModule,
+    DetalheZonaPageModule,
+    PerfilAmbulantePageModule,
 
     IonicModule.forRoot(),
     AppRoutingModule,

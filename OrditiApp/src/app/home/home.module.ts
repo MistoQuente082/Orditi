@@ -21,7 +21,7 @@ import { HomePage } from './home.page';
     ])
   ],
   declarations: [
-    HomePage,
+    HomePage
   ]
 })
 export class HomePageModule { }

@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PerfilAmbulantePage } from './perfil-ambulante.page';
-import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
 
 const routes: Routes = [
   {
@@ -17,7 +16,6 @@ const routes: Routes = [
 
 @NgModule({
   entryComponents: [
-    EditarAmbulantePage
   ],
   imports: [
     CommonModule,
@@ -25,6 +23,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EditarAmbulantePage]
+  declarations: [PerfilAmbulantePage]
 })
 export class PerfilAmbulantePageModule { }

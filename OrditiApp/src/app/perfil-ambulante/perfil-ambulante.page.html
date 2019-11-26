@@ -80,9 +80,15 @@
         <p>{{ambulante.pontoRef}}</p>
       </ion-item>
 
+      <ion-item *ngIf="ambulante.localAtiv">
+        <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
+        {{ambulante.localAtiv}}
+        </ion-input>
+      </ion-item>
+
     </ion-card>
 
-   
-    
+
+
 
   </ion-content>

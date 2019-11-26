@@ -15,6 +15,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
 import * as firebase from 'firebase';
+import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 //import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 
@@ -206,6 +207,7 @@ export class HomePage {
       //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
       area.push([zona[ponto].latitude, zona[ponto].longitude])
     }
+
     //Testando
     console.log(area);
     //Constrói um poligono com as coordenadas presentes em 'area'
@@ -226,18 +228,18 @@ export class HomePage {
     await alert.present();
   }
 
-  //async mostraDetalhes() {
-  //  var zona = this.zona;
-  //  console.log('click')
-  //  const modal = await this.modalCtrl.create({
-  //    component: DetalheZonaPage,
-  //    componentProps: {
-  //      'info': zona
-  //    }
-  //  });
-  //  return await modal.present();
-  //  //this.alertas.presentModal(DetalheZonaPage, this.zona);
-  //}
+  async mostraDetalhes() {
+    var zona = this.zona;
+    console.log('click')
+    const modal = await this.modalCtrl.create({
+      component: DetalheZonaPage,
+      componentProps: {
+        info: zona
+      }
+    });
+    return await modal.present();
+    //this.alertas.presentModal(DetalheZonaPage, this.zona);
+  }
 
   regiaoClicada(doc) {
     this.count = 0;
