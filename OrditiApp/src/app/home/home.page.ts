@@ -15,6 +15,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
 import * as firebase from 'firebase';
+import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';

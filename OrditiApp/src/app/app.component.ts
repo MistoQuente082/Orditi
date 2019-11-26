@@ -29,11 +29,7 @@ export class AppComponent {
       icon: 'search'
     },
 
-    {
-      title: 'Como me tornar um micro Empreendedor Itinerante?',
-      url: '/informacoes',
-      icon: 'information-circle'
-    },
+
     {
       title: 'Fazer Denuncia',
       url: '/denuncia',
@@ -43,6 +39,12 @@ export class AppComponent {
       title: 'Eventos Temporarios',
       url: '/eventos',
       icon: 'calendar'
+    },
+
+    {
+      title: 'Micro-empreendedor?',
+      url: '/informacoes',
+      icon: 'information-circle'
     },
     {
       title: 'Sou um fiscal',
