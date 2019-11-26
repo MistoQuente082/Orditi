@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { Observable } from 'rxjs';
-import { DetalheZonaPageModule } from '../detalhe-zona/detalhe-zona.module';
+
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 import * as L2 from 'leaflet';
@@ -15,7 +15,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
 import * as firebase from 'firebase';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+//import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+
 
 
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -225,18 +226,18 @@ export class HomePage {
     await alert.present();
   }
 
-  async mostraDetalhes() {
-    var zona = this.zona;
-    console.log('click')
-    const modal = await this.modalCtrl.create({
-      component: DetalheZonaPage,
-      componentProps: {
-        info: zona
-      }
-    });
-    return await modal.present();
-    //this.alertas.presentModal(DetalheZonaPage, this.zona);
-  }
+  //async mostraDetalhes() {
+  //  var zona = this.zona;
+  //  console.log('click')
+  //  const modal = await this.modalCtrl.create({
+  //    component: DetalheZonaPage,
+  //    componentProps: {
+  //      'info': zona
+  //    }
+  //  });
+  //  return await modal.present();
+  //  //this.alertas.presentModal(DetalheZonaPage, this.zona);
+  //}
 
   regiaoClicada(doc) {
     this.count = 0;

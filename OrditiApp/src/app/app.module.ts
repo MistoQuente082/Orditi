@@ -20,13 +20,11 @@ import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database
 import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
 import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
-import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
 
 
 
@@ -34,7 +32,6 @@ import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    DetalheZonaPageModule,
     BrowserModule,
     BrMaskerModule,
 

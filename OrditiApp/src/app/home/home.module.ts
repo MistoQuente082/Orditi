@@ -5,13 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
-import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
 @NgModule({
   entryComponents: [
-    DetalheZonaPage,
-    PerfilAmbulantePage
   ],
   imports: [
     CommonModule,
@@ -25,9 +21,7 @@ import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
     ])
   ],
   declarations: [
-    DetalheZonaPage,
     HomePage,
-    PerfilAmbulantePage
   ]
 })
 export class HomePageModule { }

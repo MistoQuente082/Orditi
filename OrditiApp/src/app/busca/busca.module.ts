@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { BuscaPage } from './busca.page';
 import { BrMaskerModule } from 'br-mask';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
-import {  } from '../perfil-ambulante/perfil-ambulante.page';
 
 const routes: Routes = [
   {
@@ -19,8 +17,7 @@ const routes: Routes = [
 
 @NgModule({
   entryComponents: [
-    
-    ],
+  ],
   imports: [
     BrMaskerModule,
     CommonModule,
@@ -28,8 +25,8 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [BuscaPage,
-    
+  declarations: [BuscaPage
+
   ]
 })
 export class BuscaPageModule { }

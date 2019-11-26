@@ -29,7 +29,6 @@ export class AppComponent {
       icon: 'search'
     },
 
-
     {
       title: 'Fazer Denuncia',
       url: '/denuncia',
@@ -75,10 +74,9 @@ export class AppComponent {
       url: '/denuncia',
       icon: 'hand'
     },
-
     {
-      title: 'Eventos Temporários',
-      url: '/home',
+      title: 'Eventos Temporarios',
+      url: '/eventos',
       icon: 'calendar'
     },
 
