@@ -2,15 +2,17 @@ import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { Observable } from 'rxjs';
-import { DetalheZonaPageModule } from '../detalhe-zona/detalhe-zona.module';
+
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 import * as firebase from 'firebase';
+import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+
 
 
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -193,7 +195,7 @@ export class HomePage {
     const modal = await this.modalCtrl.create({
       component: DetalheZonaPage,
       componentProps: {
-        info: zona
+        'info': zona
       }
     });
     return await modal.present();

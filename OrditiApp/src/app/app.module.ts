@@ -25,6 +25,7 @@ import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
+import { PerfilAmbulantePageModule } from './perfil-ambulante/perfil-ambulante.module';
 
 
 
@@ -33,6 +34,7 @@ import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
   entryComponents: [],
   imports: [
     DetalheZonaPageModule,
+    PerfilAmbulantePageModule,
     BrowserModule,
     BrMaskerModule,
     IonicModule.forRoot(),

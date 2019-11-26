@@ -8,7 +8,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'home',
+    path: 'home', //troca pelo caminho da tela de boas-vindas
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
 
@@ -22,7 +22,8 @@ const routes: Routes = [
   { path: 'perfil-ambulante', loadChildren: './perfil-ambulante/perfil-ambulante.module#PerfilAmbulantePageModule' },
   { path: 'busca', loadChildren: './busca/busca.module#BuscaPageModule' },
   { path: 'editar-ambulante', loadChildren: './editar-ambulante/editar-ambulante.module#EditarAmbulantePageModule' },
-  { path: 'eventos', loadChildren: './eventos/eventos.module#EventosPageModule' },  { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' }
+  { path: 'eventos', loadChildren: './eventos/eventos.module#EventosPageModule' },
+  { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' }
 
 
 ];

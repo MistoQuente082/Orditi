@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
+
 import { AlertasService } from '../services/alertas.service';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -16,16 +17,17 @@ export class DetalheZonaPage implements OnInit {
 
   constructor(
     public db: AngularFirestore,
-    navParams: NavParams,
+    private navParams: NavParams,
     public alertas: AlertasService,
-    public modalCtrl: ModalController,
+    private modalCtrl: ModalController,
   ) {
-    this.local = navParams.get('info');
-    this.ambulantes = db.collection("ambulantes", ref =>
-      ref.where('regiao', '==', this.local.nome)).valueChanges();
+
   }
 
   ngOnInit() {
+    this.local = this.navParams.get('info');
+    this.ambulantes = this.db.collection("ambulantes", ref =>
+      ref.where('regiao', '==', this.local.nome)).valueChanges();
   }
 
   async fechar() {

@@ -74,7 +74,7 @@ export class BuscaPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: PerfilAmbulantePage,
       componentProps: {
-        info: item
+        'info': item
       }
     });
     return await modal.present();
@@ -85,10 +85,11 @@ export class BuscaPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: DetalheZonaPage,
       componentProps: {
-        info: zona
+        'info': zona
       }
     });
     return await modal.present();
+    //this.alertas.presentModal(DetalheZonaPage, this.zona);
   }
 
   ngOnInit() {
