@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+Simport { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -26,11 +26,15 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
+import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
+
+
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    DetalheZonaPageModule,
     BrowserModule,
     BrMaskerModule,
 

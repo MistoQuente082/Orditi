@@ -238,8 +238,8 @@ export class CadastroPage implements OnInit {
           endereco: this.endereco,
           pontoRef: this.pontoRef,
           produto: this.produto,
-          foto: '',
-          zona: this.regiao,
+          foto: "",
+          regiao: this.regiao,
         };
         this.presentAlertCadastro(dados);
       }
@@ -314,12 +314,12 @@ export class CadastroPage implements OnInit {
                 firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url => {
                   dados.foto = url;
                   this.db.collection("ambulantes").doc(dados.cpf).set(dados);
-                  this.router.navigate(['/home']);
-                  this.alertas.presentToast('Executado com sucesso!')
-                  console.log('Executando')
                 });
               }
-              )
+              );
+              this.router.navigate(['/home']);
+              this.alertas.presentToast('Executado com sucesso!')
+              console.log('Executando')
             } catch (erro) {
               this.alertas.presentToast('Não foi possível realizar o cadastro!')
               console.log('Executando, mas com erro')

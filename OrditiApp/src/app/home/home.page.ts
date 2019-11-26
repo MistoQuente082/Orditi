@@ -7,16 +7,16 @@ import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { Observable } from 'rxjs';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+import { DetalheZonaPageModule } from '../detalhe-zona/detalhe-zona.module';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 import * as L2 from 'leaflet';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
+import * as firebase from 'firebase';
 
 
-//Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
@@ -45,6 +45,8 @@ const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  count = 0;
+
   user: any = AppModule.getUsuario();
 
   map: L.map = null;
@@ -126,8 +128,10 @@ export class HomePage {
             this.criarPoligono(doc);
           })
         });
-
-        this.db.collection('ambulantes').get().toPromise().then(snapshot => {
+        //Criar Pins de Ambulantes
+        this.db.collection('ambulantes', ref =>
+          ref.where('regiao', '==', 'Independente')
+        ).get().toPromise().then(snapshot => {
           snapshot.forEach(geo => {
             this.criarMarkerAmbulantes(geo);
           })
@@ -173,6 +177,12 @@ export class HomePage {
     var ambulanteLat = geo.data().local._lat;
     var ambulantLong = geo.data().local._long;
     var zona = geo.data().zona;
+
+    //console.log(ambulanteFoto)
+    //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
+    //  ambulanteFoto = url;
+    //});
+    console.log(ambulanteFoto);
 
     var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
@@ -228,7 +238,14 @@ export class HomePage {
   }
 
   regiaoClicada(doc) {
+    this.count = 0;
     this.zona = doc.data()
+    this.db.collection('ambulantes', ref =>
+      ref.where('regiao', '==', this.zona.nome)).get().toPromise().then(snapshot => {
+        snapshot.forEach(doc => {
+          this.count += 1;
+        })
+      })
     console.log(doc.data().nome)
   }
 

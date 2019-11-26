@@ -24,15 +24,15 @@ export class CameraService {
         text: 'Capturar Imagem',
         icon: 'camera',
         handler: () => {
-          this.escolherFoto();
-          console.log('Share clicked');
+          this.tirarFoto();
+          console.log('Tirar foto clicked');
         }
       }, {
         text: 'Escolher da Galeria',
         icon: 'images',
         handler: () => {
-          console.log('Play clicked');
-          this.tirarFoto();
+          console.log('escolher Foto clicked');
+          this.escolherFoto();
 
         }
       }]
@@ -59,6 +59,7 @@ export class CameraService {
         //this.imgPessoa = this.webView.convertFileSrc(imageData);
         this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
         this.imgDato = imageData;
+        console.log('imgDato - escolher')
       }, (err) => {
         // Handle error
       });
@@ -66,28 +67,31 @@ export class CameraService {
 
   }
 
-    // Função para camera
-    tirarFoto() {
-      const options: CameraOptions = {
-        quality: 100,
-        destinationType: this.camera.DestinationType.DATA_URL,
-        encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE,
-        sourceType: this.camera.PictureSourceType.CAMERA
-      };
-  
-      this.camera.getPicture(options)
-        .then((imageData) => {
-          // imageData is either a base64 encoded string or a file URI
-          // If it's base64 (DATA_URL):
-  
-          //this.imgPessoa = this.webView.convertFileSrc(imageData);
-          this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
-        }, (err) => {
-          // Handle error
-        });
-  
-  
-    }
+  // Função para camera
+  tirarFoto() {
+    console.log('Tirar foto')
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
+
+    this.camera.getPicture(options)
+      .then((imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+
+        //this.imgPessoa = this.webView.convertFileSrc(imageData);
+        this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
+        this.imgDato = imageData;
+        console.log('foto tirada')
+      }, (err) => {
+        // Handle error
+      });
+
+
+  }
 
 }
