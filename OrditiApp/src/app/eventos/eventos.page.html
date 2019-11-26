@@ -11,15 +11,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor='let evento of eventos | async' (click)="verEvento()">
+  <ion-card *ngFor='let evento of eventos | async'>
     <ion-card-header>
       <ion-card-title>{{evento.nome}}</ion-card-title>
       <ion-card-subtitle>de {{ evento.dataInicio.toDate() | date:'dd/MM/yyyy'}}
         {{ evento.dataFim.toDate() | date:'dd/MM/yyyy'}}</ion-card-subtitle>
     </ion-card-header>
+    <br>
     <ion-card-content>
-      <ion-card-subtitle>Locais de ocorrencia: </ion-card-subtitle>
-      <p *ngFor='let lugar of evento.Locais'>{{lugar}}</p>
+      <ion-card-subtitle>Locais de ocorrencia: <p *ngFor='let lugar of evento.Locais'>{{lugar}}</p> </ion-card-subtitle>
+      <ion-button class="float_direita" fill="outline" (click)="verEvento()">
+        Saiba mais
+      </ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

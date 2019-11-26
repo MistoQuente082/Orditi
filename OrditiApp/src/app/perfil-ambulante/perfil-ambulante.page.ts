@@ -48,7 +48,7 @@ export class PerfilAmbulantePage implements OnInit {
     }).then((modalElement) => {
       modalElement.present();
     });
-    this.router.navigate["/editar-ambulante"]
+    this.router.navigate["/editar-ambulante"];
   }
 }
 
