@@ -19,6 +19,10 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-item>
+      <ion-label color="medium" position="floating">Seu nome:</ion-label>
+      <ion-input type="text" [(ngModel)]="seunome" placeholder="Ex.: Maria das Dores"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label color="medium" position="floating">Período:</ion-label>
 
       <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
@@ -38,7 +42,7 @@
       <ion-label color="medium" position="floating">Local:</ion-label>
       <ion-input ype="text" [(ngModel)]="localDenuncia" disabled="{{mostraMapa}}"
         placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde"></ion-input>
-      <ion-note text-end >
+      <ion-note text-end>
         Marcar no mapa
       </ion-note>
     </ion-item>

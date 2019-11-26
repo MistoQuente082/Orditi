@@ -19,6 +19,8 @@ import * as firebase from 'firebase';
 import { AppModule } from '../app.module';
 import { CameraService } from '../services/camera/camera.service';
 
+import * as moment from 'moment';
+
 //Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
@@ -52,11 +54,16 @@ export class DenunciaPage implements OnInit {
   // Var Camera
   public imgDenuncia = '../../assets/img/vetor.png';
 
+  metadata = {
+    contentType: 'image/jpeg',
+  };
+
   public dataDenuncia: Date = new Date();
   public horaDenuncia: Date = new Date();
   public localDenuncia: any;
   public infoDenuncia;
   public local: any;
+  public seunome: any;
 
   public imgAut;
 
@@ -102,8 +109,9 @@ export class DenunciaPage implements OnInit {
 
   cam() {
     this.usarCamera.presentActionSheet();
-
-    this.imgAut = this.usarCamera.imgPessoa;
+    if (this.usarCamera.imgPessoa) {
+      this.imgAut = this.usarCamera.imgPessoa;
+    }
 
   }
 
@@ -189,7 +197,7 @@ export class DenunciaPage implements OnInit {
   // ENVIAR DENUNCIA
   subDenuncia() {
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
-      this.infoDenuncia === undefined || this.local === undefined) {
+      this.infoDenuncia === undefined || this.local === undefined || this.seunome === undefined) {
       this.alertas.presentToast('Preencha os campos!');
     } else {
       if (this.localDenuncia === undefined) {
@@ -200,11 +208,12 @@ export class DenunciaPage implements OnInit {
         horaDenuncia: this.horaDenuncia,
         localDenuncia: this.localDenuncia,
         infoDenuncia: this.infoDenuncia,
+        foto: "",
         local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng)
       };
       console.log(dados)
 
-      this.alertas.presentAlert('Tem certeza do que está enviando?', dados, 'denuncias')
+      this.presentAlertDenuncia(dados)
       // COLOCA AQUI para envia dados da denuncia ao banco
       // Falta enviar a foto
       // E como tranformar o local no nome da rua
@@ -225,5 +234,50 @@ export class DenunciaPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentAlertDenuncia(dados) {
+    var resp: string = ' ';
+
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: "Deseja registrar essa denuncia?",
+      buttons: [
+        {
+          text: 'Fechar',
+          role: 'cancel',
+
+        }, {
+          text: 'Registrar',
+          handler: async () => {
+            try {
+              //Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
+              if (this.usarCamera.imgDato) {
+                let id = this.seunome + moment(this.dataDenuncia).format('DD-MM-YYYY:HH');
+                firebase.storage().ref().child('denuncia/' + id + '.jpg').putString(this.usarCamera.imgDato, 'base64', this.metadata).then(doc => {
+                  firebase.storage().ref().child('denuncia/' + id + '.jpg').getDownloadURL().then(url => {
+                    dados.foto = url;
+                    this.db.collection("denuncias").add(dados);
+                  });
+                }
+                );
+              } else {
+                this.db.collection("denuncias").add(dados);
+              }
+              this.router.navigate(['/home']);
+              this.alertas.presentToast('Executado com sucesso!')
+              console.log('Executando')
+            } catch (erro) {
+              this.alertas.presentToast('Não foi possível realizar a denuncia!')
+              console.log('Executando, mas com erro')
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    return resp;
+    console.log(resp);
   }
 }

@@ -16,7 +16,7 @@ import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
 import * as firebase from 'firebase';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
-//import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+import * as moment from 'moment';
 
 
 
@@ -194,8 +194,9 @@ export class HomePage {
   criarMarkerDenuncias(den) {
     var denunciaLat = den.data().local._lat;
     var denunciaLong = den.data().local._long;
-
-    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia</strong>').openPopup();
+    var denunciaInfo = den.data().infoDenuncia;
+    var denunciaData = moment(den.dataDenuncia).format('DD/MM/YYYY');
+    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<br> Diz: ' + denunciaInfo + '</strong>').openPopup();
     denMarker.addTo(this.map);
   }
 
