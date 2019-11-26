@@ -6,10 +6,12 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
 @NgModule({
   entryComponents: [
-    DetalheZonaPage
+    DetalheZonaPage,
+    PerfilAmbulantePage
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
   ],
   declarations: [
     DetalheZonaPage,
-    HomePage
+    HomePage,
+    PerfilAmbulantePage
   ]
 })
 export class HomePageModule { }

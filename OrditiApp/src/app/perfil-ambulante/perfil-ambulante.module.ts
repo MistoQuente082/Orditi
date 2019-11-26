@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PerfilAmbulantePage } from './perfil-ambulante.page';
+import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
 
 const routes: Routes = [
   {
@@ -15,12 +16,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [
+    EditarAmbulantePage
+  ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PerfilAmbulantePage]
+  declarations: [EditarAmbulantePage]
 })
-export class PerfilAmbulantePageModule {}
+export class PerfilAmbulantePageModule { }

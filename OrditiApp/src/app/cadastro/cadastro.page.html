@@ -103,7 +103,18 @@
   <ion-card *ngIf="mostrarMapa" id="mapId3" style="height: 300px">
   </ion-card>
 
+  <ion-card *ngIf="cpf">
+    <ion-card-header>
+      <ion-card-subtitle>qrCode Do Ambulante</ion-card-subtitle>
+    </ion-card-header>
+    <br>
+
+    <ngx-qrcode class="ion-text-center" qrc-element-type="canvas" [qrc-value]="cpf">
+    </ngx-qrcode>
+
+  </ion-card>
+
+
   <ion-button expand="block" color="medium" (click)="cadastrar()">
     Cadastrar
   </ion-button>
-

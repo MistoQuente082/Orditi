@@ -11,8 +11,10 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 import * as L2 from 'leaflet';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+
 
 //Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -23,18 +25,18 @@ const LeafIcon = L.Icon.extend({
   // iconRetinaUrl,
   // iconUrl,
   options: {
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
   }
 });
 
-const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-icon.png'}),
-    ambulanteIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png'}),
-    denunciaIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png'});
+const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
@@ -54,45 +56,58 @@ export class HomePage {
 
   zona: any = null;
 
+
+  //  qrCode
+  qrData = 'Hola Mundo';
+  scannedCode = null;
+
+  elementType: 'url' | 'canvas' | 'img' = 'canvas';
   constructor(
-    private qrScanner: QRScanner,
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    private barcodeScanner: BarcodeScanner) {
   }
 
-  escanear() {
-    console.log('entrou na funcao');
-    
-    this.qrScanner.prepare()
-      .then((status: QRScannerStatus) => {
 
 
-          // start scanning
-          let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-            console.log('Scanned something', text);
-            this.alertas.presentToast(text);
 
-            this.qrScanner.hide(); // hide camera preview
-            scanSub.unsubscribe(); // stop scanning
-          });
-      } 
-      )
-      .catch((e: any) => console.log('Error is', e));
+  LeerCode() {
+
+    this.barcodeScanner.scan().then(barcodeData => {
+      this.scannedCode = barcodeData;
+      console.log(barcodeData.text);
+      alert(barcodeData.text);
+
+      this.db.collection('ambulantes').doc(this.scannedCode.text).get().toPromise()
+        .then(doc => {
+          if (doc.exists) {
+            this.irPerfis(doc.data());
+            console.log('Entreou');
+          } else {
+            this.alertas.presentToast('Nenhum usuário com esse código');
+            console.log('Não rolou');
+          }
+
+        })
+        .catch(err => {
+          console.log("Error", err);
+        });
+
+    });
   }
 
   Fiscal() {
     return AppModule.getUsuarioStatus();
-    console.log(AppModule.getUsuarioStatus())
+    console.log(AppModule.getUsuarioStatus());
   }
 
   ionViewDidEnter() {
     if (this.map !== 'undefined' && this.map !== null) {
       this.map.remove();
-    }
-    else {
+    } else {
       /** Get current position **/
       this.geolocation.getCurrentPosition().then((resp) => {
         this.lat = resp.coords.latitude;
@@ -117,18 +132,18 @@ export class HomePage {
             this.criarMarkerAmbulantes(geo);
           })
         });
-        if (this.Fiscal()){
-          
-        this.db.collection('denuncias').get().toPromise().then(snapshot => {
-          snapshot.forEach(den => {
-            this.criarMarkerDenuncias(den);
-          })
-        });
-      }
+        if (this.Fiscal()) {
+
+          this.db.collection('denuncias').get().toPromise().then(snapshot => {
+            snapshot.forEach(den => {
+              this.criarMarkerDenuncias(den);
+            })
+          });
+        }
         //Fim do acesso ao Firebasse
 
         /** Criar mapa na posição atual do usuário **/
-        const marker = L.marker([this.lat, this.long], {icon: defaultIcon}).addTo(this.map)
+        const marker = L.marker([this.lat, this.long], { icon: defaultIcon }).addTo(this.map)
           .bindPopup('Você está aqui!') //Mensagem do ponto
           .openPopup(); //Abre a Mensagem
 
@@ -159,15 +174,15 @@ export class HomePage {
     var ambulantLong = geo.data().local._long;
     var zona = geo.data().zona;
 
-    var amb = L.marker([ambulanteLat, ambulantLong], {icon: ambulanteIcon}).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
   }
 
-  criarMarkerDenuncias(den){
+  criarMarkerDenuncias(den) {
     var denunciaLat = den.data().local._lat;
     var denunciaLong = den.data().local._long;
 
-    var denMarker = L.marker([denunciaLat, denunciaLong], {icon: denunciaIcon}).bindPopup('<strong>Denuncia</strong>').openPopup();
+    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia</strong>').openPopup();
     denMarker.addTo(this.map);
   }
 
@@ -220,6 +235,21 @@ export class HomePage {
   fecharCard() {
     this.zona = null;
   }
+
+
+  async irPerfis(item) {
+    const modal = await this.modalCtrl.create({
+      component: PerfilAmbulantePage,
+      componentProps: {
+        item
+      }
+    });
+
+    await modal.present();
+
+
+  }
+
 
 
 }
