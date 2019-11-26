@@ -24,18 +24,18 @@ export class AppComponent {
       icon: 'map'
     },
     {
-      title: 'Buscar Regiao',
+      title: 'Buscar Regio',
       url: '/busca',
       icon: 'search'
     },
 
     {
-      title: 'Fazer Denuncia',
+      title: 'Fazer Denúncia',
       url: '/denuncia',
       icon: 'hand'
     },
     {
-      title: 'Eventos Temporarios',
+      title: 'Eventos Temporários',
       url: '/eventos',
       icon: 'calendar'
     },
@@ -60,7 +60,7 @@ export class AppComponent {
     },
 
     {
-      title: 'Buscar Pessoa ou Regiao',
+      title: 'Buscar Pessoa ou Região',
       url: '/busca',
       icon: 'search'
     },
@@ -75,7 +75,7 @@ export class AppComponent {
       icon: 'hand'
     },
     {
-      title: 'Eventos Temporarios',
+      title: 'Eventos Temporários',
       url: '/eventos',
       icon: 'calendar'
     },
