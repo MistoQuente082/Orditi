@@ -73,7 +73,7 @@
     <ion-item>
       <ion-label color="medium" position="floating">Região</ion-label>
       <ion-select placeholder="Selecione a zona" [(ngModel)]="regiao">
-        <ion-select-option value="a1" (click)="leafletMap()">Ponto Independente</ion-select-option>
+        <ion-select-option value="a1">Ponto Independente</ion-select-option>
         <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
         </ion-select-option>
 
@@ -86,14 +86,14 @@
     </ion-item>
 
 
-    <div *ngIf="regiao == 'a1'" (click)="leafletMap()">
-      <ion-item>
+    <div *ngIf="regiao == 'a1'">
+      <ion-item (click)="leafletMap()">
         <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
         <ion-input type="text" [(ngModel)]="localAtiv" disabled="{{mostrarMapa}}"
           placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
           <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
         </ion-input>
-        <ion-note text-end>
+        <ion-note text-end (click)="leafletMap()">
           Marque no mapa
         </ion-note>
       </ion-item>
@@ -106,4 +106,3 @@
   <ion-button expand="block" color="medium" (click)="cadastrar()">
     Cadastrar
   </ion-button>
-

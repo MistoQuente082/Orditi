@@ -19,7 +19,7 @@
     </ion-fab>
   </div>
 
-  <ion-fab (click)='escanear()' *ngIf="Fiscal()" vertical="top" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="Fiscal()" vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="barcode"></ion-icon>
     </ion-fab-button>
@@ -37,7 +37,8 @@
       </ion-card-header>
       <ion-card-content>
         <ion-card-subtitle>Capacidade: {{zona.capacidade}}</ion-card-subtitle>
-        {{zona.detalhes}} Atualmente contem {{zona.ocupantes}} ambulantes alocados.
+
+        {{zona.detalhes}} Atualmente contem: {{count}} ambulantes alocados.
         <br>
         <ion-button class="float_esquerda" fill="outline" (click)="mostraDetalhes()">
           Mais informações

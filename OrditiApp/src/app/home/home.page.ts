@@ -7,14 +7,12 @@ import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { Observable } from 'rxjs';
-import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
+import { DetalheZonaPageModule } from '../detalhe-zona/detalhe-zona.module';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
-import * as L2 from 'leaflet';
+import * as firebase from 'firebase';
 
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
-//Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
@@ -23,18 +21,18 @@ const LeafIcon = L.Icon.extend({
   // iconRetinaUrl,
   // iconUrl,
   options: {
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
   }
 });
 
-const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-icon.png'}),
-    ambulanteIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png'}),
-    denunciaIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png'});
+const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
@@ -43,6 +41,8 @@ const defaultIcon = new LeafIcon({iconUrl: '../../assets/leaflet/images/marker-i
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  count = 0;
+
   user: any = AppModule.getUsuario();
 
   map: L.map = null;
@@ -55,32 +55,11 @@ export class HomePage {
   zona: any = null;
 
   constructor(
-    private qrScanner: QRScanner,
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
     public db: AngularFirestore,
     public modalCtrl: ModalController) {
-  }
-
-  escanear() {
-    console.log('entrou na funcao');
-    
-    this.qrScanner.prepare()
-      .then((status: QRScannerStatus) => {
-
-
-          // start scanning
-          let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-            console.log('Scanned something', text);
-            this.alertas.presentToast(text);
-
-            this.qrScanner.hide(); // hide camera preview
-            scanSub.unsubscribe(); // stop scanning
-          });
-      } 
-      )
-      .catch((e: any) => console.log('Error is', e));
   }
 
   Fiscal() {
@@ -111,24 +90,27 @@ export class HomePage {
             this.criarPoligono(doc);
           })
         });
-
-        this.db.collection('ambulantes').get().toPromise().then(snapshot => {
+        //Criar Pins de Ambulantes
+        this.db.collection('ambulantes', ref =>
+          ref.where('regiao', '==', 'Independente')
+        ).get().toPromise().then(snapshot => {
           snapshot.forEach(geo => {
             this.criarMarkerAmbulantes(geo);
           })
         });
-        if (this.Fiscal()){
-          
-        this.db.collection('denuncias').get().toPromise().then(snapshot => {
-          snapshot.forEach(den => {
-            this.criarMarkerDenuncias(den);
-          })
-        });
-      }
+        //Criar Pins de denuncias
+        if (this.Fiscal()) {
+
+          this.db.collection('denuncias').get().toPromise().then(snapshot => {
+            snapshot.forEach(den => {
+              this.criarMarkerDenuncias(den);
+            })
+          });
+        }
         //Fim do acesso ao Firebasse
 
         /** Criar mapa na posição atual do usuário **/
-        const marker = L.marker([this.lat, this.long], {icon: defaultIcon}).addTo(this.map)
+        const marker = L.marker([this.lat, this.long], { icon: defaultIcon }).addTo(this.map)
           .bindPopup('Você está aqui!') //Mensagem do ponto
           .openPopup(); //Abre a Mensagem
 
@@ -159,15 +141,21 @@ export class HomePage {
     var ambulantLong = geo.data().local._long;
     var zona = geo.data().zona;
 
-    var amb = L.marker([ambulanteLat, ambulantLong], {icon: ambulanteIcon}).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    //console.log(ambulanteFoto)
+    //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
+    //  ambulanteFoto = url;
+    //});
+    console.log(ambulanteFoto);
+
+    var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
   }
 
-  criarMarkerDenuncias(den){
+  criarMarkerDenuncias(den) {
     var denunciaLat = den.data().local._lat;
     var denunciaLong = den.data().local._long;
 
-    var denMarker = L.marker([denunciaLat, denunciaLong], {icon: denunciaIcon}).bindPopup('<strong>Denuncia</strong>').openPopup();
+    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia</strong>').openPopup();
     denMarker.addTo(this.map);
   }
 
@@ -213,7 +201,14 @@ export class HomePage {
   }
 
   regiaoClicada(doc) {
+    this.count = 0;
     this.zona = doc.data()
+    this.db.collection('ambulantes', ref =>
+      ref.where('regiao', '==', this.zona.nome)).get().toPromise().then(snapshot => {
+        snapshot.forEach(doc => {
+          this.count += 1;
+        })
+      })
     console.log(doc.data().nome)
   }
 

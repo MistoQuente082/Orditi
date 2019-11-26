@@ -23,7 +23,8 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { DetalheZonaPage } from './detalhe-zona/detalhe-zona.page';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+
+import { DetalheZonaPageModule } from '../app/detalhe-zona/detalhe-zona.module';
 
 
 
@@ -31,6 +32,7 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    DetalheZonaPageModule,
     BrowserModule,
     BrMaskerModule,
     IonicModule.forRoot(),
@@ -46,7 +48,6 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
     StatusBar,
     SplashScreen,
     NativeGeocoder,
-    QRScanner,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Geolocation,
     BrMaskerModule,

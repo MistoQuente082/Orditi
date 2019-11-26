@@ -9,7 +9,6 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 @NgModule({
   entryComponents: [
-    DetalheZonaPage
   ],
   imports: [
     CommonModule,
@@ -23,7 +22,6 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
     ])
   ],
   declarations: [
-    DetalheZonaPage,
     HomePage
   ]
 })

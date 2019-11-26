@@ -22,7 +22,7 @@ export class DetalheZonaPage implements OnInit {
   ) {
     this.local = navParams.get('info');
     this.ambulantes = db.collection("ambulantes", ref =>
-      ref.where('zona', '==', this.local.nome)).valueChanges();
+      ref.where('regiao', '==', this.local.nome)).valueChanges();
   }
 
   ngOnInit() {
