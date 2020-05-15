@@ -33,15 +33,30 @@
         Ambulantes da zona
       </ion-card-subtitle>
     </ion-card-header>
-    <ion-item *ngFor="let pessoa of ambulantes | async" (click)="verMais(pessoa)">
-      <ion-avatar slot="start">
-        <img src="{{pessoa.foto}}">
-      </ion-avatar>
-      <ion-label>
-        <h3>{{pessoa.nome}}</h3>
-        <h4>{{pessoa.produto}}</h4>
-      </ion-label>
-    </ion-item>
+
+    <div *ngIf="fiscal()">
+      <ion-item *ngFor="let pessoa of ambulantes | async" (click)="verMais(pessoa)">
+        <ion-avatar slot="start">
+          <img src="{{pessoa.foto}}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{pessoa.nome}}</h3>
+          <h4>{{pessoa.produto}}</h4>
+        </ion-label>
+      </ion-item>
+    </div>
+
+    <div *ngIf="!fiscal()">
+      <ion-item *ngFor="let pessoa of ambulantes | async">
+        <ion-avatar slot="start">
+          <img src="{{pessoa.foto}}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{pessoa.nome}}</h3>
+          <h4>{{pessoa.produto}}</h4>
+        </ion-label>
+      </ion-item>
+    </div>
   </ion-card>
 
 

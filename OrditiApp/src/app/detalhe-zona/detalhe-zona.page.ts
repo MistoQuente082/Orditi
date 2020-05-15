@@ -5,6 +5,7 @@ import { AlertasService } from '../services/alertas.service';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
+import { AppModule } from '../app.module';
 
 @Component({
   selector: 'app-detalhe-zona',
@@ -40,6 +41,13 @@ export class DetalheZonaPage implements OnInit {
   ngOnInit() {
 
   }
+
+  //Retorna o tipo do perfil
+  fiscal() {
+    return AppModule.getUsuarioStatus();
+  
+  }
+
 
   async verMais(item) {
     const modal = await this.modalCtrl.create({
