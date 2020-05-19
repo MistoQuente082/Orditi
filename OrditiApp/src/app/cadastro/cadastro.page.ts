@@ -43,6 +43,7 @@ const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-
 
 
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -108,6 +109,7 @@ export class CadastroPage implements OnInit {
     public db: AngularFirestore,
     public alertas: AlertasService,
     public camera: Camera,
+    private sqlOrditi: SqlOrditiService,
     private nativeGeocoder: NativeGeocoder,
     public alertController: AlertController,
     public modalController: ModalController,
@@ -116,7 +118,7 @@ export class CadastroPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public usarCamera: CameraService,
     public httpClient: HttpClient
-    
+
   ) {
     this.locais = db.collection("zonas").valueChanges();
     this.imgPessoa = "../../assets/img/avatar.svg";
@@ -124,7 +126,7 @@ export class CadastroPage implements OnInit {
 
   // Testa a funcionalidade do WebService
   sendPostRequest(dados) {
-  
+
   }
 
 
@@ -257,13 +259,13 @@ export class CadastroPage implements OnInit {
         };
         this.presentAlertCadastro(dados);
 
-        
+
       }
     } else {
       let condicicoes = this.nome === undefined || this.cpf === undefined || this.endereco === undefined
-      || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-      || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined;
-      if (condicicoes) {
+        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
+        || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined;
+      if (this.nome === undefined) {
         this.alertas.presentToast('Preencha os campos e escolha uma imagem!');
       }
       else {
@@ -284,14 +286,14 @@ export class CadastroPage implements OnInit {
             'produto': this.produto,
             'local_atividade': this.localAtiv,
             'foto': this.imgPessoa,
-            'latitude': this.local.lat,
-            'longitude': this.local.lng,
+            'latitude': 2,//this.local.lat,
+            'longitude': 2,// this.local.lng,
             'regiao': "Independente"
           };
           this.presentAlertCadastro(dados);
         }
 
-        
+
       }
     }
 
@@ -328,38 +330,17 @@ export class CadastroPage implements OnInit {
         }, {
           text: 'Adicionar',
           handler: async () => {
-            try {
-              ////Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
-              //firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamera.imgDato, 'base64', this.metadata).then(doc => {
-              //  firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url => {
-              //    dados.foto = url;
-              //    this.db.collection("ambulantes").doc(dados.cpf).set(dados);
-              //  });
-              //}
-              //);
-              //this.router.navigate(['/home']);
 
-              // ESTA PARTE ENVIA AO WEBSERVICE
-              var headers = new Headers();
-              headers.append("Accept", 'application/json');
-              headers.append('Content-Type', 'application/json' );
-              
-          
-              let postData = dados;
-          
-              this.httpClient.post("http://www.syphan.com.br/orditi/teste.php", postData,  {headers: new HttpHeaders({"Content-Type":"application/json"})})
-                .subscribe(data => {
-                  console.log(data);
-                 }, error => {
-                  console.log(error);
-                });
-                
+
+            // ESTA PARTE ENVIA AO WEBSERVICE
+            this.sqlOrditi.enviarDados(dados);
+            if () {
               this.alertas.presentToast('Executado com sucesso!')
               console.log('Executando');
-              
-            } catch (erro) {
-              this.alertas.presentToast('Não foi possível realizar o cadastro!')
+            }
+            else {
               console.log('Executando, mas com erro')
+              this.alertas.presentToast('Não foi possível realizar o cadastro!')
             }
           }
         }
@@ -370,5 +351,6 @@ export class CadastroPage implements OnInit {
     return resp;
     console.log(resp);
   }
+
 
 }
