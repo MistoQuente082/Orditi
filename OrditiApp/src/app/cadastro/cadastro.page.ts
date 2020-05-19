@@ -42,6 +42,8 @@ const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-
 // L.Marker.prototype.options.icon = iconDefault;
 
 
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.page.html',
@@ -112,11 +114,23 @@ export class CadastroPage implements OnInit {
     public router: Router,
     public webView: WebView,
     public actionSheetController: ActionSheetController,
-    public usarCamera: CameraService
+    public usarCamera: CameraService,
+    public httpClient: HttpClient
+    
   ) {
     this.locais = db.collection("zonas").valueChanges();
     this.imgPessoa = "../../assets/img/avatar.svg";
   }
+
+  // Testa a funcionalidade do WebService
+  sendPostRequest(dados) {
+  
+  }
+
+
+
+
+
   // Obtem a imagem a partir do cpf do ambulante
   // Envia pro banco de Dados 
   obterImg() {
@@ -135,7 +149,7 @@ export class CadastroPage implements OnInit {
       this.imgPessoa = this.usarCamera.imgPessoa;
     }
   }
-
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
   //Funcoes para o mapa
 
@@ -152,9 +166,9 @@ export class CadastroPage implements OnInit {
         this.long = resp.coords.longitude;
 
         this.map2 = new Map('mapId3').setView([this.lat, this.long], 18);
-        this.map2.on('click', (e) => { this.mapMarker(e); });
+        this.map2.on('  click', (e) => { this.mapMarker(e); });
 
-        tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map2);
 
@@ -242,11 +256,14 @@ export class CadastroPage implements OnInit {
           regiao: this.regiao,
         };
         this.presentAlertCadastro(dados);
+
+        
       }
     } else {
-      if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
-        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined) {
+      let condicicoes = this.nome === undefined || this.cpf === undefined || this.endereco === undefined
+      || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
+      || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined;
+      if (condicicoes) {
         this.alertas.presentToast('Preencha os campos e escolha uma imagem!');
       }
       else {
@@ -258,20 +275,23 @@ export class CadastroPage implements OnInit {
             this.pontoRef = " "
           }
           var dados = {
-            nome: this.nome,
-            cpf: this.cpf,
-            fone: this.fone,
-            escolaridade: this.escolaridade,
-            endereco: this.endereco,
-            pontoRef: this.pontoRef,
-            produto: this.produto,
-            localAtiv: this.localAtiv,
-            foto: "",
-            local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng),
-            regiao: "Independente"
+            'nome': this.nome,
+            'identidade': this.cpf,
+            'fone': this.fone,
+            'escolaridade': this.escolaridade,
+            'endereco': this.endereco,
+            'ponto_referencia': this.pontoRef,
+            'produto': this.produto,
+            'local_atividade': this.localAtiv,
+            'foto': this.imgPessoa,
+            'latitude': this.local.lat,
+            'longitude': this.local.lng,
+            'regiao': "Independente"
           };
           this.presentAlertCadastro(dados);
         }
+
+        
       }
     }
 
@@ -309,17 +329,34 @@ export class CadastroPage implements OnInit {
           text: 'Adicionar',
           handler: async () => {
             try {
-              //Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
-              firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamera.imgDato, 'base64', this.metadata).then(doc => {
-                firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url => {
-                  dados.foto = url;
-                  this.db.collection("ambulantes").doc(dados.cpf).set(dados);
+              ////Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
+              //firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').putString(this.usarCamera.imgDato, 'base64', this.metadata).then(doc => {
+              //  firebase.storage().ref().child('ambulantes/' + this.cpf + '.jpg').getDownloadURL().then(url => {
+              //    dados.foto = url;
+              //    this.db.collection("ambulantes").doc(dados.cpf).set(dados);
+              //  });
+              //}
+              //);
+              //this.router.navigate(['/home']);
+
+              // ESTA PARTE ENVIA AO WEBSERVICE
+              var headers = new Headers();
+              headers.append("Accept", 'application/json');
+              headers.append('Content-Type', 'application/json' );
+              
+          
+              let postData = dados;
+          
+              this.httpClient.post("http://www.syphan.com.br/orditi/teste.php", postData,  {headers: new HttpHeaders({"Content-Type":"application/json"})})
+                .subscribe(data => {
+                  console.log(data);
+                 }, error => {
+                  console.log(error);
                 });
-              }
-              );
-              this.router.navigate(['/home']);
+                
               this.alertas.presentToast('Executado com sucesso!')
-              console.log('Executando')
+              console.log('Executando');
+              
             } catch (erro) {
               this.alertas.presentToast('Não foi possível realizar o cadastro!')
               console.log('Executando, mas com erro')

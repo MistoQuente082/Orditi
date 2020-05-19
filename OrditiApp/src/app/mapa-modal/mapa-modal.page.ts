@@ -59,7 +59,7 @@ export class MapaModalPage implements OnInit {
 				this.map = new Map('mapId').setView([this.lat, this.long], 20);
 				this.map.on('click', (e) => { this.mapMarker(e); });
 
-				tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+				tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
 				}).addTo(this.map);
 

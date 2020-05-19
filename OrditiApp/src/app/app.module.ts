@@ -27,6 +27,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { DetalheZonaPageModule } from './detalhe-zona/detalhe-zona.module';
 import { PerfilAmbulantePageModule } from './perfil-ambulante/perfil-ambulante.module';
 import { HomePageModule } from './home/home.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -43,6 +44,7 @@ import { HomePageModule } from './home/home.module';
     HomePageModule,
     DetalheZonaPageModule,
     PerfilAmbulantePageModule,
+    HttpClientModule,
 
     IonicModule.forRoot(),
     AppRoutingModule,
