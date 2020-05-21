@@ -108,7 +108,6 @@ export class CadastroPage implements OnInit {
     private geolocation: Geolocation,
     public db: AngularFirestore,
     public alertas: AlertasService,
-    public camera: Camera,
     private sqlOrditi: SqlOrditiService,
     private nativeGeocoder: NativeGeocoder,
     public alertController: AlertController,
@@ -124,15 +123,6 @@ export class CadastroPage implements OnInit {
     this.imgPessoa = "../../assets/img/avatar.svg";
   }
 
-  // Testa a funcionalidade do WebService
-  sendPostRequest(dados) {
-
-  }
-
-
-
-
-
   // Obtem a imagem a partir do cpf do ambulante
   // Envia pro banco de Dados 
   obterImg() {
@@ -144,14 +134,13 @@ export class CadastroPage implements OnInit {
     console.log('image', resultado);
   }
 
-
+  // Chama a câmera
   cam() {
     this.usarCamera.presentActionSheet();
     if (this.usarCamera.imgPessoa) {
       this.imgPessoa = this.usarCamera.imgPessoa;
     }
   }
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
   //Funcoes para o mapa
 
@@ -244,18 +233,18 @@ export class CadastroPage implements OnInit {
 
         this.obterImg();
 
-
+        console.log('rg', this.regiao);
         const dados = {
-          data: this.imgPessoa,
-          nome: this.nome,
-          cpf: this.cpf,
-          fone: this.fone,
-          escolaridade: this.escolaridade,
-          endereco: this.endereco,
-          pontoRef: this.pontoRef,
-          produto: this.produto,
-          foto: "",
-          regiao: this.regiao,
+          'nome': this.nome,
+          'identidade': this.cpf,
+          'fone': this.fone,
+          'escolaridade': this.escolaridade,
+          'endereco': this.endereco,
+          'pontoRef': this.pontoRef,
+          'produto': this.produto,
+          'foto': this.imgPessoa,
+          'regiao': this.regiao,
+          'situacao': 0, // 0: ainda n pagou, 1: pagou 
         };
         this.presentAlertCadastro(dados);
 
@@ -265,7 +254,7 @@ export class CadastroPage implements OnInit {
       let condicicoes = this.nome === undefined || this.cpf === undefined || this.endereco === undefined
         || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
         || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined;
-      if (this.nome === undefined) {
+      if (condicicoes) {
         this.alertas.presentToast('Preencha os campos e escolha uma imagem!');
       }
       else {
@@ -284,23 +273,17 @@ export class CadastroPage implements OnInit {
             'endereco': this.endereco,
             'ponto_referencia': this.pontoRef,
             'produto': this.produto,
-            'local_atividade': this.localAtiv,
             'foto': this.imgPessoa,
-            'latitude': 2,//this.local.lat,
-            'longitude': 2,// this.local.lng,
-            'regiao': "Independente"
+            'latitude': this.local.lat,
+            'longitude': this.local.lng,
+            'regiao': "Independente",
+            'situacao': 0, // 0: ainda n pagou, 1: pagou 
           };
           this.presentAlertCadastro(dados);
         }
-
-
       }
     }
-
-
   }
-
-
 
   ngOnInit() {
 
@@ -316,6 +299,7 @@ export class CadastroPage implements OnInit {
     await alert.present();
   }
 
+  // Pergunta se realmente deja enviar o pedido de cadastro
   async presentAlertCadastro(dados) {
     var resp: string = ' ';
 
@@ -324,24 +308,15 @@ export class CadastroPage implements OnInit {
       message: "Deseja adicionar essa pessoa?",
       buttons: [
         {
-          text: 'Fechar',
+          text: 'Cancelar',
           role: 'cancel',
 
         }, {
           text: 'Adicionar',
           handler: async () => {
-
-
             // ESTA PARTE ENVIA AO WEBSERVICE
-            this.sqlOrditi.enviarDados(dados);
-            if () {
-              this.alertas.presentToast('Executado com sucesso!')
-              console.log('Executando');
-            }
-            else {
-              console.log('Executando, mas com erro')
-              this.alertas.presentToast('Não foi possível realizar o cadastro!')
-            }
+            this.sqlOrditi.urlBanco = 'https://www.syphan.com.br/orditi/service/cadastroAmbulante';
+            await this.sqlOrditi.enviarDados(dados);
           }
         }
       ]

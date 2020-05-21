@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertasService } from '../alertas.service';
 
 
 @Injectable({
@@ -7,11 +8,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class SqlOrditiService {
 
-  private urlBanco: string = "http://www.syphan.com.br/orditi/teste.php";
+  public urlBanco: string;
   public estado;
 
   constructor(
-    public httpClient: HttpClient) {
+    public httpClient: HttpClient,
+    public alertas: AlertasService) {
   }
 
 
@@ -20,7 +22,7 @@ export class SqlOrditiService {
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
 
-
+    let estado;
     let postData = dados;
 
     this.httpClient.post(
@@ -28,11 +30,20 @@ export class SqlOrditiService {
       postData,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
       .subscribe(data => {
-        console.log(data);
-        return data;
+        if (data == 1) {
+          this.alertas.presentToast('Executado com sucesso!')
+        } else {
+          this.alertas.presentToast('Não foi possível realizar o cadastro!')
+
+
+        }
+
       }, error => {
         console.log(error);
-        return error;
+        this.alertas.presentToast('Não foi possível realizar o cadastro!')
+
+
       });
+
   }
 }
