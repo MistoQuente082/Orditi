@@ -20,6 +20,7 @@ import { AppModule } from '../app.module';
 import { CameraService } from '../services/camera/camera.service';
 
 import * as moment from 'moment';
+import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 
 //Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -89,6 +90,7 @@ export class DenunciaPage implements OnInit {
   }
 
   constructor(
+    private sqlOrditi: SqlOrditiService,
     private geolocation: Geolocation,
     public alertas: AlertasService,
     private nativeGeocoder: NativeGeocoder,
@@ -204,12 +206,12 @@ export class DenunciaPage implements OnInit {
         this.localDenuncia = " ";
       }
       const dados = {
-        dataDenuncia: this.dataDenuncia,
-        horaDenuncia: this.horaDenuncia,
-        localDenuncia: this.localDenuncia,
-        infoDenuncia: this.infoDenuncia,
-        foto: "",
-        local: new firebase.firestore.GeoPoint(this.local.lat, this.local.lng)
+        'dataDenuncia': this.dataDenuncia,
+        'horaDenuncia': this.horaDenuncia,
+        'localDenuncia': this.localDenuncia,
+        'infoDenuncia': this.infoDenuncia,
+        'foto': this.infoDenuncia,
+        'local': [this.local.lat, this.local.lng]
       };
       console.log(dados)
 
@@ -251,19 +253,8 @@ export class DenunciaPage implements OnInit {
           text: 'Registrar',
           handler: async () => {
             try {
-              //Comando para adicionar imagem ao firebase storage - > após adicionar o arquivo pega o id de busca dele e armazena num atributo de dados
-              if (this.usarCamera.imgDato) {
-                let id = this.seunome + moment(this.dataDenuncia).format('DD-MM-YYYY:HH');
-                firebase.storage().ref().child('denuncia/' + id + '.jpg').putString(this.usarCamera.imgDato, 'base64', this.metadata).then(doc => {
-                  firebase.storage().ref().child('denuncia/' + id + '.jpg').getDownloadURL().then(url => {
-                    dados.foto = url;
-                    this.db.collection("denuncias").add(dados);
-                  });
-                }
-                );
-              } else {
-                this.db.collection("denuncias").add(dados);
-              }
+                this.sqlOrditi.urlBanco = 'https://www.syphan.com.br/orditiServices/cadastrarDenuncias.php';
+                await this.sqlOrditi.enviarDados(dados);
               this.router.navigate(['/home']);
               this.alertas.presentToast('Executado com sucesso!')
               console.log('Executando')
