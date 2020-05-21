@@ -81,7 +81,7 @@ export class CadastroPage implements OnInit {
 
   // Necessário para cadastrar no Banco
   private url_banco = 'http://syphan.com.br/orditiServices/cadastrarAmbulante.php';
-  private alerta_texto = 'http://syphan.com.br/orditiServices/cadastrarAmbulantes.php'
+  private alerta_texto = 'Não foi possível realizar a cadastro'
 
   mostrarMapa: boolean = false;
 
@@ -237,9 +237,7 @@ export class CadastroPage implements OnInit {
           'regiao': this.regiao,
           'situacao': 0, // 0: ainda n pagou, 1: pagou 
         };
-        this.presentAlertCadastro(dados);
-
-
+        this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
       }
     } else {
       let condicicoes = this.nome === undefined || this.cpf === undefined || this.endereco === undefined

@@ -72,7 +72,9 @@ export class DenunciaPage implements OnInit {
   L: any = null;
   mostraMapa: boolean = false;
 
-
+  // Necessário para cadastrar no Banco
+  private url_banco = 'http://syphan.com.br/orditiServices/cadastrarDenuncia.php';
+  private alerta_texto = 'Não foi possível realizar a denuncia!';
 
   map2: Map = null;
   lat: any;
@@ -206,19 +208,20 @@ export class DenunciaPage implements OnInit {
         this.localDenuncia = " ";
       }
       const dados = {
-        'dataDenuncia': this.dataDenuncia,
-        'horaDenuncia': this.horaDenuncia,
-        'localDenuncia': this.localDenuncia,
-        'infoDenuncia': this.infoDenuncia,
-        'foto': this.infoDenuncia,
-        'local': [this.local.lat, this.local.lng]
+        'foto': this.imgAut,
+        'data_denuncia': this.dataDenuncia,
+        'hora_denuncia': this.horaDenuncia,
+        'descricao': this.infoDenuncia,
+        'latitude': this.local.lat,
+        'longitude': this.local.lng,
+        'local': this.localDenuncia,
+        'regiao': this.local
+
       };
       console.log(dados)
 
-      this.presentAlertDenuncia(dados)
-      // COLOCA AQUI para envia dados da denuncia ao banco
-      // Falta enviar a foto
-      // E como tranformar o local no nome da rua
+      this.presentAlertDenuncia(dados, this.url_banco, this.alerta_texto);
+
     }
 
   }
@@ -238,7 +241,7 @@ export class DenunciaPage implements OnInit {
     await alert.present();
   }
 
-  async presentAlertDenuncia(dados) {
+  async presentAlertDenuncia(dados, url, alerta) {
     var resp: string = ' ';
 
     const alert = await this.alertController.create({
@@ -252,16 +255,8 @@ export class DenunciaPage implements OnInit {
         }, {
           text: 'Registrar',
           handler: async () => {
-            try {
-                this.sqlOrditi.urlBanco = 'https://www.syphan.com.br/orditiServices/cadastrarDenuncias.php';
-                await this.sqlOrditi.enviarDados(dados);
-              this.router.navigate(['/home']);
-              this.alertas.presentToast('Executado com sucesso!')
-              console.log('Executando')
-            } catch (erro) {
-              this.alertas.presentToast('Não foi possível realizar a denuncia!')
-              console.log('Executando, mas com erro')
-            }
+            // ESTA PARTE ENVIA AO WEBSERVICE
+            await this.sqlOrditi.enviarDados(dados, url, alerta);
           }
         }
       ]
