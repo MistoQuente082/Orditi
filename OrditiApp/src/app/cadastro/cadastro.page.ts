@@ -315,7 +315,7 @@ export class CadastroPage implements OnInit {
           text: 'Adicionar',
           handler: async () => {
             // ESTA PARTE ENVIA AO WEBSERVICE
-            this.sqlOrditi.urlBanco = 'https://www.syphan.com.br/orditi/service/cadastroAmbulante';
+            this.sqlOrditi.urlBanco = 'https://www.syphan.com.br/orditiServices/cadastroAmbulante.php';
             await this.sqlOrditi.enviarDados(dados);
           }
         }
