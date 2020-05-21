@@ -8,7 +8,8 @@ import { AlertasService } from '../alertas.service';
 })
 export class SqlOrditiService {
 
-  public urlBanco: string;
+
+  public url_receber: string;
   public estado;
 
   constructor(
@@ -17,23 +18,24 @@ export class SqlOrditiService {
   }
 
 
-  async enviarDados(dados) {
+  // Envia dados 
+  async enviarDados(dados, url_enviar, alerta, ) {
     let headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
 
-    let estado;
+
     let postData = dados;
 
     this.httpClient.post(
-      this.urlBanco,
+      url_enviar,
       postData,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
       .subscribe(data => {
         if (data == 1) {
           this.alertas.presentToast('Executado com sucesso!')
         } else {
-          this.alertas.presentToast('Não foi possível realizar o cadastro!')
+          this.alertas.presentToast(alerta)
 
 
         }
@@ -45,5 +47,31 @@ export class SqlOrditiService {
 
       });
 
+  }
+
+  // Recebe os dados
+  receberDados(url) {
+    let headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+
+    const token = 39158;
+
+    this.httpClient.post(
+      url,
+      token,
+      { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
+      .subscribe(data => {
+        console.log(data)
+
+
+
+      }, error => {
+        console.log(error);
+
+
+
+      });
   }
 }

@@ -78,6 +78,11 @@ export class CadastroPage implements OnInit {
   //Variaveis do mapa
   L: any = null;
 
+
+  // Necessário para cadastrar no Banco
+  private url_banco = 'http://syphan.com.br/orditiServices/cadastrarAmbulante.php';
+  private alerta_texto = 'http://syphan.com.br/orditiServices/cadastrarAmbulantes.php'
+
   mostrarMapa: boolean = false;
 
 
@@ -205,20 +210,6 @@ export class CadastroPage implements OnInit {
 
 
 
-  // Função que leva a escolher um ponto no mapa
-  selectMap() {
-    var origem = CadastroPage;
-    this.modalController.create(
-      {
-        component: MapaModalPage,
-        componentProps: {
-          origem: "cadastro"
-        }
-      }).then((modalElement) => {
-        modalElement.present();
-      });
-  }
-
   // Botão de cadastro
   cadastrar() {
     if (this.regiao !== 'a1') {
@@ -279,7 +270,7 @@ export class CadastroPage implements OnInit {
             'regiao': "Independente",
             'situacao': 0, // 0: ainda n pagou, 1: pagou 
           };
-          this.presentAlertCadastro(dados);
+          this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
         }
       }
     }
@@ -300,7 +291,7 @@ export class CadastroPage implements OnInit {
   }
 
   // Pergunta se realmente deja enviar o pedido de cadastro
-  async presentAlertCadastro(dados) {
+  async presentAlertCadastro(dados, url, alerta) {
     var resp: string = ' ';
 
     const alert = await this.alertController.create({
@@ -315,8 +306,8 @@ export class CadastroPage implements OnInit {
           text: 'Adicionar',
           handler: async () => {
             // ESTA PARTE ENVIA AO WEBSERVICE
-            this.sqlOrditi.urlBanco = 'https://www.syphan.com.br/orditi/service/cadastroAmbulante';
-            await this.sqlOrditi.enviarDados(dados);
+            await this.sqlOrditi.enviarDados(dados, url, alerta);
+
           }
         }
       ]
