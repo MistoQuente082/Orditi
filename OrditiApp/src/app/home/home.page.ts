@@ -77,6 +77,7 @@ export class HomePage {
     public db: AngularFirestore,
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner) {
+
   }
 
 
@@ -125,9 +126,7 @@ export class HomePage {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map);
 
-        // var markers = L.markerClusterGroup();
 
-        /** Criar poligonos a partir de dados do firebase */
         //Código de acesso à coleção das zonas no firebase 
         this.db.collection('zonas').get().toPromise().then(snapshot => {
           snapshot.forEach(doc => {
@@ -135,22 +134,22 @@ export class HomePage {
           })
         });
         //Criar Pins de Ambulantes
-        this.db.collection('ambulantes', ref =>
-          ref.where('regiao', '==', 'Independente')
-        ).get().toPromise().then(snapshot => {
-          snapshot.forEach(geo => {
-            this.criarMarkerAmbulantes(geo);
-          })
-        });
-        if (this.Fiscal()) {
-
-          this.db.collection('denuncias').get().toPromise().then(snapshot => {
-            snapshot.forEach(den => {
-              this.criarMarkerDenuncias(den);
-            })
+         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+          data.forEach(element => {
+            this.criarMarkerAmbulantes(element);
           });
-        }
-        //Fim do acesso ao Firebasse
+        }, error => {
+          console.log(error);
+        });;
+        //Adicionar condição para só mostrar se for fiscal
+        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
+            data.forEach(element => {
+              console.log(element);
+              this.criarMarkerDenuncias(element);
+            });
+          }, error => {
+            console.log(error);
+          });;
 
         /** Criar mapa na posição atual do usuário **/
         const marker = L.marker([this.lat, this.long], { icon: defaultIcon }).addTo(this.map)
@@ -177,27 +176,26 @@ export class HomePage {
 
   criarMarkerAmbulantes(geo) {
 
-    var ambulanteFoto = geo.data().foto;
-    var ambulanteNome = geo.data().nome;
-    var ambulanteProduto = geo.data().produto;
-    var ambulanteLat = geo.data().local._lat;
-    var ambulantLong = geo.data().local._long;
-    var zona = geo.data().zona;
+    var ambulanteFoto = geo['foto'];
+    var ambulanteNome = geo['nome'];
+    var ambulanteProduto = geo['produto'];
+    var ambulanteLat = geo['latitude'];
+    var ambulantLong = geo['longitude'];
 
     //console.log(ambulanteFoto)
     //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
     //  ambulanteFoto = url;
     //});
-    console.log(ambulanteFoto);
 
     var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     amb.addTo(this.map);
   }
 
   criarMarkerDenuncias(den) {
-    var denunciaLat = den.data().local._lat;
-    var denunciaLong = den.data().local._long;
-    var denunciaInfo = den.data().infoDenuncia;
+    console.log(den);
+    var denunciaLat = den['latitude'];
+    var denunciaLong = den['longitude'];
+    var denunciaInfo = den['descricao'];
     var denunciaData = moment(den.dataDenuncia).format('DD/MM/YYYY');
     var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<br> Diz: ' + denunciaInfo + '</strong>').openPopup();
     denMarker.addTo(this.map);

@@ -73,7 +73,7 @@ export class DenunciaPage implements OnInit {
   mostraMapa: boolean = false;
 
   // Necessário para cadastrar no Banco
-  private url_banco = 'http://syphan.com.br/orditiServices/cadastrarDenuncia.php';
+  private url_banco = 'https://syphan.com.br/orditiServices/cadastrarDenuncia.php';
   private alerta_texto = 'Não foi possível realizar a denuncia!';
 
   map2: Map = null;
@@ -215,7 +215,6 @@ export class DenunciaPage implements OnInit {
         'latitude': this.local.lat,
         'longitude': this.local.lng,
         'local': this.localDenuncia,
-        'regiao': this.local
 
       };
       console.log(dados)
