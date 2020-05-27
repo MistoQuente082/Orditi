@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AppModule } from './app.module';
+import { LoginBancoService } from './services/login/login-banco.service';
 
 @Component({
   selector: 'app-root',
@@ -94,19 +95,19 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-  ) {
+    private loginBanco: LoginBancoService) {
     this.initializeApp();
     console.log(this.status);
     console.log(AppModule.getUsuarioStatus())
   }
 
   Fiscal() {
-    return AppModule.getUsuarioStatus();
-    console.log(AppModule.getUsuarioStatus())
+    return this.loginBanco.res_usuario;
+
   }
 
   sair() {
-    AppModule.setUsuario(null);
+    this.loginBanco.res_usuario = false;
   }
 
   initializeApp() {

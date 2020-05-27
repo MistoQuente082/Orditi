@@ -7,6 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AppModule } from '../app.module';
+import { LoginBancoService } from '../services/login/login-banco.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import { AppModule } from '../app.module';
 
 export class LoginPage implements OnInit {
   loading: HTMLIonLoadingElement;
+  private url_banco = 'http://syphan.com.br/orditiServices/validaLogin.php';
 
   tipo: boolean;
 
@@ -29,6 +31,7 @@ export class LoginPage implements OnInit {
     public fAuth: AngularFireAuth,
     public loadingController: LoadingController,
     public db: AngularFirestore,
+    private loginBanco: LoginBancoService,
     public toastCtrl: ToastController
   ) { }
 
@@ -48,39 +51,25 @@ export class LoginPage implements OnInit {
         console.log('Campos vazios');
       }
       else {
+        const dados = {
+          'matricula': matricula,
+          'senha': senha
+        };
 
-        // Autenticação por email e senha
-        // await this.fAuth.auth.signInWithEmailAndPassword(email, senha);
-        // const currentUser = firebase.auth().currentUser; -> Define o usuario como aquele logado
-        user = this.db.collection('fiscais').doc(matricula.toString()).get().toPromise()
-          .then(dados => {
+        let resposta_login = this.loginBanco.fazerLogin(this.url_banco, dados);
+        console.log(resposta_login);
+        if (resposta_login === true) {
+          this.returnHome();
+        }
 
-            if (!dados.exists) { // Checa se existe um documento no local indicado
-              console.log('Matrícula não encontrada');
-              // Aviso na tela
-              this.presentToast('Matricula ou Senha Incorreta!');
-            } else { // Ou seja, há um fiscal cadastrado com essa matrícula
-              console.log('Matrícula encontrada');
-              user = dados.data();
-              if (senha === user.senha) { // Checa se as senhas batem
-                console.log('Usuário logado!' + user.senha);
-                AppModule.setUsuario(user); // Trocar this.usuario por uma letiável global de usuário
+        else if (resposta_login === false) {
+          // Aviso na tela
 
-                console.log(AppModule.getUsuario());
+          this.presentToast('Matricula ou Senha Incorreta!');
 
-                this.returnHome();
-
-              } else {
-                // Aviso na tela
-                this.presentToast('Matricula ou Senha Incorreta!');
-                console.log('Senha Incorreta!');
-              }
-            }
-
-          })
-          .catch(err => {
-            console.log('Erro encontrado: ' + err);
-          });
+        } else {
+          this.presentToast('Erro ao fazer login');
+        }
       }
 
     } catch (err) {

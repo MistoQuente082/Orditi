@@ -18,6 +18,7 @@ import * as firebase from 'firebase';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { LoginBancoService } from '../services/login/login-banco.service';
 
 
 
@@ -76,7 +77,9 @@ export class HomePage {
     public alertController: AlertController,
     public db: AngularFirestore,
     public modalCtrl: ModalController,
-    private barcodeScanner: BarcodeScanner) {
+    private barcodeScanner: BarcodeScanner,
+    private loginBanco: LoginBancoService,
+    ) {
   }
 
 
@@ -108,9 +111,9 @@ export class HomePage {
   }
 
   Fiscal() {
-    return AppModule.getUsuarioStatus();
-    console.log(AppModule.getUsuarioStatus());
-  }
+    return this.loginBanco.res_usuario;
+    
+  } 
 
   ionViewDidEnter() {
     if (this.map !== 'undefined' && this.map !== null) {
@@ -130,7 +133,7 @@ export class HomePage {
         /** Criar poligonos a partir de dados do firebase */
         //Código de acesso à coleção das zonas no firebase 
         this.db.collection('zonas').get().toPromise().then(snapshot => {
-          snapshot.forEach(doc => {
+          snapshot.forEach(doc => { 
             this.criarPoligono(doc);
           })
         });
@@ -142,7 +145,8 @@ export class HomePage {
             this.criarMarkerAmbulantes(geo);
           })
         });
-        if (this.Fiscal()) {
+
+        if (this.Fiscal() !== false) {
 
           this.db.collection('denuncias').get().toPromise().then(snapshot => {
             snapshot.forEach(den => {
