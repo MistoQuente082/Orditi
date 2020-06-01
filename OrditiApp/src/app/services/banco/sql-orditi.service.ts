@@ -32,19 +32,15 @@ export class SqlOrditiService {
       postData,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
       .subscribe(data => {
+        console.log(data);
         if (data == 1) {
           this.alertas.presentToast('Executado com sucesso!')
         } else {
           this.alertas.presentToast(alerta)
-
-
         }
-
       }, error => {
         console.log(error);
         this.alertas.presentToast('Não foi possível realizar o cadastro!')
-
-
       });
 
   }
@@ -54,24 +50,10 @@ export class SqlOrditiService {
     let headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
-
-
     const token = 39158;
-
-    this.httpClient.post(
+    return this.httpClient.post<any[]>(
       url,
       token,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
-      .subscribe(data => {
-        console.log(data)
-
-
-
-      }, error => {
-        console.log(error);
-
-
-
-      });
   }
 }
