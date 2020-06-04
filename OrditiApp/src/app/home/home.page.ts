@@ -31,18 +31,18 @@ const LeafIcon = L.Icon.extend({
   // iconUrl,
   options: {
     shadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
+    iconSize: [52, 52],
+    iconAnchor: [26, 52],
     popupAnchor: [1, -34],
     tooltipAnchor: [16, -28],
-    shadowSize: [41, 41]
+    shadowSize: [52, 52]
   }
 });
 
 const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
-  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/carro.png' }),
   denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' }),
-  areaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/area-marker-icon.png' });
+  areaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/zonas.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
@@ -133,6 +133,7 @@ export class HomePage {
         this.db.collection('zonas').get().toPromise().then(snapshot => {
           snapshot.forEach(doc => { 
             this.criarPoligono(doc);
+            this.sqlOrditi.enviarDados(doc.data(), 'http://syphan.com.br/orditiServices/cadastrarPoligono.php', 'yeetz')
           })
         });
         //Criar Pins de Ambulantes
@@ -156,7 +157,7 @@ export class HomePage {
 
         }
         /** Criar mapa na posição atual do usuário **/
-        const marker = L.marker([this.lat, this.long], { icon: defaultIcon }).addTo(this.map)
+        const marker = L.marker([this.lat, this.long], { icon: defaultIcon}).addTo(this.map)
           .bindPopup('Você está aqui!') //Mensagem do ponto
           .openPopup(); //Abre a Mensagem
 
@@ -166,6 +167,14 @@ export class HomePage {
         this.geolocationErrorAlert();
       });
     }
+    var groupMarker = new L.MarkerClusterGroup({
+      disableClusteringAtZoom: 14,
+      showCoverageOnHover: true,
+      zoomToBoundsOnClick: true,
+      spiderfyOnMaxZoom: true
+  });
+  L.marker(['-9.65657758566445','-35.723179373310245'],{icon: areaIcon}).addTo(groupMarker);
+  this.map.addLayer(groupMarker);
   }
 
   /** Remove map when we have multiple map object **/
