@@ -53,7 +53,7 @@ const LeafIconZone = L.Icon.extend({
 
 const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
   ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-amarelo2.png' }),
-  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/icon-denuncia.png' }),
   areaIcon = new LeafIconZone({ iconUrl: '../../assets/leaflet/images/marker.png' })
 
 // L.Marker.prototype.options.icon = iconDefault;
@@ -145,6 +145,15 @@ export class HomePage {
 
         this.poli.addTo(this.map);
 
+        //Criar Pins de Ambulantes
+        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+          data.forEach(element => {
+            this.criarMarkerAmbulantes(element);
+            console.log(element);
+          });
+        }, error => {
+          console.log(error);
+        });;
 
         //Criar Pind de Zonas
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
@@ -155,14 +164,7 @@ export class HomePage {
         }, error => {
           console.log(error);
         });; 
-        //Criar Pins de Ambulantes
-        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
-          data.forEach(element => {
-            this.criarMarkerAmbulantes(element);
-          });
-        }, error => {
-          console.log(error);
-        });;
+        
         //Adicionar condição para só mostrar se for fiscal
         if (this.Fiscal() !== false) {
           this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
