@@ -77,6 +77,8 @@ export class HomePage {
 
   zona: any = null;
 
+  poli: any = polygon( [], {});
+
 
   //  qrCode
   qrData = 'Hola Mundo';
@@ -140,6 +142,8 @@ export class HomePage {
         tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map);
+
+        this.poli.addTo(this.map);
 
 
         //Criar Pind de Zonas
@@ -267,13 +271,16 @@ export class HomePage {
 
     //Constrói um poligono com as coordenadas presentes em 'area'
     var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
-    regiao.on('click', (e) => { this.regiaoClicada(doc); });
+    //regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
-    regiao.addTo(this.map);
-    regiao.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
+    this.poli.setStyle({opacity: 0.0})
+    this.poli = regiao;
+    this.poli.addTo(this.map);
+    this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
   }
 
   fecharCard() {
+    this.poli.setStyle({opacity: 0.0})
     this.zona = null;
   }
 
