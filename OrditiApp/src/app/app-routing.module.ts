@@ -23,7 +23,8 @@ const routes: Routes = [
   { path: 'busca', loadChildren: './busca/busca.module#BuscaPageModule' },
   { path: 'editar-ambulante', loadChildren: './editar-ambulante/editar-ambulante.module#EditarAmbulantePageModule' },
   { path: 'eventos', loadChildren: './eventos/eventos.module#EventosPageModule' },
-  { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' }
+  { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' },  { path: 'busca-ambulante', loadChildren: './busca-ambulante/busca-ambulante.module#BuscaAmbulantePageModule' }
+
 
 
 ];

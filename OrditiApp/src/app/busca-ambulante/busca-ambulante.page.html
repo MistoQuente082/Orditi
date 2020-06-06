@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>busca-ambulante</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-label color="medium" position="floating">Tipo de Busca</ion-label>
+    <ion-select placeholder="Selecione o que esta procurando" [(ngModel)]="tipo">
+      <ion-select-option value="pessoa">Pessoas</ion-select-option>
+      <ion-select-option value="zona">Zonas</ion-select-option>
+
+    </ion-select>
+    <ion-searchbar placeholder="Digite o CPF da pessoa procurada" [(ngModel)]="cpf" (ionInput)="filtrarCPF($event) "
+      clearInput [brmasker]="{person: true}" maxlength="14">
+    </ion-searchbar>
+
+    <ion-list>
+      <ion-item *ngFor="let pessoa of ambulantes" (click)="verMais(pessoa)">
+        <ion-avatar slot="start">
+          <img src="{{pessoa.foto}}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{pessoa.nome}}</h3>
+          <p>{{pessoa.produto}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+
+</ion-content>
