@@ -1,18 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>busca-ambulante</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Buscar Pessoa
+    </ion-title>
   </ion-toolbar>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </ion-header>
 
 <ion-content>
+  <ion-item>
     <ion-label color="medium" position="floating">Tipo de Busca</ion-label>
     <ion-select placeholder="Selecione o que esta procurando" [(ngModel)]="tipo">
-      <ion-select-option value="pessoa">Pessoas</ion-select-option>
-      <ion-select-option value="zona">Zonas</ion-select-option>
+      <ion-select-option value="cpf">CPF</ion-select-option>
+      <ion-select-option value="nome">Nome</ion-select-option>
 
     </ion-select>
-    <ion-searchbar placeholder="Digite o CPF da pessoa procurada" [(ngModel)]="cpf" (ionInput)="filtrarCPF($event) "
-      clearInput [brmasker]="{person: true}" maxlength="14">
+  </ion-item>
+    <ion-searchbar placeholder="Procure" [(ngModel)]="filtro" (ionInput)="filtrar($event) ">
     </ion-searchbar>
 
     <ion-list>
