@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AppModule } from '../app.module';
 
 import _ from "lodash";
-import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
+
 import { ModalController } from '@ionic/angular';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
@@ -17,10 +17,10 @@ import { LoginBancoService } from '../services/login/login-banco.service';
   styleUrls: ['./busca.page.scss'],
 })
 export class BuscaPage implements OnInit {
-  public ambulantes: any[];
+  
   public zonas: any[];
 
-  public ambulantesTotal: any[];
+  
   public zonasTotal: any[];
 
   public tipo: any = "zona";
@@ -28,16 +28,11 @@ export class BuscaPage implements OnInit {
   public cpf: any;
   public regiao: any;
 
-  constructor(public db: AngularFirestore,
+  constructor(
     private loginBanco: LoginBancoService,
     private sqlOrditi: SqlOrditiService,
     public modalCtrl: ModalController) {
-      this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
-          this.ambulantesTotal = data;
-          this.ambulantes = this.ambulantesTotal;
-        }, error => {
-          console.log(error);
-        });;
+      
     this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
           this.zonasTotal = data;
           this.zonas = this.zonasTotal;
@@ -51,18 +46,7 @@ export class BuscaPage implements OnInit {
 
   }
 
-  filtrarCPF(busca: any) {
-    let val = busca.target.value;
-    if (val && val.trim() != "") {
-      this.ambulantes = _.values(this.ambulantesTotal);
-      this.ambulantes = this.ambulantes.filter(pessoa => {
-        return (pessoa.identidade.indexOf(val) === 0)
-      })
-    }
-    else {
-      this.ambulantes = this.ambulantesTotal;
-    }
-  }
+  
 
   filtrarNomeRegiao(busca: any) {
     let val = busca.target.value;
@@ -77,16 +61,6 @@ export class BuscaPage implements OnInit {
     else {
       this.zonas = this.zonasTotal;
     }
-  }
-
-  async verMais(item) {
-    const modal = await this.modalCtrl.create({
-      component: PerfilAmbulantePage,
-      componentProps: {
-        info: item
-      }
-    });
-    return await modal.present();
   }
 
   async mostraDetalhes(zona) {
