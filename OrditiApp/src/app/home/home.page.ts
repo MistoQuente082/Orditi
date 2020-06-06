@@ -10,7 +10,8 @@ import { Observable } from 'rxjs';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
-import * as L2 from 'leaflet';
+import 'leaflet.markercluster';
+
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
@@ -61,7 +62,7 @@ const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  styleUrls: ['home.page.css'],
 })
 export class HomePage {
   count = 0;
@@ -78,6 +79,8 @@ export class HomePage {
   zona: any = null;
 
   poli: any = polygon( [], {});
+
+  markersA: any;
 
 
   //  qrCode
@@ -145,6 +148,19 @@ export class HomePage {
 
         this.poli.addTo(this.map);
 
+        this.markersA = L.markerClusterGroup({
+          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 },
+          iconCreateFunction: function(cluster) {
+            return new L.DivIcon({
+              html: "<div style='background-color: #2d98a2; border-radius: 100%; padding: 5%;background-clip: padding-box; text-align: center; heigh:30px; width:30px;'><span style='color: white;'>" 
+              + cluster.getChildCount()  
+              + "</span></div>",
+              className: "mycluster",
+              iconSize: new L.Point(60, 40)
+            });
+          }
+        });
+
         //Criar Pins de Ambulantes
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
           data.forEach(element => {
@@ -154,6 +170,8 @@ export class HomePage {
         }, error => {
           console.log(error);
         });;
+
+        this.markersA.addTo(this.map);
 
         //Criar Pind de Zonas
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
@@ -214,7 +232,7 @@ export class HomePage {
     //});
 
     var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
-    amb.addTo(this.map);
+    this.markersA.addLayer(amb);
   }
 
   criarMarkerDenuncias(den) {

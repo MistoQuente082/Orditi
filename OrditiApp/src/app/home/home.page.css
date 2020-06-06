@@ -4,7 +4,40 @@
 }
 
 #logo{
+	height: 52px;
+	margin: 4px;
 }
+:root{
+	--marker-a-color: #ee0000c0;
+	--marker-b-color: #00ee00c0;
+	--marker-text-color: #eee;
+ }
+ .cluster {
+	background-clip: padding-box;
+	border-radius: 20px;
+	}
+
+.cluster div {
+	width: 30px;
+	height: 30px;
+	margin-left: 5px;
+	margin-top: 5px;
+
+	text-align: center;
+	border-radius: 15px;
+	font-weight: bold;
+	}
+.cluster span {
+	line-height: 30px;
+  color: red;
+	}
+
+.mycluster{
+	border-radius: 100%;
+	padding: 5%;
+	background-color: red;
+}
+
 
 ion-toolbar ion-title{
 	position: relative;
