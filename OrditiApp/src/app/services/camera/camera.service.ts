@@ -9,6 +9,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 export class CameraService {
   public imgPessoa: string;
   public imgDato: string;
+  public imagem: string;
 
 
   constructor(
@@ -48,7 +49,8 @@ export class CameraService {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      saveToPhotoAlbum: false,
     };
 
     this.camera.getPicture(options)
@@ -56,8 +58,8 @@ export class CameraService {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64 (DATA_URL):
 
-        //this.imgPessoa = this.webView.convertFileSrc(imageData);
-        this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
+        //this.imagem = this.webView.convertFileSrc(imageData);
+        this.imagem = 'data:image/jpeg;base64,' + imageData;
         this.imgDato = imageData;
         console.log('imgDato - escolher')
       }, (err) => {
@@ -75,7 +77,8 @@ export class CameraService {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.CAMERA
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      saveToPhotoAlbum: false,
     };
 
     this.camera.getPicture(options)
@@ -83,8 +86,8 @@ export class CameraService {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64 (DATA_URL):
 
-        //this.imgPessoa = this.webView.convertFileSrc(imageData);
-        this.imgPessoa = 'data:image/jpeg;base64,' + imageData;
+        //this.imagem = this.webView.convertFileSrc(imageData);
+        return this.imagem = 'data:image/jpeg;base64,' + imageData;
         this.imgDato = imageData;
         console.log('foto tirada')
       }, (err) => {

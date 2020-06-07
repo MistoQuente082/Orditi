@@ -44,6 +44,7 @@ const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-
 
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-cadastro',
@@ -54,13 +55,27 @@ export class CadastroPage implements OnInit {
 
   // Var Camera
   public imgPessoa: string;
+  public imgProduto: string;
+  public imgDefaultP: string = "../../assets/img/avatar.svg";
+  public imgDefaultL: string = "../../assets/img/avatar.svg";
 
   // Variaveis da pessoa
   public nome: string;
   public cpf: string;
   public escolaridade: string;
-  public endereco: string;
+  public enderecoPessoa: string;
   public fone: string;
+  public email: string;
+
+  public cep: string;
+  public cidade: string;
+  public rua: string;
+  public bairro: string;
+  public numero: number;
+  public nomeMaterno: string;
+  public rg: string;
+
+
 
   // QrCode
   public qrCodeAmbulante: string;
@@ -74,9 +89,17 @@ export class CadastroPage implements OnInit {
   public localAtiv: string;
   public regiao: string;
   public local: any;
-
+  public diasAtend: any;
+  public enderecoLocal: any;
+  public hInicio: Date;
+  public hfim: Date;
+  public relatoAtividade: string;
   //Variaveis do mapa
   L: any = null;
+
+
+  // Etapas do Cadastro
+  private etapaCadastro: number = 1;
 
 
   // Necessário para cadastrar no Banco
@@ -97,6 +120,9 @@ export class CadastroPage implements OnInit {
       redirectTo: 'home'
     }
   ];
+  imgCpf: string;
+  imgRg: string;
+
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -125,26 +151,110 @@ export class CadastroPage implements OnInit {
 
   ) {
     this.locais = db.collection("zonas").valueChanges();
-    this.imgPessoa = "../../assets/img/avatar.svg";
   }
+
+  consultaCep(cep) {
+    let response = this.httpClient.get(
+      `//viacep.com.br/ws/${cep}/json`)
+      .subscribe(response => {
+        console.log('retorna do cep', response);
+        this.rpDadosPessoa(response);
+
+      });
+    console.log('retorna do cep');
+
+  }
+
+  horaInicio(event) {
+    this.hInicio = new Date(event.detail.value);
+    console.log('Chegada:', this.hInicio);
+  }
+
+  horaFim(event) {
+    this.hfim = new Date(event.detail.value);
+    console.log('Saida:', this.hfim);
+  }
+
+
+
+  obtemEnd() {
+    let link = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.local.lat},${this.local.lng}&key=AIzaSyATL2xqnX58yMa5CMocNPVm7Zcabd1eFe8`;
+    console.log(link);
+    this.httpClient.get(link)
+
+      //viacep.com.br/ws/${cep}/json`)
+      .subscribe(response => {
+        this.obterNomes(response);
+
+      });
+  }
+
+  obterNomes(geoinfo) {
+    let endereco = geoinfo.results[0].formatted_address;
+    this.enderecoLocal = endereco;
+    endereco = endereco.split(", ");
+    var enderecoAux = endereco[1].split("- ");
+    endereco[1] = enderecoAux[1];
+
+  }
+
+
+
+
+
+  rpDadosPessoa(dados) {
+    this.rua = dados.logradouro;
+    this.bairro = dados.bairro;
+    this.cidade = dados.localidade;
+
+  };
+
+
+
 
   // Obtem a imagem a partir do cpf do ambulante
   // Envia pro banco de Dados 
-  obterImg() {
+  obterQrCode() {
     const canvas = document.querySelector('canvas') as HTMLCanvasElement;
-    const imageData = canvas.toDataURL('image/jpeg').toString();
-    const formatado = imageData.split(',');
-    const resultado = formatado[1]; // Imagem
+    this.qrCodeAmbulante = canvas.toDataURL('image/jpeg').toString();
 
-    console.log('image', resultado);
   }
 
   // Chama a câmera
-  cam() {
+  cam(tipo) {
+
     this.usarCamera.presentActionSheet();
-    if (this.usarCamera.imgPessoa) {
-      this.imgPessoa = this.usarCamera.imgPessoa;
+    if (tipo === 1) {
+      if (this.usarCamera.imagem) {
+        this.imgDefaultP = null
+        this.imgPessoa = this.usarCamera.imagem;
+        this.usarCamera.imagem = null;
+      }
     }
+
+    if (tipo === 3) {
+      if (this.usarCamera.imagem) {
+        this.imgCpf = this.usarCamera.imagem;
+        this.usarCamera.imagem = null;
+      }
+    }
+
+    if (tipo === 4) {
+      if (this.usarCamera.imagem) {
+        this.imgRg = this.usarCamera.imagem;
+        this.usarCamera.imagem = null;
+      }
+    }
+
+    else {
+      if (this.usarCamera.imagem) {
+        this.imgDefaultL = null
+        this.imgProduto = this.usarCamera.imagem;
+        this.usarCamera.imagem = null;
+
+      }
+    }
+
   }
 
   //Funcoes para o mapa
@@ -164,8 +274,8 @@ export class CadastroPage implements OnInit {
         this.map2 = new Map('mapId3').setView([this.lat, this.long], 18);
         this.map2.on('  click', (e) => { this.mapMarker(e); });
 
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; <a href="https://www.openenderecomap.org/"></a>', maxZoom: 18
         }).addTo(this.map2);
 
       }).catch((error) => {
@@ -202,6 +312,9 @@ export class CadastroPage implements OnInit {
       .catch((error: any) => {
         this.geocoderTesteError(error);
       });
+
+    this.obtemEnd();
+
   }
 
   localAtual(endereco) {
@@ -209,69 +322,110 @@ export class CadastroPage implements OnInit {
   }
 
 
+  // Botão de Seguinte Etapa
+  verifiEtapa(etapa) {
+
+
+    let condicoes = this.nome === undefined || this.cpf === undefined || this.fone === undefined ||
+      this.rg === undefined || this.nomeMaterno === undefined || this.cep === undefined || this.bairro === undefined
+      || this.rua === undefined || this.imgRg === undefined || this.imgCpf === undefined
+      || this.cidade === undefined; //this.imgPessoa !== '../../assets/img/avatar.svg';
+    if (etapa === 1) {
+      if (condicoes) {
+        this.alertas.presentToast('Preencha os campos!');
+      }
+
+      else {
+
+        this.etapaCadastro = 2;
+
+      }
+
+    } else {
+      this.etapaCadastro = 1;
+    }
+  }
 
   // Botão de cadastro
   cadastrar() {
-    if (this.regiao !== 'a1') {
-      if (this.nome === undefined || this.cpf === undefined || this.endereco === undefined
-        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.regiao === undefined) {
-        this.alertas.presentToast('Preencha os campos!');
+
+    /*
+        if (this.regiao !== 'a1') {
+          if (this.produto === undefined || this.regiao === undefined) {
+            this.alertas.presentToast('Preencha os campos!');
+          } else {
+            if (this.pontoRef === undefined) {
+              this.pontoRef = ' ';
+            }
+    
+            
+    
+    
+            console.log('rg', this.regiao);
+            const dados = {
+           
+              'nome': this.nome,
+              'identidade': this.cpf,
+              'fone': this.fone,
+              'escolaridade': this.escolaridade,
+              'endereco': this.enderecoPessoa,
+              'pontoRef': this.pontoRef,
+              'produto': this.produto,
+              'foto': this.imgPessoa,
+              'regiao': this.regiao,
+              'situacao': 0, // 0: ainda n pagou, 1: pagou 
+            };
+            this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
+          }
+        } else {
+          */
+    let condicicoes = this.produto === undefined || this.regiao === undefined ||
+      this.hInicio === undefined || this.hfim === undefined || this.relatoAtividade === undefined
+      || this.imgProduto === undefined;
+    if (condicicoes) {
+      this.alertas.presentToast('Preencha os campos ');
+    }
+    else {
+      this.diasAtend = this.diasAtend.toString();
+      this.enderecoPessoa = this.rua + ' N° ' + this.numero + ', ' + this.bairro + ', ' + this.cidade;
+      this.obterQrCode();
+
+      if (this.localAtiv === undefined) {
+        this.localAtiv = " "
+        //this.alertas.presentToast('Selecione um ponto no mapa!');
       } else {
         if (this.pontoRef === undefined) {
-          this.pontoRef = ' ';
+          this.pontoRef = " "
         }
-
-        this.obterImg();
-
-        console.log('rg', this.regiao);
-        const dados = {
+        var dados = {
           'nome': this.nome,
-          'identidade': this.cpf,
+          'cpf_cnpj': this.cpf,
+          'rg': this.rg,
           'fone': this.fone,
-          'escolaridade': this.escolaridade,
-          'endereco': this.endereco,
-          'pontoRef': this.pontoRef,
+          'email': this.email,
+          'nome_materno': this.nomeMaterno,
+          'endereco': this.enderecoPessoa,
+          'end_local': this.enderecoLocal,
+          'ponto_referencia': this.pontoRef,
           'produto': this.produto,
-          'foto': this.imgPessoa,
-          'regiao': this.regiao,
+          'foto_cliente': this.imgPessoa,
+          'latitude': this.local.lat,
+          'longitude': this.local.lng,
+          'regiao': 0,
+          'atendimento_dias': this.diasAtend,
+          'atendimento_incio': this.hInicio,
+          'atendimento_fim': this.hfim,
+          'relato_atividade': this.relatoAtividade,
+          'qr_code': this.qrCodeAmbulante,
+          'foto_cpf': this.imgCpf,
+          'foto_rg': this.imgRg,
+          'foto_equipamento': this.imgProduto,
           'situacao': 0, // 0: ainda n pagou, 1: pagou 
         };
         this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
       }
-    } else {
-      let condicicoes = this.nome === undefined || this.cpf === undefined || this.endereco === undefined
-        || this.escolaridade === undefined || this.fone === undefined || this.produto === undefined
-        || this.produto === undefined || this.regiao === undefined || this.imgPessoa === undefined;
-      if (condicicoes) {
-        this.alertas.presentToast('Preencha os campos e escolha uma imagem!');
-      }
-      else {
-        if (this.localAtiv === undefined) {
-          this.localAtiv = " "
-          //this.alertas.presentToast('Selecione um ponto no mapa!');
-        } else {
-          if (this.pontoRef === undefined) {
-            this.pontoRef = " "
-          }
-          var dados = {
-            'nome': this.nome,
-            'identidade': this.cpf,
-            'fone': this.fone,
-            'escolaridade': this.escolaridade,
-            'endereco': this.endereco,
-            'ponto_referencia': this.pontoRef,
-            'produto': this.produto,
-            'foto': this.imgPessoa,
-            'latitude': this.local.lat,
-            'longitude': this.local.lng,
-            'regiao': "Independente",
-            'situacao': 0, // 0: ainda n pagou, 1: pagou 
-          };
-          this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
-        }
-      }
     }
+
   }
 
   ngOnInit() {
