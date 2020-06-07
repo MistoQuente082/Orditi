@@ -19,6 +19,7 @@ import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
+import { thistle } from 'color-name';
 
 
 
@@ -31,18 +32,30 @@ const LeafIcon = L.Icon.extend({
   // iconUrl,
   options: {
     shadowUrl,
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-    popupAnchor: [1, -34],
+    iconSize: [25, 32],
+    iconAnchor: [12, 32],
+    popupAnchor: [0, -34],
     tooltipAnchor: [16, -28],
-    shadowSize: [52, 52]
+    shadowSize: [32, 32]
+  }
+});
+
+const LeafIconZone = L.Icon.extend({
+  options: {
+    shadowUrl,
+    iconSize: [31, 40],
+    shadowSize: [41, 41],
+    iconAnchor: [15, 41],
+    shadowAnchor: [13, 41],
+    popupAnchor: [0, -41]
   }
 });
 
 const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
-  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/carro.png' }),
-  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/denuncia-marker-icon.png' }),
-  areaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/zonas.png' });
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-amarelo2.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/icon-denuncia.png' }),
+  areaIcon = new LeafIconZone({ iconUrl: '../../assets/leaflet/images/marker.png' })
+
 // L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
@@ -64,6 +77,8 @@ export class HomePage {
 
   zona: any = null;
 
+  poli: any = polygon( [], {});
+
 
   //  qrCode
   qrData = 'Hola Mundo';
@@ -79,7 +94,7 @@ export class HomePage {
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner,
     private loginBanco: LoginBancoService,
-    ) {
+  ) {
   }
 
 
@@ -112,8 +127,8 @@ export class HomePage {
 
   Fiscal() {
     return this.loginBanco.res_usuario;
-    
-  } 
+
+  }
 
   ionViewDidEnter() {
     if (this.map !== 'undefined' && this.map !== null) {
@@ -124,29 +139,35 @@ export class HomePage {
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.map = new Map('mapId').setView([this.lat, this.long], 30);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
         }).addTo(this.map);
 
+        this.poli.addTo(this.map);
 
-        //Código de acesso à coleção das zonas no firebase 
-        this.db.collection('zonas').get().toPromise().then(snapshot => {
-          snapshot.forEach(doc => { 
-            this.criarPoligono(doc);
-            this.sqlOrditi.enviarDados(doc.data(), 'http://syphan.com.br/orditiServices/cadastrarPoligono.php', 'yeetz')
-          })
-        });
         //Criar Pins de Ambulantes
-         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
           data.forEach(element => {
             this.criarMarkerAmbulantes(element);
+            console.log(element);
           });
         }, error => {
           console.log(error);
         });;
+
+        //Criar Pind de Zonas
+        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
+          console.log(data)
+          data.forEach(element => {
+            this.criarPoligono(element);
+          });
+        }, error => {
+          console.log(error);
+        });; 
+        
         //Adicionar condição para só mostrar se for fiscal
         if (this.Fiscal() !== false) {
-        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
+          this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
             data.forEach(element => {
               console.log(element);
               this.criarMarkerDenuncias(element);
@@ -157,7 +178,7 @@ export class HomePage {
 
         }
         /** Criar mapa na posição atual do usuário **/
-        const marker = L.marker([this.lat, this.long], { icon: defaultIcon}).addTo(this.map)
+        const marker = L.marker([this.lat, this.long], { icon: defaultIcon }).addTo(this.map)
           .bindPopup('Você está aqui!') //Mensagem do ponto
           .openPopup(); //Abre a Mensagem
 
@@ -167,14 +188,6 @@ export class HomePage {
         this.geolocationErrorAlert();
       });
     }
-    var groupMarker = new L.MarkerClusterGroup({
-      disableClusteringAtZoom: 14,
-      showCoverageOnHover: true,
-      zoomToBoundsOnClick: true,
-      spiderfyOnMaxZoom: true
-  });
-  L.marker(['-9.65657758566445','-35.723179373310245'],{icon: areaIcon}).addTo(groupMarker);
-  this.map.addLayer(groupMarker);
   }
 
   /** Remove map when we have multiple map object **/
@@ -215,31 +228,11 @@ export class HomePage {
   }
 
   criarPoligono(doc) {
-    var zona = doc.data().coordenadas;
-    var area = [];
-    var lati = 0;
-    var longi = 0;
-    var x = 0;
-    
-    //Constrói a matriz area com arrays de coordenadas(latitude e longitude)
-    for (var ponto in zona) {
-      //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
-      area.push([zona[ponto].latitude, zona[ponto].longitude])
-      lati+=zona[ponto].latitude
-      longi+=zona[ponto].longitude
-      x+=1;
-    }
-    var markerArea = L.marker([lati/x, longi/x], {icon: areaIcon}).bindPopup(doc.data().nome);
-    markerArea.addTo(this.map);
+    var coordenadas = doc['centroide']
 
-    //Testando
-    console.log(area);
-    //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
-    regiao.on('click', (e) => { this.regiaoClicada(doc); });
-    //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
-    regiao.addTo(this.map);
-    regiao.bindPopup(doc.data().nome + ': ' + doc.data().capacidade);
+    //Constrói a matriz area com arrays de coordenadas(latitude e longitude)
+    var markerArea = L.marker(coordenadas, { icon: areaIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+    markerArea.addTo(this.map);
   }
 
   /** Create an alert when geolocation function fails **/
@@ -266,18 +259,30 @@ export class HomePage {
   }
 
   regiaoClicada(doc) {
-    this.count = 0;
-    this.zona = doc.data()
-    this.db.collection('ambulantes', ref =>
-      ref.where('regiao', '==', this.zona.nome)).get().toPromise().then(snapshot => {
-        snapshot.forEach(doc => {
-          this.count += 1;
-        })
-      })
-    console.log(doc.data().nome)
+    var zona = doc['poligono'];
+    var area =[]
+
+    for (var ponto in zona) {
+      //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
+      area.push(zona[ponto])
+    }
+
+    JSON.stringify(doc);
+    this.zona = doc;
+    console.log(doc);
+
+    //Constrói um poligono com as coordenadas presentes em 'area'
+    var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
+    //regiao.on('click', (e) => { this.regiaoClicada(doc); });
+    //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
+    this.poli.setStyle({opacity: 0.0})
+    this.poli = regiao;
+    this.poli.addTo(this.map);
+    this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
   }
 
   fecharCard() {
+    this.poli.setStyle({opacity: 0.0})
     this.zona = null;
   }
 
