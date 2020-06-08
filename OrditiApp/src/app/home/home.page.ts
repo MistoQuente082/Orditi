@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
@@ -150,16 +153,9 @@ export class HomePage {
 
         this.markersA = L.markerClusterGroup({
           polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 },
-          iconCreateFunction: function(cluster) {
-            return new L.DivIcon({
-              html: "<div style='background-color: #2d98a2; border-radius: 100%; padding: 5%;background-clip: padding-box; text-align: center; heigh:30px; width:30px;'><span style='color: white;'>" 
-              + cluster.getChildCount()  
-              + "</span></div>",
-              className: "mycluster",
-              iconSize: new L.Point(60, 40)
-            });
-          }
-        });
+
+        }
+        );
 
         //Criar Pins de Ambulantes
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
@@ -171,7 +167,7 @@ export class HomePage {
           console.log(error);
         });;
 
-        this.markersA.addTo(this.map);
+        this.map.addLayer(this.markersA);
 
         //Criar Pind de Zonas
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
