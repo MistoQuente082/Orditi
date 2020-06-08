@@ -111,13 +111,14 @@ export class DenunciaPage implements OnInit {
 
   // Função para camera
 
-  cam() {
-    this.usarCamera.presentActionSheet();
-    if (this.usarCamera.imgPessoa) {
-      this.imgAut = this.usarCamera.imgPessoa;
+  async cam() {
+    await this.usarCamera.presentActionSheet();
+    if (this.usarCamera.imagem) {
+      this.imgAut = this.usarCamera.imagem;
     }
 
   }
+
 
 
   ngOnInit() {

@@ -19,7 +19,7 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-item>
-      <ion-label color="medium" position="floating">Período:</ion-label>
+      <ion-label   position="floating">Período:</ion-label>
 
       <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="dataAut"
         placeholder="Seleciona a Dia" (ionChange)="mudaData( $event )">
@@ -32,7 +32,7 @@
 
 
     <ion-item>
-      <ion-label color="medium" position="floating">Local:</ion-label>
+      <ion-label   position="floating">Local:</ion-label>
       <ion-input type="text" [(ngModel)]="localAut" placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
       </ion-input>
 
@@ -44,12 +44,12 @@
 
 
     <ion-item>
-      <ion-label color="medium" position="floating">Informe a situação:</ion-label>
+      <ion-label   position="floating">Informe a situação:</ion-label>
       <ion-textarea [(ngModel)]="infoAut" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
     </ion-item>
   </ion-card>
 
-  <ion-button (click)="subAut()" expand="block" color="medium">Enviar Autuação</ion-button>
+  <ion-button (click)="subAut()" expand="block"  >Enviar Autuação</ion-button>
 
 
 

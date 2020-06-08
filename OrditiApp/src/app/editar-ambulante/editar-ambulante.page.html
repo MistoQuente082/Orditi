@@ -13,18 +13,18 @@
     <img *ngIf="imgPessoa" [src]="imgPessoa">
     
     <ion-item>
-      <ion-label color="medium" position="floating">Nome:</ion-label>
+      <ion-label   position="floating">Nome:</ion-label>
       <ion-input type="text" [(ngModel)]="ambulante.nome"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
+      <ion-label   position="floating">CPF/CNPJ:</ion-label>
       <ion-input type="text" [(ngModel)]="ambulante.identidade" [brmasker]="{person: true}" maxlength="14">
       </ion-input>
     </ion-item>
 
     <ion-item>
 
-      <ion-label color="medium" position="floating">Escolaridade</ion-label>
+      <ion-label   position="floating">Escolaridade</ion-label>
       <ion-select [(ngModel)]="ambulante.escolaridade">
         <ion-select-option value="analfabeto">Sem escolaridade</ion-select-option>
         <ion-select-option value="efi">Fundamental incompleto</ion-select-option>
@@ -36,13 +36,13 @@
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Endereço</ion-label>
+      <ion-label   position="floating">Endereço</ion-label>
       <ion-input type="text" [(ngModel)]="ambulante.endereco"></ion-input>
     </ion-item>
 
 
     <ion-item>
-      <ion-label color="medium" position="floating">Telefone</ion-label>
+      <ion-label   position="floating">Telefone</ion-label>
       <ion-input type="text" [(ngModel)]="ambulante.fone" [brmasker]="{phone: true}"></ion-input>
     </ion-item>
   </ion-card>
@@ -55,12 +55,12 @@
 
 
   <ion-item>
-    <ion-label color="medium" position="floating">Produto:</ion-label>
+    <ion-label   position="floating">Produto:</ion-label>
     <ion-input type="text" [(ngModel)]="ambulante.produto" placeholder="Ex.: Churros"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label color="medium" position="floating">Região</ion-label>
+    <ion-label   position="floating">Região</ion-label>
     <ion-select placeholder="Selecione a zona" [(ngModel)]="ambulante.regiao">
       <ion-select-option value="a1">Ponto Independente</ion-select-option>
       <ion-select-option *ngFor="let lugar of locais | async" value="{{lugar.nome}}">{{lugar.nome}}
@@ -70,11 +70,11 @@
   </ion-item>
 
   <ion-item>
-    <ion-label color="medium" position="floating">Ponto de referência:</ion-label>
+    <ion-label   position="floating">Ponto de referência:</ion-label>
     <ion-input type="text" [(ngModel)]="ambulante.pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" color="medium" (click)="alterarDados()">
+  <ion-button expand="block"   (click)="alterarDados()">
     Salvar
   </ion-button>
 

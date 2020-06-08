@@ -25,31 +25,31 @@
     <img *ngIf="imgPessoa" [src]="imgPessoa">
 
     <ion-item>
-      <ion-label position="floating" color="medium">Nome:</ion-label>
+      <ion-label position="floating"  >Nome:</ion-label>
       <br>
       <p>{{ambulante.nome}}</p>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">CPF/CNPJ:</ion-label>
+      <ion-label   position="floating">CPF/CNPJ:</ion-label>
       <br>
       <p>{{ambulante.cpf}}</p>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Escolaridade:</ion-label>
+      <ion-label   position="floating">Escolaridade:</ion-label>
       <br>
       <p>{{ambulante.escolaridade}}</p>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Endereço:</ion-label>
+      <ion-label   position="floating">Endereço:</ion-label>
       <br>
       <p>{{ambulante.endereco}}</p>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Telefone:</ion-label>
+      <ion-label   position="floating">Telefone:</ion-label>
       <br>
       <p>{{ambulante.fone}}</p>
     </ion-item>
@@ -63,25 +63,25 @@
     </ion-card-header>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Produto:</ion-label>
+      <ion-label   position="floating">Produto:</ion-label>
       <br>
       <p>{{ambulante.produto}}</p>
     </ion-item>
 
     <ion-item>
-      <ion-label color="medium" position="floating">Região:</ion-label>
+      <ion-label   position="floating">Região:</ion-label>
       <br>
       <p>{{ambulante.regiao}}</p>
     </ion-item>
 
     <ion-item *ngIf="ambulante.pontoRef != ' ' || ambulante.pontoRef != ''">
-      <ion-label color="medium" position="floating">Ponto de referência:</ion-label>
+      <ion-label   position="floating">Ponto de referência:</ion-label>
       <br>
       <p>{{ambulante.pontoRef}}</p>
     </ion-item>
 
     <ion-item *ngIf="ambulante.localAtiv">
-      <ion-label color="medium" position="floating">Local de Atividade:</ion-label>
+      <ion-label   position="floating">Local de Atividade:</ion-label>
       <br>
       <p>{{ambulante.localAtiv}}</p>
     </ion-item>

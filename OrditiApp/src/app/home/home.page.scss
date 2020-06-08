@@ -1,41 +1,46 @@
 .welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+	max-height: 35vh;
+	overflow  : hidden;
 }
 
-#logo{
+.ion-toolbar {
+	--background    : transparent;
+	--ion-color-base: transparent !important;
 }
 
-ion-toolbar ion-title{
-	position: relative;
+ion-toolbar ion-title {
+	position  : relative;
 	text-align: center;
-	right: 8%;
+
 }
-.tamanho_mapa{
-	width: 100%;
+
+.tamanho_mapa {
+	width : 100%;
 	height: 100%
 }
 
-.icon_gps{
-	font-size:x-large;
+.icon_gps {
+	font-size: x-large;
 }
 
-.float_direita{
+.float_direita {
 	float: right;
 }
-.float_esquerda{
+
+.float_esquerda {
 	float: left;
 }
-.btn_gps{
+
+.btn_gps {
 	margin-bottom: 5%;
 }
 
-.modalIncompleto{
+.modalIncompleto {
 	background: rgba(0, 0, 0, 0.5) !important;
-    padding: 20% 10%  !important;
+	padding   : 20% 10% !important;
 }
 
-.cardZona{
+.cardZona {
 	background-color: aliceblue;
-	opacity: 85%;
+	opacity         : 85%;
 }

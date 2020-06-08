@@ -27,19 +27,34 @@
 
   <ion-fab *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">
-      <ion-card-header>
-        <ion-buttons class="float_direita" (click)="fecharCard()">
+      <ion-toolbar class="ion-toolbar">
+        <ion-card-header>
+
+          <ion-card-title>
+            {{zona.nome}}
+
+          </ion-card-title>
+        </ion-card-header>
+        <ion-buttons slot="end">
+
+          
           <ion-button (click)="fecharCard()">
-            <ion-icon (click)="fecharCard()" class="float_direita" name="close"></ion-icon>
+            <ion-icon slot="icon-only" name="close"></ion-icon>
           </ion-button>
+
         </ion-buttons>
-        <ion-card-title>{{zona.nome}}</ion-card-title>
-      </ion-card-header>
+      </ion-toolbar>
+
+
+
       <ion-card-content>
         <ion-card-subtitle>Capacidade: {{zona.limite_ambulantes}}</ion-card-subtitle>
+        <ion-card-subtitle>Atualmente: {{zona.quantidade_ambulantes}}</ion-card-subtitle>
 
-        {{zona.detalhes}} <br> Atualmente contem: {{zona.quantidade_ambulantes}} ambulantes alocados.
+        {{zona.detalhes}}
         <br>
+        <br>
+        
         <ion-button class="float_esquerda" fill="outline" (click)="mostraDetalhes()">
           Mais informações
         </ion-button>
