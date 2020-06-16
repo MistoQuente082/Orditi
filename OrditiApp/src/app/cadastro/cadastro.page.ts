@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { Observable } from 'rxjs';
@@ -46,6 +46,9 @@ import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
+
+
+
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.page.html',
@@ -56,6 +59,9 @@ export class CadastroPage implements OnInit {
   // Var Camera
   public imgPessoa: string;
   public imgProduto: string;
+  public imgCpf: string;
+  public imgRg: string;
+  public imagem: string;
   public imgDefaultP: string = "../../assets/img/avatar.svg";
   public imgDefaultL: string = "../../assets/img/avatar.svg";
 
@@ -94,6 +100,8 @@ export class CadastroPage implements OnInit {
   public hInicio: Date;
   public hfim: Date;
   public relatoAtividade: string;
+  public dimensao: string;
+
   //Variaveis do mapa
   L: any = null;
 
@@ -120,8 +128,7 @@ export class CadastroPage implements OnInit {
       redirectTo: 'home'
     }
   ];
-  imgCpf: string;
-  imgRg: string;
+
 
 
   returnHome() {
@@ -132,8 +139,7 @@ export class CadastroPage implements OnInit {
     contentType: 'image/jpeg',
   };
 
-  //lista de locais
-  locais: Observable<any[]>;
+
 
   constructor(
     private geolocation: Geolocation,
@@ -146,124 +152,127 @@ export class CadastroPage implements OnInit {
     public router: Router,
     public webView: WebView,
     public actionSheetController: ActionSheetController,
-    public usarCamera: CameraService,
+    public Cam: Camera,
+
     public httpClient: HttpClient
 
   ) {
-    this.locais = db.collection("zonas").valueChanges();
-  }
-
-  consultaCep(cep) {
-    let response = this.httpClient.get(
-      `//viacep.com.br/ws/${cep}/json`)
-      .subscribe(response => {
-        console.log('retorna do cep', response);
-        this.rpDadosPessoa(response);
-
-      });
-    console.log('retorna do cep');
 
   }
 
-  horaInicio(event) {
-    this.hInicio = new Date(event.detail.value);
-    console.log('Chegada:', this.hInicio);
+  // CAMERA
+  async cam(tipo) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Escolher Imagem',
+      buttons: [{
+        text: 'Galeria',
+        icon: 'images',
+        handler: () => {
+          this.takePicture(this.Cam.PictureSourceType.PHOTOLIBRARY, tipo);
+        }
+      },
+      {
+        text: 'Capturar',
+        icon: 'camera',
+        handler: () => {
+          this.takePicture(this.Cam.PictureSourceType.CAMERA, tipo);
+
+        },
+
+      }, {
+        text: 'Cancelar',
+        role: 'cancel'
+      }]
+    });
+
+    await actionSheet.present();
   }
 
-  horaFim(event) {
-    this.hfim = new Date(event.detail.value);
-    console.log('Saida:', this.hfim);
-  }
+  takePicture(sourceType: PictureSourceType, tipo) {
+
+    var options: CameraOptions = {
+      quality: 100,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      correctOrientation: true,
+      destinationType: this.Cam.DestinationType.DATA_URL,
+      encodingType: this.Cam.EncodingType.JPEG,
+      mediaType: this.Cam.MediaType.PICTURE,
 
 
+    }
 
-  obtemEnd() {
-    let link = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.local.lat},${this.local.lng}&key=AIzaSyATL2xqnX58yMa5CMocNPVm7Zcabd1eFe8`;
-    console.log(link);
-    this.httpClient.get(link)
+    this.Cam.getPicture(options).then((imgData) => {
 
-      //viacep.com.br/ws/${cep}/json`)
-      .subscribe(response => {
-        this.obterNomes(response);
+      let imagem = 'data:image/jpeg;base64,' + imgData;
 
-      });
-  }
-
-  obterNomes(geoinfo) {
-    let endereco = geoinfo.results[0].formatted_address;
-    this.enderecoLocal = endereco;
-    endereco = endereco.split(", ");
-    var enderecoAux = endereco[1].split("- ");
-    endereco[1] = enderecoAux[1];
-
-  }
-
-
-
-
-
-  rpDadosPessoa(dados) {
-    this.rua = dados.logradouro;
-    this.bairro = dados.bairro;
-    this.cidade = dados.localidade;
-
-  };
-
-
-
-
-  // Obtem a imagem a partir do cpf do ambulante
-  // Envia pro banco de Dados 
-  obterQrCode() {
-    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
-    this.qrCodeAmbulante = canvas.toDataURL('image/jpeg').toString();
-
-  }
-
-  // Chama a câmera
-  cam(tipo) {
-
-    this.usarCamera.presentActionSheet();
-    if (tipo === 1) {
-      if (this.usarCamera.imagem) {
-        this.imgDefaultP = null
-        this.imgPessoa = this.usarCamera.imagem;
-        this.usarCamera.imagem = null;
+      if (tipo === 1) {
+        if (imagem) {
+          this.imgDefaultP = null
+          this.imgPessoa = imagem;
+          imagem = null;
+        }
       }
+
+      if (tipo === 3) {
+        if (imagem) {
+          this.imgCpf = imagem;
+          imagem = null;
+        }
+      }
+
+      if (tipo === 4) {
+        if (imagem) {
+          this.imgRg = imagem;
+          imagem = null;
+        }
+      }
+
+      else {
+        if (imagem) {
+          this.imgDefaultL = null
+          this.imgProduto = imagem;
+          imagem = null;
+
+        }
+      }
+
+    })
+  }
+
+  // REMOVE IMAGENS MOSTRADAS NA TELA
+  remover(tipo) {
+    if (tipo === 2) {
+      this.imgProduto = null;
     }
 
     if (tipo === 3) {
-      if (this.usarCamera.imagem) {
-        this.imgCpf = this.usarCamera.imagem;
-        this.usarCamera.imagem = null;
-      }
+      this.imgCpf = null;
     }
 
     if (tipo === 4) {
-      if (this.usarCamera.imagem) {
-        this.imgRg = this.usarCamera.imagem;
-        this.usarCamera.imagem = null;
-      }
+      this.imgRg = null;
+
     }
 
-    else {
-      if (this.usarCamera.imagem) {
-        this.imgDefaultL = null
-        this.imgProduto = this.usarCamera.imagem;
-        this.usarCamera.imagem = null;
-
-      }
-    }
 
   }
 
+
+
+
+
   //Funcoes para o mapa
+  ocultarMapa() {
+    this.mostrarMapa = false;
+  }
+
 
   /** Load leaflet map **/
   leafletMap() {
     this.mostrarMapa = true;
-    if (this.map2 !== 'undefined' && this.map2 !== null) {
-      this.map2.remove();
+    if (this.map2 !== 'undefined' && this.map2 !== null && !this.enderecoLocal) {
+      this.map2 = null;
     }
     else {
       /** Get current position **/
@@ -279,7 +288,7 @@ export class CadastroPage implements OnInit {
         }).addTo(this.map2);
 
       }).catch((error) => {
-        console.log('Error getting location', error);
+
       });
     }
   }
@@ -290,10 +299,10 @@ export class CadastroPage implements OnInit {
   }
 
   mapMarker(e) {
-    console.log("Objeto: ", e);
-    console.log("Latlng: ", e.latlng);
-    console.log("Lat: ", e.latlng.lat);
-    console.log("Lng: ", e.latlng.lng);
+
+
+
+
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
@@ -313,7 +322,7 @@ export class CadastroPage implements OnInit {
         this.geocoderTesteError(error);
       });
 
-    this.obtemEnd();
+    this.consultaCoord();
 
   }
 
@@ -322,12 +331,56 @@ export class CadastroPage implements OnInit {
   }
 
 
+  // FUNÇÕES PARA RETONAR ENDEREÇO
+  consultaCoord() {
+    let link = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.local.lat},${this.local.lng}&key=AIzaSyATL2xqnX58yMa5CMocNPVm7Zcabd1eFe8`;
+
+    this.httpClient.get(link)
+
+      //viacep.com.br/ws/${cep}/json`)
+      .subscribe(response => {
+        this.rpNomesLocal(response);
+
+      });
+  }
+
+  rpNomesLocal(geoinfo) {
+    let endereco = geoinfo.results[0].formatted_address;
+    this.enderecoLocal = endereco;
+    endereco = endereco.split(", ");
+    var enderecoAux = endereco[1].split("- ");
+    endereco[1] = enderecoAux[1];
+
+  }
+
+
+  consultaCep(cep) {
+    let response = this.httpClient.get(
+      `//viacep.com.br/ws/${cep}/json`)
+      .subscribe(response => {
+
+        this.rpNomesRes(response);
+
+      });
+
+  }
+  rpNomesRes(dados) {
+    this.rua = dados.logradouro;
+    this.bairro = dados.bairro;
+    this.cidade = dados.localidade;
+
+  };
+
+
+
+
+
   // Botão de Seguinte Etapa
   verifiEtapa(etapa) {
 
 
     let condicoes = this.nome === undefined || this.cpf === undefined || this.fone === undefined ||
-      this.rg === undefined || this.nomeMaterno === undefined || this.cep === undefined || this.bairro === undefined
+      this.rg === undefined || this.nomeMaterno === undefined || this.bairro === undefined
       || this.rua === undefined || this.imgRg === undefined || this.imgCpf === undefined
       || this.cidade === undefined; //this.imgPessoa !== '../../assets/img/avatar.svg';
     if (etapa === 1) {
@@ -343,8 +396,41 @@ export class CadastroPage implements OnInit {
 
     } else {
       this.etapaCadastro = 1;
+      this.mostrarMapa = false;
+      if (!this.enderecoLocal) {
+        this.map2 = null;
+      }
+
+
     }
   }
+
+  // OBTEM OS HORÁRIOS DE FUNCIONAMENTO
+  horaInicio(event) {
+    this.hInicio = new Date(event.detail.value);
+
+  }
+  // OBTEM OS HORÁRIOS DE FUNCIONAMENTO
+
+  horaFim(event) {
+    this.hfim = new Date(event.detail.value);
+
+  }
+
+
+
+
+
+  // Obtem a imagem a partir do cpf do ambulante
+  // Envia pro banco de Dados 
+  obterQrCode() {
+    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+    this.qrCodeAmbulante = canvas.toDataURL('image/jpeg').toString();
+
+  }
+
+
+
 
   // Botão de cadastro
   cadastrar() {
@@ -361,7 +447,7 @@ export class CadastroPage implements OnInit {
             
     
     
-            console.log('rg', this.regiao);
+            
             const dados = {
            
               'nome': this.nome,
@@ -379,9 +465,10 @@ export class CadastroPage implements OnInit {
           }
         } else {
           */
-    let condicicoes = this.produto === undefined || this.regiao === undefined ||
-      this.hInicio === undefined || this.hfim === undefined || this.relatoAtividade === undefined
-      || this.imgProduto === undefined;
+    let condicicoes = this.produto === undefined || this.hInicio === undefined
+      || this.hfim === undefined || this.relatoAtividade === undefined
+      || this.produto === undefined || this.local === undefined
+      || this.dimensao === undefined || this.imgProduto === undefined;
     if (condicicoes) {
       this.alertas.presentToast('Preencha os campos ');
     }
@@ -420,8 +507,10 @@ export class CadastroPage implements OnInit {
           'foto_cpf': this.imgCpf,
           'foto_rg': this.imgRg,
           'foto_equipamento': this.imgProduto,
+          'dimensao': this.dimensao,
           'situacao': 0, // 0: ainda n pagou, 1: pagou 
         };
+
         this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
       }
     }
@@ -467,7 +556,7 @@ export class CadastroPage implements OnInit {
 
     await alert.present();
     return resp;
-    console.log(resp);
+
   }
 
 

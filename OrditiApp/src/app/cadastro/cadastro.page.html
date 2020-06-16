@@ -9,13 +9,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-button slot="end"   size="small">Adicionar Foto</ion-button>
+  <ion-button slot="end" size="small">Adicionar Foto</ion-button>
 
   <div *ngIf="etapaCadastro == 1">
     <div class="centro">
       <img *ngIf="imgPessoa" class="conteudo" [src]="imgPessoa" (click)="cam(1)">
       <img *ngIf="imgDefaultP" class="conteudo" [src]="imgDefaultP" (click)="cam(1)">
-      
+
     </div>
 
 
@@ -28,11 +28,11 @@
       </ion-card-header>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Nome:</ion-label>
+        <ion-label color="secondary" position="floating">Nome:</ion-label>
         <ion-input type="text" [(ngModel)]="nome" placeholder="Ex.: Maria das Dores"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label color="secondary"  position="floating">CPF/CNPJ:</ion-label>
+        <ion-label color="secondary" position="floating">CPF/CNPJ:</ion-label>
         <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}"
           minlength="14">
         </ion-input>
@@ -42,54 +42,54 @@
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">RG:</ion-label>
-        <ion-input type="text" [(ngModel)]="rg" placeholder="123.456.789-10">
+        <ion-label color="secondary" position="floating">RG:</ion-label>
+        <ion-input type="text" [(ngModel)]="rg" placeholder="12.456.789-0">
         </ion-input>
 
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Nome da Mãe:</ion-label>
+        <ion-label color="secondary" position="floating">Nome da Mãe:</ion-label>
         <ion-input type="text" [(ngModel)]="nomeMaterno" placeholder="Ex.: Glória das Dores" minlength="3"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">CEP:</ion-label>
+        <ion-label color="secondary" position="floating">CEP:</ion-label>
         <ion-input type="text" [(ngModel)]="cep" placeholder="Ex.: 57033-424" [brmasker]="{mask:'00000-000', len:9}"
           (focusout)="consultaCep(cep)" minlength="9"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Cidade:</ion-label>
+        <ion-label color="secondary" position="floating">Cidade:</ion-label>
         <ion-input type="text" [(ngModel)]="cidade" placeholder="Ex.: Maceió" minlength="3"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Bairro:</ion-label>
+        <ion-label color="secondary" position="floating">Bairro:</ion-label>
         <ion-input type="text" [(ngModel)]="bairro" placeholder="Ex.: Benedito Bentes" minlength="3"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Rua:</ion-label>
+        <ion-label color="secondary" position="floating">Rua:</ion-label>
         <ion-input type="text" [(ngModel)]="rua" placeholder="Ex.: Senador Rui Palmeira" minlength="3"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">N°:</ion-label>
+        <ion-label color="secondary" position="floating">N°:</ion-label>
         <ion-input type="number" [(ngModel)]="numero" placeholder="Ex.: 3" minlength="1"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">N° de Contato:</ion-label>
+        <ion-label color="secondary" position="floating">N° de Contato:</ion-label>
         <ion-input type="text" [(ngModel)]="fone" placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}"
           minlength="14"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Email:</ion-label>
-        <ion-input type="email" [(ngModel)]="email" placeholder="Ex.: exemplo@email.com" ></ion-input>
+        <ion-label color="secondary" position="floating">Email:</ion-label>
+        <ion-input type="email" [(ngModel)]="email" placeholder="Ex.: exemplo@email.com"></ion-input>
       </ion-item>
 
 
@@ -102,22 +102,34 @@
         </ion-card-subtitle>
       </ion-card-header>
 
+
       <ion-item>
-        <ion-label  >
+        <ion-thumbnail *ngIf="imgCpf" slot="start">
+          <ion-img [src]=imgCpf></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>
           CPF/CNPJ </ion-label>
-        <ion-button slot="end" color="secondary"  size="small" (click)="cam(3)">Adicionar</ion-button>
+        <ion-button *ngIf="!imgCpf" slot="end" color="secondary" size="small" (click)="cam(3)">Adicionar</ion-button>
+        <ion-button *ngIf="imgCpf" slot="end" color="danger" size="small" (click)="remover(3)">Remover</ion-button>
 
 
       </ion-item>
 
       <ion-item>
-        <ion-label  >RG</ion-label>
-        <ion-button slot="end"  color="secondary" size="small" (click)="cam(4)">Adicionar</ion-button>
+        <ion-thumbnail *ngIf="imgRg" slot="start">
+          <ion-img [src]=imgRg></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>RG</ion-label>
+
+        <ion-button *ngIf="!imgRg" slot="end" color="secondary" size="small" (click)="cam(4)">Adicionar</ion-button>
+        <ion-button *ngIf="imgRg" slot="end" color="danger" size="small" (click)="remover(4)">Remover</ion-button>
       </ion-item>
     </ion-card>
 
 
-    <ion-button expand="block"   (click)="verifiEtapa(1)">
+    <ion-button expand="block" (click)="verifiEtapa(1)">
       Seguinte
     </ion-button>
   </div>
@@ -134,7 +146,7 @@
 
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Dias:</ion-label>
+        <ion-label color="secondary" position="floating">Dias:</ion-label>
         <ion-select multiple="true" [(ngModel)]="diasAtend" placeholder="Ex.: Segunda">
           <ion-select-option value=" Segunda-feira">Segunda-feira</ion-select-option>
           <ion-select-option value=" Terça-feira">Terça-feira</ion-select-option>
@@ -148,13 +160,13 @@
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Início</ion-label>
+        <ion-label color="secondary" position="floating">Início</ion-label>
         <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher" ([ngModel])="hInicio"
           placeholder="Ex.: 15:00" (ionChange)="horaInicio( $event )">
         </ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label color="secondary"  position="floating">Fim</ion-label>
+        <ion-label color="secondary" position="floating">Fim</ion-label>
         <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher" ([ngModel])="hfim"
           placeholder="Ex.: 18:30" (ionChange)="horaFim( $event )">
         </ion-datetime>
@@ -168,13 +180,13 @@
       </ion-card-header>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Relatar atividade:</ion-label>
+        <ion-label color="secondary" position="floating">Relatar atividade:</ion-label>
         <ion-textarea [(ngModel)]="relatoAtividade" rows="8" cols="15" placeholder="Atividade a ser Desenvolvida">
         </ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Produto e/ou Serviço:</ion-label>
+        <ion-label color="secondary" position="floating">Produto e/ou Serviço:</ion-label>
         <ion-input type="text" [(ngModel)]="produto" placeholder="Ex.: Churros"></ion-input>
       </ion-item>
 
@@ -189,29 +201,32 @@
       </ion-card-header>
 
 
-    
+
 
       <ion-item>
-        <ion-label color="secondary"  position="floating">Ponto de referência:</ion-label>
+        <ion-label color="secondary" position="floating">Ponto de referência:</ion-label>
         <ion-input type="text" [(ngModel)]="pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
       </ion-item>
 
 
-      <div >
+      <div>
         <ion-item (click)="leafletMap()">
-          <ion-label color="secondary"  position="floating">Local de Atividade:</ion-label>
-          <ion-input type="text" [(ngModel)]="localAtiv" disabled="{{mostrarMapa}}"
+          <ion-label color="secondary" position="floating">Local de Atividade:</ion-label>
+          <ion-input type="text" [(ngModel)]="enderecoLocal" disabled="{{mostrarMapa}}"
             placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
             <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
           </ion-input>
-          <ion-note text-end (click)="leafletMap()">
+          <ion-note *ngIf="mostrarMapa == false"text-end (click)="leafletMap()">
             Marque no mapa
           </ion-note>
+
+         
         </ion-item>
       </div>
     </ion-card>
 
     <ion-card *ngIf="mostrarMapa" id="mapId3" style="height: 300px">
+      
     </ion-card>
 
     <ion-card *ngIf="cpf">
@@ -228,25 +243,36 @@
     <ion-card>
       <ion-card-header>
         <ion-card-subtitle>
-          Foto do Equipamento
+          Equipamento
         </ion-card-subtitle>
       </ion-card-header>
 
       <ion-item>
-        <ion-label  >
-          Imagem </ion-label>
-        <ion-button slot="end"   size="small" (click)="cam(2)">Adicionar</ion-button>
+        <ion-thumbnail *ngIf="imgProduto" slot="start">
+          <ion-img [src]=imgProduto></ion-img>
+        </ion-thumbnail>
 
+        <ion-label>Imagem</ion-label>
 
+        <ion-button *ngIf="!imgProduto" slot="end" color="secondary" size="small" (click)="cam(2)">Adicionar
+        </ion-button>
+        <ion-button *ngIf="imgProduto" slot="end" color="danger" size="small" (click)="remover(2)">Remover</ion-button>
       </ion-item>
+
+      <ion-item>
+        <ion-label color="secondary" position="floating">Dimensões:</ion-label>
+        <ion-input type="text" [(ngModel)]="dimensao" placeholder="Ex.: 1x2x3"></ion-input>
+      </ion-item>
+
+      
 
     </ion-card>
 
-    <ion-button expand="block" fill="outline"   (click)="verifiEtapa(2)">
+    <ion-button expand="block" fill="outline" (click)="verifiEtapa(2)">
       Voltar
     </ion-button>
 
-    <ion-button expand="block"   (click)="cadastrar()">
+    <ion-button expand="block" (click)="cadastrar()">
       Solicitar Cadastro
     </ion-button>
   </div>
