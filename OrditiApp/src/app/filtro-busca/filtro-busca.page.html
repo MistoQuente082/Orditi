@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Gerar Lista
+    </ion-title>
+  </ion-toolbar>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</ion-header>
+
+<ion-content>
+  <ion-item >
+    <ion-label color="medium" position="floating">Bairro</ion-label>
+    <ion-select placeholder="Escolha o bairro" [(ngModel)]="bairro" multiple>
+      <ion-select-option value="51" selected>Todos os bairros</ion-select-option>
+            <ion-select-option value="0">Área Rural</ion-select-option>
+            <ion-select-option value="1">Antares</ion-select-option>
+            <ion-select-option value="2">Barro Duro</ion-select-option>
+            <ion-select-option value="3">Bebedouro</ion-select-option>
+            <ion-select-option value="4">Benedito Bentes</ion-select-option>
+            <ion-select-option value="5">Bom Parto</ion-select-option>
+            <ion-select-option value="6">Canaã</ion-select-option>
+            <ion-select-option value="7">Centro</ion-select-option>
+            <ion-select-option value="8">Chã da Jaqueira</ion-select-option>
+            <ion-select-option value="9">Chã de Bebedouro</ion-select-option>
+            <ion-select-option value="10">Cidade Universitária</ion-select-option>
+            <ion-select-option value="11">Clima Bom</ion-select-option>
+            <ion-select-option value="12">Cruz das Almas</ion-select-option>
+            <ion-select-option value="13">Farol</ion-select-option>
+            <ion-select-option value="14">Feitosa</ion-select-option>
+            <ion-select-option value="15">Fernão Velho</ion-select-option>
+            <ion-select-option value="16">Garça Torta</ion-select-option>
+            <ion-select-option value="17">Gruta de Lourdes</ion-select-option>
+            <ion-select-option value="18">Guaxuma</ion-select-option>
+            <ion-select-option value="19">Ipioca</ion-select-option>
+            <ion-select-option value="20">Jacarecica</ion-select-option>
+            <ion-select-option value="21">Jacintinho</ion-select-option>
+            <ion-select-option value="22">Jaraguá</ion-select-option>
+            <ion-select-option value="23">Jardim Petrópolis</ion-select-option>            
+            <ion-select-option value="24">Jatiúca</ion-select-option>
+            <ion-select-option value="25">Levada</ion-select-option>
+            <ion-select-option value="26">Mangabeiras</ion-select-option>
+            <ion-select-option value="27">Mutange</ion-select-option>
+            <ion-select-option value="28">Ouro Preto</ion-select-option>
+            <ion-select-option value="29">Pajuçara</ion-select-option>
+            <ion-select-option value="30">Pescaria</ion-select-option>
+            <ion-select-option value="31">Petrópolis</ion-select-option>
+            <ion-select-option value="32">Pinheiro</ion-select-option>
+            <ion-select-option value="33">Pitanguinha</ion-select-option>
+            <ion-select-option value="34">Poço</ion-select-option>
+            <ion-select-option value="35">Ponta da Terra</ion-select-option>
+            <ion-select-option value="36">Ponta Grossa</ion-select-option>
+            <ion-select-option value="37">Ponta Verde</ion-select-option>
+            <ion-select-option value="38">Pontal da Barra</ion-select-option>
+            <ion-select-option value="39">Prado</ion-select-option>
+            <ion-select-option value="40">Riacho Doce</ion-select-option>
+            <ion-select-option value="41">Rio Novo</ion-select-option>
+            <ion-select-option value="42">Santa Amélia</ion-select-option>
+            <ion-select-option value="43">Santa Lúcia</ion-select-option>
+            <ion-select-option value="44">Santo Amaro</ion-select-option>
+            <ion-select-option value="45">Santos Dumont</ion-select-option>
+            <ion-select-option value="46">São Jorge</ion-select-option>
+            <ion-select-option value="47">Serraria</ion-select-option>
+            <ion-select-option value="48">Tabuleiro do Martins</ion-select-option>
+            <ion-select-option value="49">Trapiche da Barra</ion-select-option>
+            <ion-select-option value="50">Vergel do Lago</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item >
+    <ion-label color="medium" position="floating">Tipo de Equipamento</ion-label>
+    <ion-select placeholder="Todos" [(ngModel)]="bairro" multiple>
+      <ion-select-option value="pessoa">Carrinho</ion-select-option>
+      <ion-select-option value="zona">Barraca</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item >
+    <ion-label color="medium" position="floating">Tipo de Produto/Serviço</ion-label>
+    <ion-select placeholder="Todos" [(ngModel)]="bairro" multiple>
+      <ion-select-option value="alimenticios">Alimentícios</ion-select-option>
+      <ion-select-option value="arefatos">Artefatos e Utensílios</ion-select-option>
+      <ion-select-option value="artesanato">Artesanato</ion-select-option>
+      <ion-select-option value="bebidas">Bebidas</ion-select-option>
+      <ion-select-option value="bebidasAlcoolicas">Bebidas Alcoólicas</ion-select-option>
+      <ion-select-option value="brinquedos">Brinquedos e ornamentos</ion-select-option>
+      <ion-select-option value="confeccoes">Confecções e uso pessoal</ion-select-option>
+      <ion-select-option value="outros">Outros</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+    <ion-item> 
+      <ion-card>
+        <ion-item>
+          <ion-input type="number" placeholder="Minima" [(ngModel)]="largura"></ion-input>
+        </ion-item>
+      </ion-card>
+      até
+      <ion-card>
+        <ion-item>
+          <ion-input type="number" placeholder="Maxima" [(ngModel)]="comprimento"></ion-input>
+        </ion-item>
+      </ion-card>
+    </ion-item>
+
+    <ion-button expand="block" color="medium">Gerar Lista</ion-button>
+
+</ion-content>

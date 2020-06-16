@@ -71,12 +71,17 @@ export class AppComponent {
       icon: 'search'
     },
     {
+      title: 'Gerar Listas',
+      url: '/filtro-busca',
+      icon: 'search'
+    },
+    {
       title: 'Cadastro de Ambulante',
       url: '/cadastro',
       icon: 'person-add'
     },
     {
-      title: 'Autuação',
+      title: 'Notificar',
       url: '/denuncia',
       icon: 'hand'
     },

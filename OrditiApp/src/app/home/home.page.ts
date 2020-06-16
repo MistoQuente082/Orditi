@@ -79,6 +79,9 @@ export class HomePage {
 
   poli: any = polygon( [], {});
 
+  markersA: any;
+  markersD: any;
+
 
   //  qrCode
   qrData = 'Hola Mundo';
@@ -144,6 +147,12 @@ export class HomePage {
         }).addTo(this.map);
 
         this.poli.addTo(this.map);
+
+        this.markersA = L.markerClusterGroup({
+          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 }});
+        this.markersD = L.markerClusterGroup({
+          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 }});
+
 
         //Criar Pins de Ambulantes
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
