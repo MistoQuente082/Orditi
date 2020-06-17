@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
-import * as L2 from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 

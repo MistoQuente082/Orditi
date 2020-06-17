@@ -46,6 +46,7 @@
     "geolocation": "^0.2.0",
     "ionic": "^5.4.16",
     "leaflet": "^1.5.1",
+    "leaflet.markercluster": "^1.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ngx-qrcode2": "0.0.9",
