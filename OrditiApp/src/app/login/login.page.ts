@@ -8,6 +8,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AppModule } from '../app.module';
 import { LoginBancoService } from '../services/login/login-banco.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -18,59 +19,44 @@ import { LoginBancoService } from '../services/login/login-banco.service';
 export class LoginPage implements OnInit {
   loading: HTMLIonLoadingElement;
   private url_banco = 'http://syphan.com.br/orditiServices/validaLogin.php';
+  public res_usuario: any = false;
 
   tipo: boolean;
 
-  matricula: number;
+  matricula: string;
   senha: string;
 
   user: any = AppModule.getUsuario();
 
   constructor(
     public router: Router,
+    public httpClient: HttpClient,
     public fAuth: AngularFireAuth,
     public loadingController: LoadingController,
-    public db: AngularFirestore,
     private loginBanco: LoginBancoService,
     public toastCtrl: ToastController
   ) { }
 
-  async fazerLogin() {
+  async fazerLogin(resp) {
     console.log('Tentando fazer login:');
-    const { matricula, senha } = this;
-
     let user: any;
 
     await this.presentLoading(); // Carregamento enquanto espera
 
     try {
+      if (resp === true) {
+        this.returnHome();
+      }
 
-      if (this.matricula === undefined || this.senha === undefined) {
+      else if (resp === false) {
         // Aviso na tela
-        this.presentToast('Preencha os campos');
-        console.log('Campos vazios');
+
+        this.presentToast('Matricula ou Senha Incorreta!');
+
+      } else {
+        this.presentToast('Erro ao fazer login');
       }
-      else {
-        const dados = {
-          'matricula': matricula,
-          'senha': senha
-        };
 
-        let resposta_login = this.loginBanco.fazerLogin(this.url_banco, dados);
-        console.log(resposta_login);
-        if (resposta_login === true) {
-          this.returnHome();
-        }
-
-        else if (resposta_login === false) {
-          // Aviso na tela
-
-          this.presentToast('Matricula ou Senha Incorreta!');
-
-        } else {
-          this.presentToast('Erro ao fazer login');
-        }
-      }
 
     } catch (err) {
 
@@ -81,6 +67,56 @@ export class LoginPage implements OnInit {
       this.loading.dismiss();
     }
 
+  }
+
+  // Recebe os dados
+  receberDados(url) {
+    console.log('campos vazios?', this.matricula, this.senha);
+    if (this.matricula === undefined || this.senha === undefined
+      ||  this.matricula === null || this.senha === null) {
+      // Aviso na tela
+      this.presentToast('Preencha os campos');
+      console.log('Campos vazios');
+    }
+    else {
+      let headers = new Headers();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      const dados = {
+        'matricula': this.matricula,
+        'senha': this.senha
+      };
+      let enviar = {
+        token: 39158,
+        dados: dados
+      }
+
+      this.httpClient.post(
+        url,
+        enviar,
+        { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
+        .subscribe(data => {
+          console.log('Não houve nenhum erro no Banco: ', data)
+          console.log(data);
+          if (data['retorno'] == 1) {
+            this.fazerLogin(true);
+            this.loginBanco.inserir('fiscal', data['dados']);
+          }
+
+          if (data['retorno'] == 0) {
+            this.fazerLogin(false);
+
+
+          }
+
+
+        }, error => {
+          console.log('Erro ao tentar fazer login pelo Banco: ', error);
+          this.fazerLogin('erro');
+
+
+        });
+    }
   }
 
   // Senha visivel ou não

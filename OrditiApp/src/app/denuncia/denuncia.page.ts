@@ -4,11 +4,11 @@ import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Router } from '@angular/router';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ActionSheetController } from '@ionic/angular';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { AlertController } from '@ionic/angular';
 
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 
 import { AlertasService } from '../services/alertas.service';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -21,6 +21,7 @@ import { CameraService } from '../services/camera/camera.service';
 
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { HttpClient } from '@angular/common/http';
 
 //Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -97,28 +98,71 @@ export class DenunciaPage implements OnInit {
     public alertas: AlertasService,
     private nativeGeocoder: NativeGeocoder,
     public alertController: AlertController,
-    public camera: Camera,
     public router: Router,
-    public db: AngularFirestore,
-    public modalController: ModalController,
-    public usarCamera: CameraService
+    public actionSheetController: ActionSheetController,
+    public Cam: Camera,
+    public httpClient: HttpClient
+
   ) {
-    this.imgAut = "../../assets/img/avatar.svg";
   }
 
+  remover() {
+    this.imgAut = null
+
+
+  }
 
 
 
   // Função para camera
 
+  // CAMERA
   async cam() {
-    await this.usarCamera.presentActionSheet();
-    if (this.usarCamera.imagem) {
-      this.imgAut = this.usarCamera.imagem;
-    }
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Escolher Imagem',
+      buttons: [{
+        text: 'Galeria',
+        icon: 'images',
+        handler: () => {
+          this.takePicture(this.Cam.PictureSourceType.PHOTOLIBRARY);
+        }
+      },
+      {
+        text: 'Capturar',
+        icon: 'camera',
+        handler: () => {
+          this.takePicture(this.Cam.PictureSourceType.CAMERA);
 
+        },
+
+      }, {
+        text: 'Cancelar',
+        role: 'cancel'
+      }]
+    });
+
+    await actionSheet.present();
   }
 
+  takePicture(sourceType: PictureSourceType) {
+
+    var options: CameraOptions = {
+      quality: 100,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      correctOrientation: true,
+      destinationType: this.Cam.DestinationType.DATA_URL,
+      encodingType: this.Cam.EncodingType.JPEG,
+      mediaType: this.Cam.MediaType.PICTURE,
+
+
+    }
+
+    this.Cam.getPicture(options).then((imgData) => {
+
+      this.imgAut = 'data:image/jpeg;base64,' + imgData;
+    });
+  }
 
 
   ngOnInit() {
@@ -127,9 +171,9 @@ export class DenunciaPage implements OnInit {
   /** Load leaflet map **/
   leafletMap() {
     this.mostraMapa = true;
-    console.log('Mostrando mapa')
-    if (this.map2 !== 'undefined' && this.map2 !== null) {
-      this.map2.remove();
+
+    if (this.map2 !== 'undefined' && this.map2 !== null && !this.localDenuncia) {
+      this.map2 = null;
     }
     else {
       /** Get current position **/
@@ -145,21 +189,13 @@ export class DenunciaPage implements OnInit {
         }).addTo(this.map2);
 
       }).catch((error) => {
-        console.log('Error getting location', error);
+
       });
     }
   }
 
-  mapRemove() {
-    //this.map2.remove(); -> Isso tava fazendo dar um erro bem grande
-    this.returnHome();
-  }
 
   mapMarker(e) {
-    console.log("Objeto: ", e);
-    console.log("Latlng: ", e.latlng);
-    console.log("Lat: ", e.latlng.lat);
-    console.log("Lng: ", e.latlng.lng);
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
@@ -167,42 +203,28 @@ export class DenunciaPage implements OnInit {
 
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
-
-    let options: NativeGeocoderOptions = {
-      useLocale: true,
-      maxResults: 5
-    };
-
-    this.nativeGeocoder.reverseGeocode(e.latlng.lat, e.latlng.lng, options)
-      .then((result: NativeGeocoderResult[]) => {
-        this.localAtual("" + result[0].subAdministrativeArea + " " + result[0].subLocality + " " + result[0].thoroughfare);
-      })
-      .catch((error: any) => {
-        this.geocoderTesteError(error);
-      });
+    this.consultaCoord();
   }
 
-  localAtual(endereco) {
-    this.localDenuncia = endereco;
-  }
+
 
 
 
   // DATA DO OCORRIDO
   mudaData(event) {
     this.dataDenuncia = new Date(event.detail.value);
-    console.log('DIA', this.dataDenuncia);
+
 
   }
   mudaHora(event) {
     this.horaDenuncia = new Date(event.detail.value);
-    console.log('Chegada:', this.horaDenuncia);
+
   }
 
   // ENVIAR DENUNCIA
   subDenuncia() {
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
-      this.infoDenuncia === undefined || this.local === undefined || this.seunome === undefined) {
+      this.infoDenuncia === undefined || this.local === undefined || this.imgDenuncia === undefined ) {
       this.alertas.presentToast('Preencha os campos!');
     } else {
       if (this.localDenuncia === undefined) {
@@ -218,7 +240,7 @@ export class DenunciaPage implements OnInit {
         'local': this.localDenuncia,
 
       };
-      console.log(dados)
+
 
       this.presentAlertDenuncia(dados, this.url_banco, this.alerta_texto);
 
@@ -228,7 +250,7 @@ export class DenunciaPage implements OnInit {
 
   Fiscal() {
     return AppModule.getUsuarioStatus();
-    console.log(AppModule.getUsuarioStatus())
+
   }
 
   async geocoderTesteError(e) {
@@ -264,6 +286,26 @@ export class DenunciaPage implements OnInit {
 
     await alert.present();
     return resp;
-    console.log(resp);
+
+  }
+
+
+
+  // FUNÇÕES PARA RETONAR ENDEREÇO
+  consultaCoord() {
+    let link = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.local.lat},${this.local.lng}&key=AIzaSyATL2xqnX58yMa5CMocNPVm7Zcabd1eFe8`;
+
+    this.httpClient.get(link)
+
+      //viacep.com.br/ws/${cep}/json`)
+      .subscribe(response => {
+        this.rpNomesLocal(response);
+
+      });
+  }
+
+  rpNomesLocal(geoinfo) {
+    let endereco = geoinfo.results[0].formatted_address;
+    this.localDenuncia = endereco;
   }
 }

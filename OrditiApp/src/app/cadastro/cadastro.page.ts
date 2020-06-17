@@ -507,7 +507,7 @@ export class CadastroPage implements OnInit {
           'foto_cpf': this.imgCpf,
           'foto_rg': this.imgRg,
           'foto_equipamento': this.imgProduto,
-          'dimensao': this.dimensao,
+          'area_equipamento': this.dimensao,
           'situacao': 0, // 0: ainda n pagou, 1: pagou 
         };
 

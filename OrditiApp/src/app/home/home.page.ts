@@ -77,7 +77,7 @@ export class HomePage {
 
   zona: any = null;
 
-  poli: any = polygon( [], {});
+  poli: any = polygon([], {});
 
 
   //  qrCode
@@ -126,11 +126,14 @@ export class HomePage {
   }
 
   Fiscal() {
-    return this.loginBanco.res_usuario;
+    
+    return false;
 
   }
 
   ionViewDidEnter() {
+    
+    
     if (this.map !== 'undefined' && this.map !== null) {
       this.map.remove();
     } else {
@@ -163,8 +166,8 @@ export class HomePage {
           });
         }, error => {
           console.log(error);
-        });; 
-        
+        });;
+
         //Adicionar condição para só mostrar se for fiscal
         if (this.Fiscal() !== false) {
           this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
@@ -219,11 +222,12 @@ export class HomePage {
 
   criarMarkerDenuncias(den) {
     console.log(den);
+    var denunciaFoto = den['foto'];
     var denunciaLat = den['latitude'];
     var denunciaLong = den['longitude'];
     var denunciaInfo = den['descricao'];
     var denunciaData = moment(den.dataDenuncia).format('DD/MM/YYYY');
-    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<br> Diz: ' + denunciaInfo + '</strong>').openPopup();
+    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<img src="' + denunciaFoto + '"><br>  Diz: ' + denunciaInfo + '</strong>').openPopup();
     denMarker.addTo(this.map);
   }
 
@@ -260,7 +264,7 @@ export class HomePage {
 
   regiaoClicada(doc) {
     var zona = doc['poligono'];
-    var area =[]
+    var area = []
 
     for (var ponto in zona) {
       //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
@@ -275,14 +279,14 @@ export class HomePage {
     var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
     //regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
-    this.poli.setStyle({opacity: 0.0})
+    this.poli.setStyle({ opacity: 0.0 })
     this.poli = regiao;
     this.poli.addTo(this.map);
     this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
   }
 
   fecharCard() {
-    this.poli.setStyle({opacity: 0.0})
+    this.poli.setStyle({ opacity: 0.0 })
     this.zona = null;
   }
 

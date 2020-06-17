@@ -30,10 +30,6 @@ import { HomePageModule } from './home/home.module';
 import { HttpClientModule } from '@angular/common/http';
 
 
-
-
-
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -53,7 +49,12 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    IonicStorageModule.forRoot({
+      name: '__orditi',
+      storeName: 'login',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
   ],
   providers: [
     StatusBar,
