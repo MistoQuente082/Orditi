@@ -14,7 +14,6 @@
   <ion-item >
     <ion-label color="medium" position="floating">Bairro</ion-label>
     <ion-select placeholder="Escolha o bairro" [(ngModel)]="bairro" multiple>
-      <ion-select-option value="51" (ionSelect)="allClickedCategories()">Todos os bairros</ion-select-option>
             <ion-select-option *ngFor="let bai of bairros" value={{bai}}>{{bai}}</ion-select-option>
     </ion-select>
   </ion-item>

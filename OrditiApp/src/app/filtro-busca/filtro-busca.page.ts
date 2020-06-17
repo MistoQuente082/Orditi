@@ -17,8 +17,8 @@ export class FiltroBuscaPage implements OnInit {
   produto: any[];
   bairro: any[];
 
-  min_area: any;
-  max_area: any;
+  min_area: any = null;
+  max_area: any = null;
 
   constructor(
     private loginBanco: LoginBancoService,
@@ -45,9 +45,18 @@ export class FiltroBuscaPage implements OnInit {
 
       var equipamento = e['area_equipamento'].split('x')
       var area = parseFloat(equipamento[1])*parseFloat(equipamento[2])
-      console.log(area)
-      console.log(this.min_area)
-      console.log(this.max_area)
+
+      if (this.min_area === null){
+        this.min_area = 0;
+      }
+      if(this.max_area === null){
+        this.max_area = 10000000000;
+      }
+
+      if(this.bairro === []){
+        this.bairro = ['Área Rural','Antares','Barro Duro','Bebedouro','Benedito Bentes','Bom Parto','Canaã','Centro','Chã da Jaqueira','Chã de Bebedouro','Cidade Universitária','Clima Bom','Cruz das Almas','Farol','Feitosa','Fernão Velho','Garça Torta','Gruta de Lourdes','Guaxuma','Ipioca','Jacarecica','Jacintinho','Jaraguá','Jardim Petrópolis'    ,'Jatiúca','Levada','Mangabeiras','Mutange','Ouro Preto','Pajuçara','Pescaria','Petrópolis','Pinheiro','Pitanguinha','Poço','Ponta da Terra','Ponta Grossa','Ponta Verde','Pontal da Barra','Prado','Riacho Doce','Rio Novo','Santa Amélia','Santa Lúcia','Santo Amaro','Santos Dumont','São Jorge','Serraria','Tabuleiro do Martins','Trapiche da Barra','Vergel do Lago']
+      }
+      
 
       if(this.bairro.includes(endereco[1]) && this.min_area<= area && this.max_area >=area){
         console.log("yeetz")
@@ -55,11 +64,19 @@ export class FiltroBuscaPage implements OnInit {
       }
     })
     console.log(this.lista);
+    console.log(this.pessoasTotal);
+    console.log(this.min_area);
+    console.log(this.max_area);
   }
 
   allClickedCategories(){    
     console.log(this.bairro);
-    this.bairro = ['Área Rural','Antares','Barro Duro','Bebedouro','Benedito Bentes','Bom Parto','Canaã','Centro','Chã da Jaqueira','Chã de Bebedouro','Cidade Universitária','Clima Bom','Cruz das Almas','Farol','Feitosa','Fernão Velho','Garça Torta','Gruta de Lourdes','Guaxuma','Ipioca','Jacarecica','Jacintinho','Jaraguá','Jardim Petrópolis'    ,'Jatiúca','Levada','Mangabeiras','Mutange','Ouro Preto','Pajuçara','Pescaria','Petrópolis','Pinheiro','Pitanguinha','Poço','Ponta da Terra','Ponta Grossa','Ponta Verde','Pontal da Barra','Prado','Riacho Doce','Rio Novo','Santa Amélia','Santa Lúcia','Santo Amaro','Santos Dumont','São Jorge','Serraria','Tabuleiro do Martins','Trapiche da Barra','Vergel do Lago']
+    if(this.bairro != []){
+      
+    } else {
+      this.bairro = [];
+    }
+    
     
   }
 
