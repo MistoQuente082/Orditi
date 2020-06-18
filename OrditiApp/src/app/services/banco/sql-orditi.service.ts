@@ -33,7 +33,8 @@ export class SqlOrditiService {
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
       .subscribe(data => {
         console.log(data);
-        if (data == 1) {
+        
+        if (data['retorno'] == 1) {          
           this.alertas.presentToast('Executado com sucesso!')
         } else {
           this.alertas.presentToast(alerta)

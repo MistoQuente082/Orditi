@@ -3,7 +3,7 @@
     <name>ORDITI</name>
     <description>Ordenamento Itinerante</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http:///" />
     <allow-intent href="https:///" />
@@ -106,4 +106,5 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="http://localhost:8100" sessionid="3606acf5" />
     <allow-navigation href="http://localhost:8101" sessionid="45d71e18" />
+    <allow-navigation href="http://localhost:8102" sessionid="29d1e6dd" />
 </widget>

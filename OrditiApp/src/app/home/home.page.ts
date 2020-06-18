@@ -55,6 +55,8 @@ const LeafIconZone = L.Icon.extend({
 
 const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
   ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-amarelo2.png' }),
+  ambulanteVerdeIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-verde.png' }),
+  ambulanteVermelhoIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-vermelho.png' }),
   denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/icon-denuncia.png' }),
   areaIcon = new LeafIconZone({ iconUrl: '../../assets/leaflet/images/marker.png' })
 
@@ -79,7 +81,7 @@ export class HomePage {
 
   zona: any = null;
 
-  poli: any = polygon( [], {});
+  poli: any = polygon([], {});
 
   markersA: any;
   markersD: any;
@@ -90,6 +92,7 @@ export class HomePage {
   scannedCode = null;
 
   elementType: 'url' | 'canvas' | 'img' = 'canvas';
+  tipoUsuario: boolean = this.loginBanco.res_usuario;
   constructor(
     private sqlOrditi: SqlOrditiService,
     private geolocation: Geolocation,
@@ -130,15 +133,40 @@ export class HomePage {
     });
   }
 
-  Fiscal() {
-    return this.loginBanco.res_usuario;
 
-  }
 
   ionViewDidEnter() {
+
+
     if (this.map !== 'undefined' && this.map !== null) {
       this.map.remove();
     } else {
+      this.loginBanco.recuperar('fiscal')
+        .then((dados) => {
+
+          if(dados !== null){
+          console.log('dadinhos', dados);
+          console.log('MEU POSTIVO');
+
+          this.tipoUsuario = true;
+          this.loginBanco.res_usuario = true;
+          }
+
+          else {
+            console.log('MEU NEGATIVO');
+            this.tipoUsuario = false;
+            this.loginBanco.res_usuario = false;
+          }
+
+        }, error => {
+          console.log('MEU NEGATIVO');
+          this.tipoUsuario = false;
+          this.loginBanco.res_usuario = false;
+
+        });
+
+
+
       /** Get current position **/
       this.geolocation.getCurrentPosition().then((resp) => {
         this.lat = resp.coords.latitude;
@@ -174,10 +202,10 @@ export class HomePage {
           });
         }, error => {
           console.log(error);
-        });; 
-        
+        });;
+console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
         //Adicionar condição para só mostrar se for fiscal
-        if (this.Fiscal() !== false) {
+        if (this.tipoUsuario !== false) {
           this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
             data.forEach(element => {
               console.log(element);
@@ -218,23 +246,29 @@ export class HomePage {
     var ambulanteProduto = geo['produto'];
     var ambulanteLat = geo['latitude'];
     var ambulantLong = geo['longitude'];
+    var ambulanteStatus = geo['situacao'];
 
     //console.log(ambulanteFoto)
     //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
     //  ambulanteFoto = url;
     //});
-
-    var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    if (ambulanteStatus === 1) {
+      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    }
+    if (ambulanteStatus === 2) {
+      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    }
     amb.addTo(this.map);
   }
 
   criarMarkerDenuncias(den) {
     console.log(den);
+    var denunciaFoto = den['foto'];
     var denunciaLat = den['latitude'];
     var denunciaLong = den['longitude'];
     var denunciaInfo = den['descricao'];
     var denunciaData = moment(den.dataDenuncia).format('DD/MM/YYYY');
-    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<br> Diz: ' + denunciaInfo + '</strong>').openPopup();
+    var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<img src="' + denunciaFoto + '"><br>  Diz: ' + denunciaInfo + '</strong>').openPopup();
     denMarker.addTo(this.map);
   }
 
@@ -271,7 +305,7 @@ export class HomePage {
 
   regiaoClicada(doc) {
     var zona = doc['poligono'];
-    var area =[]
+    var area = []
 
     for (var ponto in zona) {
       //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
@@ -286,14 +320,14 @@ export class HomePage {
     var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
     //regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
-    this.poli.setStyle({opacity: 0.0})
+    this.poli.setStyle({ opacity: 0.0 })
     this.poli = regiao;
     this.poli.addTo(this.map);
     this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
   }
 
   fecharCard() {
-    this.poli.setStyle({opacity: 0.0})
+    this.poli.setStyle({ opacity: 0.0 })
     this.zona = null;
   }
 
