@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Gerar Lista
+    </ion-title>
+  </ion-toolbar>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</ion-header>
+
+<ion-content>
+  <ion-item >
+    <ion-label color="medium" position="floating">Bairro</ion-label>
+    <ion-select placeholder="Escolha o bairro" [(ngModel)]="bairro" multiple>
+            <ion-select-option *ngFor="let bai of bairros" value={{bai}}>{{bai}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item >
+    <ion-label color="medium" position="floating">Tipo de Equipamento</ion-label>
+    <ion-select placeholder="Todos" [(ngModel)]="equipamento" multiple>
+      <ion-select-option value="pessoa">Carrinho</ion-select-option>
+      <ion-select-option value="zona">Barraca</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item >
+    <ion-label color="medium" position="floating">Tipo de Produto/Serviço</ion-label>
+    <ion-select placeholder="Todos" [(ngModel)]="produto" multiple>
+      <ion-select-option value="alimenticios">Alimentícios</ion-select-option>
+      <ion-select-option value="arefatos">Artefatos e Utensílios</ion-select-option>
+      <ion-select-option value="artesanato">Artesanato</ion-select-option>
+      <ion-select-option value="bebidas">Bebidas</ion-select-option>
+      <ion-select-option value="bebidasAlcoolicas">Bebidas Alcoólicas</ion-select-option>
+      <ion-select-option value="brinquedos">Brinquedos e ornamentos</ion-select-option>
+      <ion-select-option value="confeccoes">Confecções e uso pessoal</ion-select-option>
+      <ion-select-option value="outros">Outros</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+    <ion-item> 
+      <ion-card>
+        <ion-item>
+          <ion-input type="number" placeholder="Minima" [(ngModel)]="min_area"></ion-input>
+        </ion-item>
+      </ion-card>
+      até
+      <ion-card>
+        <ion-item>
+          <ion-input type="number" placeholder="Maxima" [(ngModel)]="max_area"></ion-input>
+        </ion-item>
+      </ion-card>
+    </ion-item>
+
+    <ion-button expand="block" (click)='gerarLista()' color="medium">Gerar Lista</ion-button>
+
+    <ion-list >
+      <ion-item *ngFor="let pessoa of lista" >
+        <ion-avatar slot="start">
+          <img src="{{pessoa.foto}}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{pessoa.nome}}</h3>
+          <p>{{pessoa.produto}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+</ion-content>

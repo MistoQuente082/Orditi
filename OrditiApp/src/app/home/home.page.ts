@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
-import * as L2 from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
@@ -80,6 +82,9 @@ export class HomePage {
   zona: any = null;
 
   poli: any = polygon([], {});
+
+  markersA: any;
+  markersD: any;
 
 
   //  qrCode
@@ -172,6 +177,12 @@ export class HomePage {
         }).addTo(this.map);
 
         this.poli.addTo(this.map);
+
+        this.markersA = L.markerClusterGroup({
+          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 }});
+        this.markersD = L.markerClusterGroup({
+          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 }});
+
 
         //Criar Pins de Ambulantes
         this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
