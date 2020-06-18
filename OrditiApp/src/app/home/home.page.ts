@@ -87,6 +87,7 @@ export class HomePage {
   scannedCode = null;
 
   elementType: 'url' | 'canvas' | 'img' = 'canvas';
+  tipoUsuario: boolean = this.loginBanco.res_usuario;
   constructor(
     private sqlOrditi: SqlOrditiService,
     private geolocation: Geolocation,
@@ -127,18 +128,40 @@ export class HomePage {
     });
   }
 
-  Fiscal() {
-    
-    return false;
 
-  }
 
   ionViewDidEnter() {
-    
-    
+
+
     if (this.map !== 'undefined' && this.map !== null) {
       this.map.remove();
     } else {
+      this.loginBanco.recuperar('fiscal')
+        .then((dados) => {
+
+          if(dados !== null){
+          console.log('dadinhos', dados);
+          console.log('MEU POSTIVO');
+
+          this.tipoUsuario = true;
+          this.loginBanco.res_usuario = true;
+          }
+
+          else {
+            console.log('MEU NEGATIVO');
+            this.tipoUsuario = false;
+            this.loginBanco.res_usuario = false;
+          }
+
+        }, error => {
+          console.log('MEU NEGATIVO');
+          this.tipoUsuario = false;
+          this.loginBanco.res_usuario = false;
+
+        });
+
+
+
       /** Get current position **/
       this.geolocation.getCurrentPosition().then((resp) => {
         this.lat = resp.coords.latitude;
@@ -169,9 +192,9 @@ export class HomePage {
         }, error => {
           console.log(error);
         });;
-
+console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
         //Adicionar condição para só mostrar se for fiscal
-        if (this.Fiscal() !== false) {
+        if (this.tipoUsuario !== false) {
           this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
             data.forEach(element => {
               console.log(element);
@@ -218,10 +241,12 @@ export class HomePage {
     //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
     //  ambulanteFoto = url;
     //});
-    if (ambulanteStatus === 1){
-    var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();}
-    if (ambulanteStatus === 2){
-      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();}
+    if (ambulanteStatus === 1) {
+      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    }
+    if (ambulanteStatus === 2) {
+      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+    }
     amb.addTo(this.map);
   }
 

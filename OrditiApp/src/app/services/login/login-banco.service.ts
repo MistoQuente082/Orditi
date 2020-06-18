@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
   providedIn: 'root'
 })
 export class LoginBancoService {
-  public res_usuario: any = false;
+  public res_usuario: boolean = false;
   dados_usuario;
 
   constructor(
@@ -17,17 +17,21 @@ export class LoginBancoService {
   inserir(key, dados) {
     // set a key/value
     this.storage.set(key, dados);
+    this.res_usuario = true;
   }
 
   recuperar(key) {
+
+
     return this.storage.get(key)
-    .then((dados) => {
-      console.log('dadinhos', dados);
-      this.dados_usuario = dados
-      this.res_usuario = true
-    });
 
-  } 
+  }
 
+  remover(key) {
+    // set a key/value
+    this.storage.clear();
+    this.dados_usuario = null;
+    this.res_usuario = false;
+  }
 
 }

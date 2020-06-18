@@ -107,12 +107,14 @@ export class AppComponent {
   }
 
   Fiscal() {
+    
     return this.loginBanco.res_usuario;
 
   }
 
   sair() {
-    this.loginBanco.res_usuario = false;
+    this.loginBanco.remover('fiscal')
+    return this.Fiscal();
   }
 
   initializeApp() {
