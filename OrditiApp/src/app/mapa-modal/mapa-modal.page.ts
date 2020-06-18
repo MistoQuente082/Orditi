@@ -4,10 +4,10 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { CadastroPage } from '../cadastro/cadastro.page';
 import { DenunciaPage } from '../denuncia/denuncia.page';
+import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 
 @Component({
 	selector: 'app-mapa-modal',
@@ -29,8 +29,8 @@ export class MapaModalPage implements OnInit {
 	local: any;
 
 	constructor(public modalController: ModalController,
+		private sqlOrditi: SqlOrditiService,
 		navParams: NavParams,
-		public db: AngularFirestore,
 		private geolocation: Geolocation,
 		private nativeGeocoder: NativeGeocoder,
 		public alertController: AlertController, ) {
@@ -63,14 +63,11 @@ export class MapaModalPage implements OnInit {
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
 				}).addTo(this.map);
 
-				/** Criar poligonos a partir de dados do firebase */
-				//Código de acesso à coleção das zonas no firebase 
-				this.db.collection('zonas').get().toPromise().then(snapshot => {
-					snapshot.forEach(doc => {
+				this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
+					data.forEach(doc => {
 						this.criarPoligono(doc);
 					})
 				})
-				//Fim do acesso ao Firebasse
 
 			}).catch((error) => {
 				console.log('Error getting location', error);

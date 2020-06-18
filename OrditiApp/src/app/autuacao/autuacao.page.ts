@@ -36,9 +36,6 @@ export class AutuacaoPage implements OnInit {
     this.imgAut = "../../assets/img/denuncias.png";
   }
 
-
-
-
   // Função para camera
 
   cam() {
@@ -47,10 +44,6 @@ export class AutuacaoPage implements OnInit {
     this.imgAut = this.usarCamera.imgPessoa;
 
   }
-
-
-
-
 
   // DATA DO OCORRIDO
   mudaData(event) {

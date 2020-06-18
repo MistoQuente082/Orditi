@@ -4,7 +4,6 @@ import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'le
 import 'leaflet/dist/leaflet.css';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AppModule } from '../app.module';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
 import { Observable } from 'rxjs';
 
@@ -16,7 +15,6 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
-import * as firebase from 'firebase';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
@@ -98,7 +96,7 @@ export class HomePage {
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
-    public db: AngularFirestore,
+
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner,
     private loginBanco: LoginBancoService,
@@ -115,20 +113,12 @@ export class HomePage {
       console.log(barcodeData.text);
       alert(barcodeData.text);
 
-      this.db.collection('ambulantes').doc(this.scannedCode.text).get().toPromise()
-        .then(doc => {
-          if (doc.exists) {
-            this.irPerfis(doc.data());
-            console.log('Entreou');
-          } else {
-            this.alertas.presentToast('Nenhum usuário com esse código');
-            console.log('Não rolou');
-          }
-
-        })
-        .catch(err => {
-          console.log("Error", err);
-        });
+      this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+          data.forEach(element => {
+          });
+        }, error => {
+          console.log(error);
+        });;
 
     });
   }
@@ -248,10 +238,7 @@ console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
     var ambulantLong = geo['longitude'];
     var ambulanteStatus = geo['situacao'];
 
-    //console.log(ambulanteFoto)
-    //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
-    //  ambulanteFoto = url;
-    //});
+
     if (ambulanteStatus === 1) {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
     }
@@ -308,7 +295,6 @@ console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
     var area = []
 
     for (var ponto in zona) {
-      //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
       area.push(zona[ponto])
     }
 

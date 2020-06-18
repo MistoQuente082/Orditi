@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DetalheEventosPage } from '../detalhe-eventos/detalhe-eventos.page';
@@ -17,8 +16,7 @@ export class EventosPage implements OnInit {
   public modalController: ModalController;
   public router: Router;
 
-  constructor(public db: AngularFirestore, ) {
-    this.eventos = this.db.collection('eventos', ref => ref.orderBy('dataInicio', 'asc')).valueChanges();
+  constructor( ) {
   }
 
   ngOnInit() {

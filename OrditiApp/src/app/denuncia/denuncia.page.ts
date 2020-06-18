@@ -11,11 +11,9 @@ import { AlertController } from '@ionic/angular';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 
 import { AlertasService } from '../services/alertas.service';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 import * as L from 'leaflet';
 
-import * as firebase from 'firebase';
 import { AppModule } from '../app.module';
 import { CameraService } from '../services/camera/camera.service';
 

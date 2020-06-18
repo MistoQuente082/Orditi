@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class AlertasService {
 
   constructor(
-    public db: AngularFirestore,
     public modalCtrl: ModalController,
     public alertController: AlertController,
     public toastController: ToastController,
@@ -31,7 +29,7 @@ export class AlertasService {
           text: 'Adicionar',
           handler: async () => {
             const resp = 'Adicionar'; //Retorna o que deve ser feito
-            this.subDados(dados, local)
+            //this.subDados(dados, local)
             this.router.navigate(['/home']);
             this.presentToast('Executado com sucesso!')
             console.log('Executando')
@@ -46,21 +44,21 @@ export class AlertasService {
   }
 
   // Envia ao Banco de Dados
-  subDados(dados, local: string) {
-    if (local === 'ambulantes') {
-      this.db.collection(local).doc(dados.cpf).get().toPromise().then(doc => {
-        if (!doc.exists) {
-          this.db.collection(local).doc(dados.cpf).set(dados);
-        }
-        else {
-          this.presentToast("Ja existe um ambulante cadastrado com esse CPF!")
-        }
-      })
-    } else {
-      this.db.collection(local).add(dados);
-    }
-    console.log("Documento adicionado a " + local);
-  }
+  //subDados(dados, local: string) {
+  //  if (local === 'ambulantes') {
+  //    this.db.collection(local).doc(dados.cpf).get().toPromise().then(doc => {
+  //      if (!doc.exists) {
+  //        this.db.collection(local).doc(dados.cpf).set(dados);
+  //      }
+  //      else {
+  //        this.presentToast("Ja existe um ambulante cadastrado com esse CPF!")
+  //      }
+  //    })
+  //  } else {
+  //    this.db.collection(local).add(dados);
+  //  }
+  //  console.log("Documento adicionado a " + local);
+  //}
 
   // Mostra um toast na tela
   async presentToast(message: string) {

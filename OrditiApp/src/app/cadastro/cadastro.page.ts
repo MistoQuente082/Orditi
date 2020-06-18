@@ -4,7 +4,6 @@ import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/n
 import { ModalController, ActionSheetController } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { AlertController } from '@ionic/angular';
@@ -15,7 +14,6 @@ import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
 import { Router } from '@angular/router';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import * as firebase from 'firebase'
 import { CameraService } from '../services/camera/camera.service';
 
 //Configuração dos markers do leaflet
@@ -134,7 +132,6 @@ export class CadastroPage implements OnInit {
   returnHome() {
     this.router.navigate(['/home']);
   }
-  //tipo de dado - Firebase
   metadata = {
     contentType: 'image/jpeg',
   };
@@ -143,7 +140,6 @@ export class CadastroPage implements OnInit {
 
   constructor(
     private geolocation: Geolocation,
-    public db: AngularFirestore,
     public alertas: AlertasService,
     private sqlOrditi: SqlOrditiService,
     private nativeGeocoder: NativeGeocoder,
@@ -417,10 +413,6 @@ export class CadastroPage implements OnInit {
 
   }
 
-
-
-
-
   // Obtem a imagem a partir do cpf do ambulante
   // Envia pro banco de Dados 
   obterQrCode() {
@@ -429,42 +421,8 @@ export class CadastroPage implements OnInit {
 
   }
 
-
-
-
   // Botão de cadastro
   cadastrar() {
-
-    /*
-        if (this.regiao !== 'a1') {
-          if (this.produto === undefined || this.regiao === undefined) {
-            this.alertas.presentToast('Preencha os campos!');
-          } else {
-            if (this.pontoRef === undefined) {
-              this.pontoRef = ' ';
-            }
-    
-            
-    
-    
-            
-            const dados = {
-           
-              'nome': this.nome,
-              'identidade': this.cpf,
-              'fone': this.fone,
-              'escolaridade': this.escolaridade,
-              'endereco': this.enderecoPessoa,
-              'pontoRef': this.pontoRef,
-              'produto': this.produto,
-              'foto': this.imgPessoa,
-              'regiao': this.regiao,
-              'situacao': 0, // 0: ainda n pagou, 1: pagou 
-            };
-            this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
-          }
-        } else {
-          */
     let condicicoes = this.produto === undefined || this.hInicio === undefined
       || this.hfim === undefined || this.relatoAtividade === undefined
       || this.produto === undefined || this.local === undefined

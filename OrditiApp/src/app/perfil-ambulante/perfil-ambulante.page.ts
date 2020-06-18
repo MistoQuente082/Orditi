@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { NavParams, ModalController } from '@ionic/angular';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { Observable } from 'rxjs';
@@ -13,7 +12,6 @@ import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
 import { Router } from '@angular/router';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import * as firebase from 'firebase'
 import { CameraService } from '../services/camera/camera.service';
 import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
 
@@ -27,7 +25,6 @@ export class PerfilAmbulantePage implements OnInit {
   ambulante: any;
   // Variaveis da pessoa
   constructor(
-    public db: AngularFirestore,
     public alertas: AlertasService,
     public navParam: NavParams,
     public modalController: ModalController,

@@ -13,12 +13,6 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { MapaModalPageModule } from './mapa-modal/mapa-modal.module';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { AngularFireModule } from '@angular/fire'; //Necessário para qualquer coisa do Firebase
-import { environment } from '../environments/environment'; //As informações do Arquivo do firebase estão lá
-
-import { AngularFirestoreModule } from '@angular/fire/firestore'; //O Database 
-import { AngularFireStorageModule } from '@angular/fire/storage'; //Inútil, porém não sei
-import { AngularFireAuthModule } from '@angular/fire/auth'; //Autenticação
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { BrMaskerModule } from 'br-mask';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
@@ -46,10 +40,6 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     MapaModalPageModule,
-    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-    AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
-    AngularFireStorageModule, // imports firebase/storage only needed for storage features
-    AngularFireModule.initializeApp(environment.firebase),
     IonicStorageModule.forRoot({
       name: '__orditi',
       storeName: 'login',
