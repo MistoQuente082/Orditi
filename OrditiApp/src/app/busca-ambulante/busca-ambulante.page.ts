@@ -25,6 +25,7 @@ export class BuscaAmbulantePage implements OnInit {
     public modalCtrl: ModalController
   ) {
     this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+      console.log(data);
           this.ambulantesTotal = data;
           this.ambulantes = this.ambulantesTotal;
         }, error => {
