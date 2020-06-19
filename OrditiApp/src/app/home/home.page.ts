@@ -118,9 +118,12 @@ export class HomePage {
       alert(barcodeData.text);
       try {
         this.sqlOrditi.receberPerfil(this.scannedCode.text).subscribe(data => {
-          console.log(data)
-          this.irPerfis(data[0]);
-          console.log('Entreou');
+          if(data[0] === undefined){
+            this.alertas.presentToast('Nenhum usuário com esse código');
+          }
+          else{
+            this.irPerfis(data[0]);
+          }
         })
       } catch{
         this.alertas.presentToast('Nenhum usuário com esse código');
@@ -235,17 +238,16 @@ export class HomePage {
     var ambulanteLat = geo['latitude'];
     var ambulantLong = geo['longitude'];
     var ambulanteStatus = geo['situacao'];
-
-    //console.log(ambulanteFoto)
-    //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
-    //  ambulanteFoto = url;
-    //});
-    if (ambulanteStatus === 1) {
+    if (ambulanteStatus === '1') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
       amb.addTo(this.map);
     }
-    if (ambulanteStatus === 2) {
+    if (ambulanteStatus === '2') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+      amb.addTo(this.map);
+    }
+    if (ambulanteStatus === '0') {
+      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
       amb.addTo(this.map);
     }
     

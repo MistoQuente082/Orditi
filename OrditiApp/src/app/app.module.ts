@@ -28,6 +28,7 @@ import { DetalheZonaPageModule } from './detalhe-zona/detalhe-zona.module';
 import { PerfilAmbulantePageModule } from './perfil-ambulante/perfil-ambulante.module';
 import { HomePageModule } from './home/home.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NotificarAmbulantePageModule } from './notificar-ambulante/notificar-ambulante.module';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
     HomePageModule,
     DetalheZonaPageModule,
     PerfilAmbulantePageModule,
+    NotificarAmbulantePageModule,
     HttpClientModule,
 
     IonicModule.forRoot(),

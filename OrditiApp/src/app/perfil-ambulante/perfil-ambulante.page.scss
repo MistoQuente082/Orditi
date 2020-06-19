@@ -12,6 +12,8 @@ ion-card-subtitle {
     height: 130px;
     width: 100%;
     display: flex;
+    align-content: center;
+    flex-direction: column;
   }
   .conteudo {
     border-radius: 50%;
@@ -19,4 +21,7 @@ ion-card-subtitle {
     width: 120px;
     margin: auto;
   }
+.abaixo{
+  margin: 3px;
+}
   

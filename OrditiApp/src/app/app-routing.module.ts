@@ -24,7 +24,8 @@ const routes: Routes = [
   { path: 'editar-ambulante', loadChildren: './editar-ambulante/editar-ambulante.module#EditarAmbulantePageModule' },
   { path: 'eventos', loadChildren: './eventos/eventos.module#EventosPageModule' },
   { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' },  { path: 'busca-ambulante', loadChildren: './busca-ambulante/busca-ambulante.module#BuscaAmbulantePageModule' },
-  { path: 'filtro-busca', loadChildren: './filtro-busca/filtro-busca.module#FiltroBuscaPageModule' }
+  { path: 'filtro-busca', loadChildren: './filtro-busca/filtro-busca.module#FiltroBuscaPageModule' },
+  { path: 'notificar-ambulante', loadChildren: './notificar-ambulante/notificar-ambulante.module#NotificarAmbulantePageModule' }
 
 
 

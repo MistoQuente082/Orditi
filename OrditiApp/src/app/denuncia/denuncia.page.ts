@@ -15,11 +15,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import * as L from 'leaflet';
 
-import * as firebase from 'firebase';
 import { AppModule } from '../app.module';
 import { CameraService } from '../services/camera/camera.service';
 
-import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -102,17 +100,12 @@ export class DenunciaPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public Cam: Camera,
     public httpClient: HttpClient
-
   ) {
   }
 
   remover() {
     this.imgAut = null
-
-
   }
-
-
 
   // Função para camera
 
@@ -238,7 +231,6 @@ export class DenunciaPage implements OnInit {
         'latitude': this.local.lat,
         'longitude': this.local.lng,
         'local': this.localDenuncia,
-
       };
 
 
