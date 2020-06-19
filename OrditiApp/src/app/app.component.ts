@@ -8,6 +8,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AppModule } from './app.module';
 import { LoginBancoService } from './services/login/login-banco.service';
+import { ListaAmbulantesService } from './services/lista-ambulantes/lista-ambulantes.service';
+import { SqlOrditiService } from './services/banco/sql-orditi.service';
 
 @Component({
   selector: 'app-root',
@@ -105,16 +107,22 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private loginBanco: LoginBancoService) {
+    private loginBanco: LoginBancoService,
+    private listaAmbulante: ListaAmbulantesService,
+    private sqlOrditi: SqlOrditiService) {
     this.initializeApp();
+    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+      this.listaAmbulante.inserir('lista', data)
+      this.listaAmbulante.recuperar('lista').then((data)=>{
+        console.log(data)
+      });
+    })
     console.log(this.status);
     console.log(AppModule.getUsuarioStatus())
   }
 
   Fiscal() {
-    
     return this.loginBanco.res_usuario;
-
   }
 
   sair() {

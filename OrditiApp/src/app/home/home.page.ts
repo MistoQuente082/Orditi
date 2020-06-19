@@ -22,6 +22,7 @@ import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
 import { thistle } from 'color-name';
+import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 
 
@@ -102,6 +103,7 @@ export class HomePage {
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner,
     private loginBanco: LoginBancoService,
+    private listaAmbulante: ListaAmbulantesService
   ) {
   }
 
@@ -114,22 +116,15 @@ export class HomePage {
       this.scannedCode = barcodeData;
       console.log(barcodeData.text);
       alert(barcodeData.text);
-
-      this.db.collection('ambulantes').doc(this.scannedCode.text).get().toPromise()
-        .then(doc => {
-          if (doc.exists) {
-            this.irPerfis(doc.data());
-            console.log('Entreou');
-          } else {
-            this.alertas.presentToast('Nenhum usuário com esse código');
-            console.log('Não rolou');
-          }
-
+      try {
+        this.sqlOrditi.receberPerfil(this.scannedCode.text).subscribe(data => {
+          console.log(data)
+          this.irPerfis(data[0]);
+          console.log('Entreou');
         })
-        .catch(err => {
-          console.log("Error", err);
-        });
-
+      } catch{
+        this.alertas.presentToast('Nenhum usuário com esse código');
+      }
     });
   }
 
@@ -143,26 +138,17 @@ export class HomePage {
     } else {
       this.loginBanco.recuperar('fiscal')
         .then((dados) => {
-
-          if(dados !== null){
-          console.log('dadinhos', dados);
-          console.log('MEU POSTIVO');
-
-          this.tipoUsuario = true;
-          this.loginBanco.res_usuario = true;
+          if (dados !== null) {
+            this.tipoUsuario = true;
+            this.loginBanco.res_usuario = true;
           }
-
           else {
-            console.log('MEU NEGATIVO');
             this.tipoUsuario = false;
             this.loginBanco.res_usuario = false;
           }
-
         }, error => {
-          console.log('MEU NEGATIVO');
           this.tipoUsuario = false;
           this.loginBanco.res_usuario = false;
-
         });
 
 
@@ -179,13 +165,15 @@ export class HomePage {
         this.poli.addTo(this.map);
 
         this.markersA = L.markerClusterGroup({
-          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 }});
+          polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
+        });
         this.markersD = L.markerClusterGroup({
-          polygonOptions: { stroke:false, fill: true, fillColor: "gray", fillOpacity: 0.45 }});
+          polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
+        });
 
 
         //Criar Pins de Ambulantes
-        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+        this.listaAmbulante.recuperar('lista').then((data)=>{
           data.forEach(element => {
             this.criarMarkerAmbulantes(element);
             console.log(element);
@@ -203,7 +191,7 @@ export class HomePage {
         }, error => {
           console.log(error);
         });;
-console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
+        console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
         //Adicionar condição para só mostrar se for fiscal
         if (this.tipoUsuario !== false) {
           this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
@@ -254,11 +242,13 @@ console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
     //});
     if (ambulanteStatus === 1) {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+      amb.addTo(this.map);
     }
     if (ambulanteStatus === 2) {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+      amb.addTo(this.map);
     }
-    amb.addTo(this.map);
+    
   }
 
   criarMarkerDenuncias(den) {

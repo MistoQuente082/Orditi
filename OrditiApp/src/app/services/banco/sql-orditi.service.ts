@@ -57,4 +57,32 @@ export class SqlOrditiService {
       token,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
   }
+
+  receberPerfil(id){
+    let headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+    let token = 39158;
+    console.log(id)
+    let lista = {token: token, id: id};
+    return this.httpClient.post<any[]>(
+      'http://www.syphan.com.br/orditiServices/filtrarAmbulante.php',
+      lista,
+      { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
+
+  }
+
+  receberNotificacoes(id){
+    let headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+    let token = 39158;
+    console.log(id)
+    let lista = {token: token, id: id};
+    return this.httpClient.post<any[]>(
+      'http://www.syphan.com.br/orditiServices/receberNotificacoes.php',
+      lista,
+      { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
+
+  }
 }

@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import _ from "lodash";
 
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
+import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 @Component({
   selector: 'app-busca-ambulante',
@@ -22,9 +23,10 @@ export class BuscaAmbulantePage implements OnInit {
 
   constructor(
     private sqlOrditi: SqlOrditiService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private listaAmbulante: ListaAmbulantesService
   ) {
-    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+    this.listaAmbulante.recuperar('lista').then((data)=>{
       console.log(data);
           this.ambulantesTotal = data;
           this.ambulantes = this.ambulantesTotal;
@@ -37,6 +39,7 @@ export class BuscaAmbulantePage implements OnInit {
   }
 
   async verMais(item) {
+    console.log(item);
     const modal = await this.modalCtrl.create({
       component: PerfilAmbulantePage,
       componentProps: {

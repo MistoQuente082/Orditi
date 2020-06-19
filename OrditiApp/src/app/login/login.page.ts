@@ -102,7 +102,6 @@ export class LoginPage implements OnInit {
             this.fazerLogin(true);
             this.loginBanco.inserir('fiscal', data['dados']);
           }
-
           if (data['retorno'] == 0) {
             this.fazerLogin(false);
 

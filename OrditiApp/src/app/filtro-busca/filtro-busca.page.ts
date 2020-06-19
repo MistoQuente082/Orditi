@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginBancoService } from '../services/login/login-banco.service';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { ModalController } from '@ionic/angular';
+import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 @Component({
   selector: 'app-filtro-busca',
@@ -25,8 +26,9 @@ export class FiltroBuscaPage implements OnInit {
     public modalController: ModalController,
     private loginBanco: LoginBancoService,
     private sqlOrditi: SqlOrditiService,
+    private listaAmbulante: ListaAmbulantesService,
   ) {
-    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+    this.listaAmbulante.recuperar('lista').then((data)=>{
           this.pessoasTotal = data;
         }, error => {
           console.log(error);

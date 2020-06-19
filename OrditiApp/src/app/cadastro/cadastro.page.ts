@@ -417,10 +417,6 @@ export class CadastroPage implements OnInit {
 
   }
 
-
-
-
-
   // Obtem a imagem a partir do cpf do ambulante
   // Envia pro banco de Dados 
   obterQrCode() {
@@ -429,42 +425,9 @@ export class CadastroPage implements OnInit {
 
   }
 
-
-
-
   // Botão de cadastro
   cadastrar() {
 
-    /*
-        if (this.regiao !== 'a1') {
-          if (this.produto === undefined || this.regiao === undefined) {
-            this.alertas.presentToast('Preencha os campos!');
-          } else {
-            if (this.pontoRef === undefined) {
-              this.pontoRef = ' ';
-            }
-    
-            
-    
-    
-            
-            const dados = {
-           
-              'nome': this.nome,
-              'identidade': this.cpf,
-              'fone': this.fone,
-              'escolaridade': this.escolaridade,
-              'endereco': this.enderecoPessoa,
-              'pontoRef': this.pontoRef,
-              'produto': this.produto,
-              'foto': this.imgPessoa,
-              'regiao': this.regiao,
-              'situacao': 0, // 0: ainda n pagou, 1: pagou 
-            };
-            this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
-          }
-        } else {
-          */
     let condicicoes = this.produto === undefined || this.hInicio === undefined
       || this.hfim === undefined || this.relatoAtividade === undefined
       || this.produto === undefined || this.local === undefined

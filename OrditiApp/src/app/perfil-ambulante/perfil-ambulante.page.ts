@@ -23,8 +23,13 @@ import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
   styleUrls: ['./perfil-ambulante.page.scss'],
 })
 export class PerfilAmbulantePage implements OnInit {
+  historico: boolean = false;
+  trabalho: boolean = true;
+  informacoes: boolean = false;
 
+  historicoLista: any[]=[];
   ambulante: any;
+  
   // Variaveis da pessoa
   constructor(
     public db: AngularFirestore,
@@ -34,6 +39,7 @@ export class PerfilAmbulantePage implements OnInit {
     public router: Router,
   ) {
     this.ambulante = this.navParam.get('info');
+    console.log(this.ambulante);
   }
 
 
@@ -51,9 +57,32 @@ export class PerfilAmbulantePage implements OnInit {
     });
 
     await modal.present();
+  }
 
+  mostrarNotificacoes(){
+    if(this.historico === false){
+      this.historico = true;
+    }
+      else{
+        this.historico = false;
+      }
+  }
+  mostrarTrabalho(){
+    if(this.trabalho === false){
+    this.trabalho = true;
+  }
+    else{
+      this.trabalho = false;
+    }
+  }
 
-
+  mostrarInfor(){
+    if(this.informacoes === false){
+    this.informacoes = true;
+  }
+    else{
+      this.informacoes = false;
+    }
   }
 
 }
