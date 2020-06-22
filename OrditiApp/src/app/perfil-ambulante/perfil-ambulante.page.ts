@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 
 import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
 import { NotificarAmbulantePage } from '../notificar-ambulante/notificar-ambulante.page';
+import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 
 @Component({
   selector: 'app-perfil-ambulante',
@@ -23,7 +24,7 @@ export class PerfilAmbulantePage implements OnInit {
   
   // Variaveis da pessoa
   constructor(
-    public db: AngularFirestore,
+    public sqlOrditi: SqlOrditiService,
     public alertas: AlertasService,
     public navParam: NavParams,
     public modalController: ModalController,
@@ -31,6 +32,10 @@ export class PerfilAmbulantePage implements OnInit {
   ) {
     this.ambulante = this.navParam.get('info');
     console.log(this.ambulante);
+    this.sqlOrditi.receberNotificacoes(this.ambulante['id']).subscribe(data =>{
+      console.log(data);
+      this.historicoLista = data;
+    })
   }
 
 

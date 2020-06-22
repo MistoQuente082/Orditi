@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
+import { ModalController, ActionSheetController, AlertController, NavParams } from '@ionic/angular';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { LoginBancoService } from '../services/login/login-banco.service';
 
 @Component({
   selector: 'app-notificar-ambulante',
@@ -20,13 +21,24 @@ export class NotificarAmbulantePage implements OnInit {
   public info;
   public seunome: any;
 
+  public id;
+  public titulo: any;
+
   constructor(
     private sqlOrditi: SqlOrditiService,
     public alertController: AlertController,
     public modalController: ModalController,
+    public navParam: NavParams,
     public Cam: Camera,
+    public loginBanco: LoginBancoService,
     public actionSheetController: ActionSheetController,
-  ) { }
+  ) { 
+    this.id = this.navParam.get('id');
+    this.loginBanco.recuperar('fiscal')
+        .then((dados) => {
+          console.log(dados);
+        })
+  }
 
   ngOnInit() {
   }
@@ -90,14 +102,19 @@ export class NotificarAmbulantePage implements OnInit {
 
   //Enviar
   submit(){
-    const dados = {
-      'foto': this.imgAut,
-      'data_denuncia': this.data,
-      'hora_denuncia': this.hora,
-      'descricao': this.info,
-    };
-
-    this.presentAlertDenuncia(dados, this.url_banco, this.alerta_texto);
+    this.loginBanco.recuperar('fiscal').then((dados) =>{
+      const data = {
+        'foto': this.imgAut,
+        'ambulante_id': this.id,
+        'data_notificacao': this.data,
+        'hora_notificacao': this.hora,
+        'descricao': this.info,
+        'fiscal_id': dados['id'],
+        'fiscal_nome': this.seunome,
+        'titulo': this.titulo,
+      };
+      this.presentAlertDenuncia(dados, this.url_banco, this.alerta_texto);
+    })
 
   }
 

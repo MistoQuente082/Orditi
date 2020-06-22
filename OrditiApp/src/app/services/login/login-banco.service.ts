@@ -21,10 +21,7 @@ export class LoginBancoService {
   }
 
   recuperar(key) {
-
-
     return this.storage.get(key)
-
   }
 
   remover(key) {

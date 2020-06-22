@@ -47,21 +47,14 @@ export class LoginPage implements OnInit {
       if (resp === true) {
         this.returnHome();
       }
-
       else if (resp === false) {
         // Aviso na tela
-
         this.presentToast('Matricula ou Senha Incorreta!');
-
       } else {
         this.presentToast('Erro ao fazer login');
       }
-
-
     } catch (err) {
-
       console.log('Erro encontrado ao conectar-se ao banco de dados: ' + err.code);
-
     } finally {
       // Encerra o carregamento
       this.loading.dismiss();
@@ -104,16 +97,10 @@ export class LoginPage implements OnInit {
           }
           if (data['retorno'] == 0) {
             this.fazerLogin(false);
-
-
           }
-
-
         }, error => {
           console.log('Erro ao tentar fazer login pelo Banco: ', error);
           this.fazerLogin('erro');
-
-
         });
     }
   }
