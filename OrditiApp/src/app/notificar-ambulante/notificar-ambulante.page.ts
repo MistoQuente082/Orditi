@@ -14,7 +14,7 @@ export class NotificarAmbulantePage implements OnInit {
   private url_banco = 'https://syphan.com.br/orditiServices/cadastrarNotificacao.php';
   private alerta_texto = 'Não foi possível cadastrar a ocorrência!';
 
-  public imgAut;
+  //public imgAut;
 
   public data: Date = new Date();
   public hora: Date = new Date();
@@ -49,47 +49,47 @@ export class NotificarAmbulantePage implements OnInit {
 
   // Função para camera
   // CAMERA
-  async cam() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Escolher Imagem',
-      buttons: [{
-        text: 'Galeria',
-        icon: 'images',
-        handler: () => {
-          this.takePicture(this.Cam.PictureSourceType.PHOTOLIBRARY);
-        }
-      },
-      {
-        text: 'Capturar',
-        icon: 'camera',
-        handler: () => {
-          this.takePicture(this.Cam.PictureSourceType.CAMERA);
-        },
-      }, {
-        text: 'Cancelar',
-        role: 'cancel'
-      }]
-    });
-    await actionSheet.present();
-  }
-  takePicture(sourceType: PictureSourceType) {
-    var options: CameraOptions = {
-      quality: 100,
-      sourceType: sourceType,
-      saveToPhotoAlbum: false,
-      correctOrientation: true,
-      destinationType: this.Cam.DestinationType.DATA_URL,
-      encodingType: this.Cam.EncodingType.JPEG,
-      mediaType: this.Cam.MediaType.PICTURE,
-    }
-    this.Cam.getPicture(options).then((imgData) => {
-      this.imgAut = 'data:image/jpeg;base64,' + imgData;
-    });
-  }
+  //async cam() {
+  //  const actionSheet = await this.actionSheetController.create({
+  //    header: 'Escolher Imagem',
+  //    buttons: [{
+  //      text: 'Galeria',
+  //      icon: 'images',
+  //      handler: () => {
+  //        this.takePicture(this.Cam.PictureSourceType.PHOTOLIBRARY);
+  //      }
+  //    },
+  //    {
+  //      text: 'Capturar',
+  //      icon: 'camera',
+  //      handler: () => {
+  //        this.takePicture(this.Cam.PictureSourceType.CAMERA);
+  //      },
+  //    }, {
+  //      text: 'Cancelar',
+  //      role: 'cancel'
+  //    }]
+  //  });
+  //  await actionSheet.present();
+  //}
+  //takePicture(sourceType: PictureSourceType) {
+  //  var options: CameraOptions = {
+  //    quality: 100,
+  //    sourceType: sourceType,
+  //    saveToPhotoAlbum: false,
+  //    correctOrientation: true,
+  //    destinationType: this.Cam.DestinationType.DATA_URL,
+  //    encodingType: this.Cam.EncodingType.JPEG,
+  //    mediaType: this.Cam.MediaType.PICTURE,
+  //  }
+  //  this.Cam.getPicture(options).then((imgData) => {
+  //    this.imgAut = 'data:image/jpeg;base64,' + imgData;
+  //  });
+  //}
   //REmover imagem
-  remover() {
-    this.imgAut = null
-  }
+  //remover() {
+  //  this.imgAut = null
+  //}
 
 
   // DATA DO OCORRIDO
@@ -104,7 +104,6 @@ export class NotificarAmbulantePage implements OnInit {
   submit(){
     this.loginBanco.recuperar('fiscal').then((dados) =>{
       const data = {
-        'foto': this.imgAut,
         'ambulante_id': this.id,
         'data_notificacao': this.data,
         'hora_notificacao': this.hora,
@@ -113,7 +112,7 @@ export class NotificarAmbulantePage implements OnInit {
         'fiscal_nome': this.seunome,
         'titulo': this.titulo,
       };
-      this.presentAlertDenuncia(dados, this.url_banco, this.alerta_texto);
+      this.presentAlertDenuncia(data, this.url_banco, this.alerta_texto);
     })
 
   }

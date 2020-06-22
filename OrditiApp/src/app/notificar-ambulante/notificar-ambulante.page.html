@@ -48,24 +48,6 @@
     </ion-item>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>
-        Imagem da Ocorrência
-      </ion-card-subtitle>
-    </ion-card-header>
-    <ion-item>
-      <ion-thumbnail *ngIf="imgAut" slot="start">
-        <ion-img [src]=imgAut></ion-img>
-      </ion-thumbnail>
-
-      <ion-label>Imagem</ion-label>
-
-      <ion-button *ngIf="!imgAut" slot="end" color="secondary" size="small" (click)="cam()">Adicionar</ion-button>
-      <ion-button *ngIf="imgAut" slot="end" color="danger" size="small" (click)="remover()">Remover</ion-button>
-    </ion-item>
-  </ion-card>
-
 
 
   <ion-button (click)="submit()" expand="block">Enviar</ion-button>

@@ -120,14 +120,10 @@
       </ion-card-subtitle>
     </ion-card-header>
     <div *ngIf="historico">
-      <p>aaaaa</p>
       <ion-item *ngFor="let ocorrencia of historicoLista">
-        <ion-avatar slot="start">
-          <img src="{{ocorrencia.foto}}">
-        </ion-avatar>
         <ion-label>
           <h3>{{ocorrencia.descricao}}</h3>
-          <p>{{ocorrencia.hora}}</p>
+          <p>Dia: {{ocorrencia.data_notificacao}}</p>
         </ion-label>
       </ion-item>
     </div>
