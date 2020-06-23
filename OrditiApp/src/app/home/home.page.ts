@@ -5,8 +5,6 @@ import 'leaflet/dist/leaflet.css';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
-import { Observable } from 'rxjs';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
@@ -16,12 +14,10 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
-import * as firebase from 'firebase';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
-import { thistle } from 'color-name';
 import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 
@@ -105,6 +101,8 @@ export class HomePage {
     private loginBanco: LoginBancoService,
     private listaAmbulante: ListaAmbulantesService
   ) {
+    
+    console.log(this.loginBanco.recuperar('fiscal'));
   }
 
 
@@ -118,9 +116,12 @@ export class HomePage {
       alert(barcodeData.text);
       try {
         this.sqlOrditi.receberPerfil(this.scannedCode.text).subscribe(data => {
-          console.log(data)
-          this.irPerfis(data[0]);
-          console.log('Entreou');
+          if(data[0] === undefined){
+            this.alertas.presentToast('Nenhum usuário com esse código');
+          }
+          else{
+            this.irPerfis(data[0]);
+          }
         })
       } catch{
         this.alertas.presentToast('Nenhum usuário com esse código');
@@ -235,17 +236,16 @@ export class HomePage {
     var ambulanteLat = geo['latitude'];
     var ambulantLong = geo['longitude'];
     var ambulanteStatus = geo['situacao'];
-
-    //console.log(ambulanteFoto)
-    //firebase.storage().ref().child('ambulantes/' + geo.data().cpf + '.jpg').getDownloadURL().then(url => {
-    //  ambulanteFoto = url;
-    //});
-    if (ambulanteStatus === 1) {
+    if (ambulanteStatus === '1') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
       amb.addTo(this.map);
     }
-    if (ambulanteStatus === 2) {
+    if (ambulanteStatus === '2') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
+      amb.addTo(this.map);
+    }
+    if (ambulanteStatus === '0') {
+      var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
       amb.addTo(this.map);
     }
     

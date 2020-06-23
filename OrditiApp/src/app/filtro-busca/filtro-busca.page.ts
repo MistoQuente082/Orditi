@@ -3,6 +3,7 @@ import { LoginBancoService } from '../services/login/login-banco.service';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { ModalController } from '@ionic/angular';
 import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
+import { MostrarListaPage } from '../mostrar-lista/mostrar-lista.page';
 
 @Component({
   selector: 'app-filtro-busca',
@@ -21,13 +22,21 @@ export class FiltroBuscaPage implements OnInit {
 
   min_area: any = null;
   max_area: any = null;
+  listaFiltro: any;
 
   constructor(
     public modalController: ModalController,
     private loginBanco: LoginBancoService,
     private sqlOrditi: SqlOrditiService,
     private listaAmbulante: ListaAmbulantesService,
+    private listaFiltrada: ListaAmbulantesService,
   ) {
+
+    this.listaAmbulante.recuperar('lista1').then((data)=>{
+      this.listaFiltro = data;
+      console.log(data)
+    })
+
     this.listaAmbulante.recuperar('lista').then((data)=>{
           this.pessoasTotal = data;
         }, error => {
@@ -66,6 +75,7 @@ export class FiltroBuscaPage implements OnInit {
       }
       console.log(this.bairro)
     })
+    this.modalLista(this.lista)
   }
 
   allClickedCategories(){    
@@ -77,7 +87,27 @@ export class FiltroBuscaPage implements OnInit {
     }    
   }
 
-  modalLista(){
+  async modalLista(lista){
+    const modal = await this.modalController.create({
+      component: MostrarListaPage,
+      componentProps: {
+        lista: lista
+      }
+    });
+
+    await modal.present();
+  }
+
+  async verLista(){
+    
+    const modal = await this.modalController.create({
+      component: MostrarListaPage,
+      componentProps: {
+        lista: this.listaFiltro
+      }
+    });
+
+    await modal.present();
   }
 
 }

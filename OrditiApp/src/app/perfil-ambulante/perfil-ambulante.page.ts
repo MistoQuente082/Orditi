@@ -1,21 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { NavParams, ModalController } from '@ionic/angular';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
-import { Observable } from 'rxjs';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
-import { AlertController } from '@ionic/angular';
 
-import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
+import * as moment from 'moment';
+
 import { Router } from '@angular/router';
 
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import * as firebase from 'firebase'
-import { CameraService } from '../services/camera/camera.service';
 import { EditarAmbulantePage } from '../editar-ambulante/editar-ambulante.page';
+import { NotificarAmbulantePage } from '../notificar-ambulante/notificar-ambulante.page';
+import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 
 @Component({
   selector: 'app-perfil-ambulante',
@@ -32,7 +25,7 @@ export class PerfilAmbulantePage implements OnInit {
   
   // Variaveis da pessoa
   constructor(
-    public db: AngularFirestore,
+    public sqlOrditi: SqlOrditiService,
     public alertas: AlertasService,
     public navParam: NavParams,
     public modalController: ModalController,
@@ -40,6 +33,14 @@ export class PerfilAmbulantePage implements OnInit {
   ) {
     this.ambulante = this.navParam.get('info');
     console.log(this.ambulante);
+    this.sqlOrditi.receberNotificacoes(this.ambulante['id']).subscribe(data =>{
+      console.log(data)
+      data.forEach( e =>{
+        e.data_notificacao = moment(e.data_notificacao).format('DD/MM/YYYY');}
+      )
+      console.log(data);
+      this.historicoLista = data;
+    })
   }
 
 
@@ -83,6 +84,17 @@ export class PerfilAmbulantePage implements OnInit {
     else{
       this.informacoes = false;
     }
+  }
+
+  async notificar(){
+    const modal = await this.modalController.create({
+      component: NotificarAmbulantePage,
+      componentProps: {
+        id: this.ambulante['id']
+      }
+    });
+
+    await modal.present();
   }
 
 }

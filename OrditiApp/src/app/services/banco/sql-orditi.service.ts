@@ -80,7 +80,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'http://www.syphan.com.br/orditiServices/receberNotificacoes.php',
+      'http://www.syphan.com.br/orditiServices/listarNotificacoes.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 

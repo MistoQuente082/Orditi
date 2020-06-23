@@ -13,6 +13,7 @@
 
   <div class="centro">
     <img class="conteudo" [src]="ambulante['foto']" (click)="cam()">
+
   </div>
 
   <ion-card *ngIf="mostrarMapa" id="mapId3" style="height: 300px"></ion-card>
@@ -26,27 +27,43 @@
     <div *ngIf="trabalho">
       <ion-item>
         <ion-label position="floating">Produto:</ion-label>
-        <br>
         <p>{{ambulante.produto}}</p>
       </ion-item>
 
       <ion-item>
+        <ion-label position="floating">Descrição:</ion-label>
+        <p>{{ambulante.relato_atividade}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Area do Equipamento:</ion-label>
+        <p>{{ambulante.area_equipamento}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Tipo do Equipamento:</ion-label>
+        <p>pppp</p>
+      </ion-item>
+
+      <ion-item *ngIf="ambulante.regiao != '0'">
         <ion-label position="floating">Região:</ion-label>
-        <br>
         <p>{{ambulante.regiao}}</p>
       </ion-item>
-
-      <ion-item *ngIf="ambulante.pontoRef != ' ' || ambulante.pontoRef != ''">
-        <ion-label position="floating">Ponto de referência:</ion-label>
-        <br>
-        <p>{{ambulante.pontoRef}}</p>
+      <ion-item *ngIf="ambulante.ponto_referencia!='NULL'">
+        <ion-label position="floating">Ponto de Referencia:</ion-label>
+        <p>{{ambulante.ponto_referencia}}</p>
       </ion-item>
 
-      <ion-item *ngIf="ambulante.localAtiv">
+      <ion-item *ngIf="ambulante.end_local">
         <ion-label position="floating">Local de Atividade:</ion-label>
-        <br>
-        <p>{{ambulante.localAtiv}}</p>
+        <p>{{ambulante.end_local}}</p>
       </ion-item>
+
+      <ion-item *ngIf="ambulante.atendimento_dias">
+        <ion-label position="floating">Dias de trabalho:</ion-label>
+        <p>{{ambulante.atendimento_dias}}</p>
+      </ion-item>
+
+      <img class="abaixo" [src]="ambulante['foto_equipamento']">
     </div>
   </ion-card>
 
@@ -87,6 +104,12 @@
         <br>
         <p>{{ambulante.fone}}</p>
       </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Telefone:</ion-label>
+        <br>
+        <p>{{ambulante.email}}</p>
+      </ion-item>
     </div>
   </ion-card>
 
@@ -97,20 +120,15 @@
       </ion-card-subtitle>
     </ion-card-header>
     <div *ngIf="historico">
-      <p>aaaaa</p>
       <ion-item *ngFor="let ocorrencia of historicoLista">
-        <ion-avatar slot="start">
-          <img src="{{ocorrencia.foto}}">
-        </ion-avatar>
         <ion-label>
-          <h3>{{ocorrencia.descricao}}</h3>
-          <p>{{ocorrencia.hora}}</p>
+          <h2>{{ocorrencia.titulo}}</h2>
+          <h4>{{ocorrencia.descricao}}</h4>
+          <p>Dia: {{ocorrencia.data_notificacao}}</p>
         </ion-label>
       </ion-item>
     </div>
+    <ion-button (click)="notificar()" expand="block">Registrar Ocorrência</ion-button>
   </ion-card>
-
-
-
 
 </ion-content>

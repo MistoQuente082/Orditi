@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Lista Salva</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list >
+    <ion-item *ngFor="let pessoa of lista" >
+      <ion-avatar slot="start">
+        <img src="{{pessoa.foto}}">
+      </ion-avatar>
+      <ion-label>
+        <h3>{{pessoa.nome}}</h3>
+        <p>{{pessoa.produto}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" (click)='salvarLista()' color="medium">Salvar Lista</ion-button>
+
+</ion-content>

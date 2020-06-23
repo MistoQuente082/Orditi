@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Registrar Notificação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        Informações
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-item>
+      <ion-label color="secondary" position="floating">Nome do Fiscal:</ion-label>
+      <ion-input type="text" [(ngModel)]="seunome" placeholder="Ex.: Maria das Dores"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="secondary" position="floating">Dê um nome à Ocorrência:</ion-label>
+      <ion-input type="text" [(ngModel)]="titulo" placeholder="Ex.: Organização"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="secondary" position="floating">Período:</ion-label>
+
+      <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
+        ([ngModel])="data.toISOString()" placeholder="Seleciona o Dia" (ionChange)="mudaData( $event )">
+      </ion-datetime>
+
+
+      <ion-datetime display-format="HH:mm" strin cancelText="Cancelar" doneText="Escolher" ([ngModel])="hora"
+        placeholder="Seleciona o Horário" (ionChange)="mudaHora( $event )">
+      </ion-datetime>
+
+
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="secondary" position="floating">Informe a situação:</ion-label>
+      <ion-textarea [(ngModel)]="info" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
+    </ion-item>
+  </ion-card>
+
+
+
+  <ion-button (click)="submit()" expand="block">Enviar</ion-button>
+
+
+</ion-content>
