@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { NavParams, ModalController } from '@ionic/angular';
-import { AngularFirestore } from '@angular/fire/firestore';
+
+import * as moment from 'moment';
 
 import { Router } from '@angular/router';
 
@@ -33,6 +34,10 @@ export class PerfilAmbulantePage implements OnInit {
     this.ambulante = this.navParam.get('info');
     console.log(this.ambulante);
     this.sqlOrditi.receberNotificacoes(this.ambulante['id']).subscribe(data =>{
+      console.log(data)
+      data.forEach( e =>{
+        e.data_notificacao = moment(e.data_notificacao).format('DD/MM/YYYY');}
+      )
       console.log(data);
       this.historicoLista = data;
     })

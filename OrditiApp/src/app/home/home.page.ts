@@ -5,8 +5,6 @@ import 'leaflet/dist/leaflet.css';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AppModule } from '../app.module';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { HighlightDelayBarrier } from 'blocking-proxy/built/lib/highlight_delay_barrier';
-import { Observable } from 'rxjs';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
@@ -16,12 +14,10 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 
-import * as firebase from 'firebase';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
-import { thistle } from 'color-name';
 import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 

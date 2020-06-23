@@ -122,16 +122,13 @@
     <div *ngIf="historico">
       <ion-item *ngFor="let ocorrencia of historicoLista">
         <ion-label>
-          <h3>{{ocorrencia.descricao}}</h3>
+          <h2>{{ocorrencia.titulo}}</h2>
+          <h4>{{ocorrencia.descricao}}</h4>
           <p>Dia: {{ocorrencia.data_notificacao}}</p>
         </ion-label>
       </ion-item>
     </div>
     <ion-button (click)="notificar()" expand="block">Registrar Ocorrência</ion-button>
   </ion-card>
-
-
-
-
 
 </ion-content>
