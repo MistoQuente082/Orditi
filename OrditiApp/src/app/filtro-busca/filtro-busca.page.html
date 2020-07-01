@@ -37,18 +37,18 @@
     <ion-item> 
       <ion-card>
         <ion-item>
-          <ion-input type="number" placeholder="Minima" [(ngModel)]="min_area"></ion-input>
+          <ion-input type="number" placeholder="Min " [(ngModel)]="min_area"></ion-input>
         </ion-item>
       </ion-card>
       até
       <ion-card>
         <ion-item>
-          <ion-input type="number" placeholder="Maxima" [(ngModel)]="max_area"></ion-input>
+          <ion-input type="number" placeholder="Max" [(ngModel)]="max_area"></ion-input>
         </ion-item>
       </ion-card>
     </ion-item>
 
-    <ion-button expand="block" (click)='gerarLista()' color="medium">Gerar Lista</ion-button>
+    <ion-button expand="block"  (click)='gerarLista()' color="medium">Gerar Lista</ion-button>
     <ion-button expand="block" (click)='verLista()' color="medium">Ver Lista Salva Anteriormente</ion-button>
 
 </ion-content>
