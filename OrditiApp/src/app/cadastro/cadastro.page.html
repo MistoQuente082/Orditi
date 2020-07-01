@@ -185,9 +185,11 @@
         </ion-textarea>
       </ion-item>
 
-      <ion-item>
-        <ion-label color="secondary" position="floating">Produto e/ou Serviço:</ion-label>
-        <ion-input type="text" [(ngModel)]="produto" placeholder="Ex.: Churros"></ion-input>
+      <ion-item >
+        <ion-label color="medium" position="floating">Tipo de Produto/Serviço</ion-label>
+        <ion-select placeholder="Todos" [(ngModel)]="produto" multiple>
+          <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
+        </ion-select>
       </ion-item>
 
     </ion-card>

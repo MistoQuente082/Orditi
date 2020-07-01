@@ -30,14 +30,7 @@
   <ion-item >
     <ion-label color="medium" position="floating">Tipo de Produto/Serviço</ion-label>
     <ion-select placeholder="Todos" [(ngModel)]="produto" multiple>
-      <ion-select-option value="alimenticios">Alimentícios</ion-select-option>
-      <ion-select-option value="arefatos">Artefatos e Utensílios</ion-select-option>
-      <ion-select-option value="artesanato">Artesanato</ion-select-option>
-      <ion-select-option value="bebidas">Bebidas</ion-select-option>
-      <ion-select-option value="bebidasAlcoolicas">Bebidas Alcoólicas</ion-select-option>
-      <ion-select-option value="brinquedos">Brinquedos e ornamentos</ion-select-option>
-      <ion-select-option value="confeccoes">Confecções e uso pessoal</ion-select-option>
-      <ion-select-option value="outros">Outros</ion-select-option>
+      <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
     </ion-select>
   </ion-item>
 

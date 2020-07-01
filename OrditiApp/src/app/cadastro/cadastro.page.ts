@@ -1,9 +1,7 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { ModalController, ActionSheetController } from '@ionic/angular';
-import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
-import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
@@ -11,12 +9,10 @@ import { AlertController } from '@ionic/angular';
 
 import * as L from 'leaflet';
 
-import { Map, latLng, tileLayer, Layer, marker, circle, Icon } from 'leaflet';
+import { Map, tileLayer, marker } from 'leaflet';
 import { Router } from '@angular/router';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import * as firebase from 'firebase'
-import { CameraService } from '../services/camera/camera.service';
 
 //Configuração dos markers do leaflet
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
@@ -90,7 +86,7 @@ export class CadastroPage implements OnInit {
 
 
   // Variaveis Do trabalho
-  public produto: string;
+  public produto: any[];
   public pontoRef: string;
   public localAtiv: string;
   public regiao: string;
@@ -129,7 +125,7 @@ export class CadastroPage implements OnInit {
     }
   ];
 
-
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos', 'Ornamentos', 'Confecções', 'Calçados', 'Artigos de uso pessoal', 'Louças', 'Ferragens', 'Artefatos de plástico, borracha ou couro', 'Utensílios Domésticos', 'Artesanato e Antiguidades', 'Arte em geral', 'Outros'];
 
   returnHome() {
     this.router.navigate(['/home']);

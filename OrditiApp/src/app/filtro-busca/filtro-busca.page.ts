@@ -20,6 +20,8 @@ export class FiltroBuscaPage implements OnInit {
   produto: any[];
   bairro: any[] = [];
 
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos', 'Ornamentos', 'Confecções', 'Calçados', 'Artigos de uso pessoal', 'Louças', 'Ferragens', 'Artefatos de plástico, borracha ou couro', 'Utensílios Domésticos', 'Artesanato e Antiguidades', 'Arte em geral', 'Outros'];
+
   min_area: any = null;
   max_area: any = null;
   listaFiltro: any;
@@ -70,7 +72,13 @@ export class FiltroBuscaPage implements OnInit {
       } else{
         bairr = this.bairro
       }
-      if(bairr.includes(endereco[1]) && minarea<= area && maxarea >=area){
+      var prod;
+      if(this.produto.length <=0){
+        prod = this.produtos
+      } else{
+        prod = this.produto;
+      }
+      if(bairr.includes(endereco[1]) && minarea<= area && maxarea >=area && e['produto'].some(item => prod.includes(item)) ){
         this.lista.push(e);
       }
       console.log(this.bairro)
