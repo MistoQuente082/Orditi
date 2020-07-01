@@ -118,7 +118,7 @@ export class PerfilAmbulantePage implements OnInit {
   leafletMap(ambulante) {
 
     this.mostrarMapa = true;
-    if (this.map !== 'undefined' && this.map !== null && !this.enderecoLocal) {
+    if (this.map !== 'undefined' && this.map !== null) {
       this.map = null;
     }
     else {
