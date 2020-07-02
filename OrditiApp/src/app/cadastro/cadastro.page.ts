@@ -125,7 +125,22 @@ export class CadastroPage implements OnInit {
     }
   ];
 
-  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos', 'Ornamentos', 'Confecções', 'Calçados', 'Artigos de uso pessoal', 'Louças', 'Ferragens', 'Artefatos de plástico, borracha ou couro', 'Utensílios Domésticos', 'Artesanato e Antiguidades', 'Arte em geral', 'Outros'];
+  produtos: any[] = [
+    'Alimentos',
+    'Bebidas não alcoólicas',
+    'Bebidas Alcoólicas',
+    'Briquedos',
+    'Ornamentos',
+    'Confecções',
+    'Calçados',
+    'Artigos de uso pessoal',
+    'Louças',
+    'Ferragens',
+    'Artefatos de plástico, borracha ou couro',
+    'Utensílios Domésticos',
+    'Artesanato e Antiguidades',
+    'Arte em geral',
+    'Outros'];
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -424,16 +439,19 @@ export class CadastroPage implements OnInit {
   // Botão de cadastro
   cadastrar() {
 
+
+    let produto = this.produto.toString();
     let condicicoes = this.produto === undefined || this.hInicio === undefined
-      || this.hfim === undefined || this.relatoAtividade === undefined
-      || this.produto === undefined || this.local === undefined
+      || this.hfim === undefined
+      || this.local === undefined
       || this.dimensao === undefined || this.imgProduto === undefined;
-    if (condicicoes) {
+
+    if ((condicicoes && produto === '14' && this.relatoAtividade === undefined) || condicicoes) {
       this.alertas.presentToast('Preencha os campos ');
     }
+
     else {
       this.diasAtend = this.diasAtend.toString();
-      this.enderecoPessoa = this.rua + ' N° ' + this.numero + ', ' + this.bairro + ', ' + this.cidade;
       this.obterQrCode();
 
       if (this.localAtiv === undefined) {
@@ -445,15 +463,19 @@ export class CadastroPage implements OnInit {
         }
         var dados = {
           'nome': this.nome,
-          'cpf_cnpj': this.cpf,
+          'identidade': this.cpf,
           'rg': this.rg,
           'fone': this.fone,
           'email': this.email,
           'nome_materno': this.nomeMaterno,
-          'endereco': this.enderecoPessoa,
+          'endereco': this.rua,
+          'numero': this.numero,
+          'bairro': this.bairro,
+          'cidade': this.cidade,
+          'cep': this.cep,
           'end_local': this.enderecoLocal,
           'ponto_referencia': this.pontoRef,
-          'produto': this.produto,
+          'produto': produto,
           'foto_cliente': this.imgPessoa,
           'latitude': this.local.lat,
           'longitude': this.local.lng,
