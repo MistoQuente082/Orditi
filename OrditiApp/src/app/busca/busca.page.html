@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Buscar Região
+      Pesquisar
     </ion-title>
   </ion-toolbar>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -12,20 +12,30 @@
 
 <ion-content>
   <ion-item *ngIf="Fiscal() != false">
-    <ion-label   position="floating">Tipo de Busca</ion-label>
-    <ion-select placeholder="Selecione o que esta procurando" [(ngModel)]="tipo">
-      <ion-select-option value="pessoa">Pessoas</ion-select-option>
+    <ion-label position="floating">Tipo de Busca</ion-label>
+    <ion-select value="nome" placeholder="Selecione o que esta procurando" 
+      [(ngModel)]="tipo">
       <ion-select-option value="zona">Zonas</ion-select-option>
+      <ion-select-option value="cpf">CPF</ion-select-option>
+      <ion-select-option value="nome">Nome</ion-select-option>
 
     </ion-select>
   </ion-item>
-  <div *ngIf="tipo == 'pessoa'">
-    <ion-searchbar placeholder="Digite o CPF da pessoa procurada" [(ngModel)]="cpf" (ionInput)="filtrarCPF($event) "
-      clearInput [brmasker]="{person: true}" maxlength="14">
+
+  <div>
+    <ion-searchbar *ngIf="tipo == 'cpf'" placeholder="Digite o CPF" [(ngModel)]="cpf"
+      (ionInput)="filtrar($event, tipo)" clearInput [brmasker]="{person: true}" maxlength="14">
     </ion-searchbar>
 
+    <ion-searchbar *ngIf="tipo != 'cpf'" placeholder="Pesquise" [(ngModel)]="busca"
+      (ionInput)="filtrar($event, tipo)" clearInput>
+    </ion-searchbar>
+  </div>
+
+
+  <div *ngIf="tipo != 'zona'">
     <ion-list>
-      <ion-item *ngFor="let pessoa of ambulantes" (click)="verMais(pessoa)">
+      <ion-item *ngFor="let pessoa of ambulantes" (click)="modal(pessoa, tipo)">
         <ion-avatar slot="start">
           <img src="{{pessoa.foto}}">
         </ion-avatar>
@@ -38,12 +48,9 @@
   </div>
 
   <div *ngIf="tipo == 'zona'">
-    <ion-searchbar placeholder="Digite o nome da regiao" [(ngModel)]="regiao" (ionInput)="filtrarNomeRegiao($event)"
-      clearInput>
-    </ion-searchbar>
 
     <ion-list>
-      <ion-item *ngFor="let area of zonas " (click)="mostraDetalhes(area)">
+      <ion-item *ngFor="let area of zonas " (click)="modal(area, tipo)">
         <ion-avatar slot="start">
           <img src="{{area.foto}}">
         </ion-avatar>
@@ -54,6 +61,8 @@
       </ion-item>
     </ion-list>
   </div>
+
+
 
 
 </ion-content>

@@ -9,6 +9,8 @@ import { ModalController } from '@ionic/angular';
 import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
+import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
+import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 //import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 @Component({
@@ -17,28 +19,54 @@ import { LoginBancoService } from '../services/login/login-banco.service';
   styleUrls: ['./busca.page.scss'],
 })
 export class BuscaPage implements OnInit {
-  
+
   public zonas: any[];
 
-  
+  public ambulantesTotal: any[];
+  public ambulantes: any[];
+
   public zonasTotal: any[];
 
   public tipo: any = "zona";
 
   public cpf: any;
   public regiao: any;
+  labelPesquisa: any;
+  tipo1: string;
 
   constructor(
     private loginBanco: LoginBancoService,
     private sqlOrditi: SqlOrditiService,
+    private listaAmbulante: ListaAmbulantesService,
+
     public modalCtrl: ModalController) {
-      
+    this.listaAmbulante.recuperar('lista').then((data) => {
+      console.log(data);
+      this.ambulantesTotal = data;
+      this.ambulantes = this.ambulantesTotal;
+    }, error => {
+      console.log(error);
+    });;
     this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
-          this.zonasTotal = data;
-          this.zonas = this.zonasTotal;
-        }, error => {
-          console.log(error);
-        });;
+      this.zonasTotal = data;
+      this.zonas = this.zonasTotal;
+    }, error => {
+      console.log(error);
+    });;
+  }
+
+  tipoPesquisa(tipo) {
+    if (tipo === 'zona') {
+      this.labelPesquisa = "Digite o nome da regiao";
+
+    }
+
+    else {
+      this.labelPesquisa = "Digite o nome do ambulante";
+      this.tipo1 = 'pessoa';
+    }
+
+    console.log('THIS.LABELPESSOA', this.labelPesquisa)
   }
 
   Fiscal() {
@@ -46,33 +74,70 @@ export class BuscaPage implements OnInit {
 
   }
 
-  
 
-  filtrarNomeRegiao(busca: any) {
+  filtrar(busca, tipo) {
+
     let val = busca.target.value;
-    console.log(val);
-    if (val && val.trim() !== "") {
-      this.zonas = _.values(this.zonasTotal);
-      console.log(this.zonas);
-      this.zonas = this.zonas.filter(zona => {
-        return (zona.nome.toLowerCase().indexOf(val.toLowerCase()) > -1)
-      })
+    console.log(val)
+    console.log('ZONA 1', this.tipo1)
+    if (this.tipo !== 'zona') {
+      if (val && val.trim() != "") {
+        this.ambulantes = _.values(this.ambulantesTotal);
+        this.ambulantes = this.ambulantes.filter(pessoa => {
+
+
+          if (tipo === "cpf") {
+            return (pessoa.identidade.toLowerCase().indexOf(val.toLowerCase()) > -1)
+          }
+          if (tipo === "nome") {
+            return (pessoa.nome.toLowerCase().indexOf(val.toLowerCase()) > -1)
+          }
+
+        })
+      }
+      else {
+        this.ambulantes = this.ambulantesTotal;
+      }
     }
     else {
-      this.zonas = this.zonasTotal;
+      if (val && val.trim() != "") {
+        this.zonas = _.values(this.zonasTotal);
+        console.log(this.zonas);
+        this.zonas = this.zonas.filter(zona => {
+          return (zona.nome.toLowerCase().indexOf(val.toLowerCase()) > -1)
+        });
+      }
+
+
     }
   }
 
-  async mostraDetalhes(zona) {
-    console.log('click')
-    const modal = await this.modalCtrl.create({
-      component: DetalheZonaPage,
-      componentProps: {
-        info: zona
-      }
-    });
-    return await modal.present();
-    //this.alertas.presentModal(DetalheZonaPage, this.zona);
+
+
+
+
+  async modal(item, tipo) {
+
+    if (tipo !== 'zona') {
+      const modal = await this.modalCtrl.create({
+        component: PerfilAmbulantePage,
+        componentProps: {
+          info: item
+        }
+      });
+      return await modal.present();
+    } else {
+
+      console.log('click')
+      const modal = await this.modalCtrl.create({
+        component: DetalheZonaPage,
+        componentProps: {
+          info: item
+        }
+      });
+      return await modal.present();
+      //this.alertas.presentModal(DetalheZonaPage, this.zona);
+    }
   }
 
   ngOnInit() {
