@@ -44,6 +44,8 @@ export class PerfilAmbulantePage implements OnInit {
   trabalho: boolean = true;
   informacoes: boolean = false;
 
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
+
   historicoLista: any[] = [];
   ambulante: any;
   map: any;

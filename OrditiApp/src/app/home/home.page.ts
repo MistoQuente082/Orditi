@@ -101,7 +101,7 @@ export class HomePage {
     private loginBanco: LoginBancoService,
     private listaAmbulante: ListaAmbulantesService
   ) {
-    
+    console.log(this.listaAmbulante.recuperar('lista'));
     console.log(this.loginBanco.recuperar('fiscal'));
   }
 

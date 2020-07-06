@@ -28,11 +28,8 @@
       <ion-list>
         <ion-item (click)="leafletMap(ambulante)">
           <ion-label>
-            <p class="color">Produto</p>
-            <h2>{{ambulante.produto}}</h2>
-            <ion-note *ngIf="mostrarMapa == false" slot="end" (click)="leafletMap(ambulante)">
-              Mostrar no mapa
-            </ion-note>
+            <p class="color">Produto:</p>
+            <h2 *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
             
           </ion-label>
         </ion-item>
@@ -122,8 +119,8 @@
       <ion-list>
         <ion-item>
           <ion-label>
-            <p class="color">Produto</p>
-            <h2>{{ambulante.produto}}</h2>
+            <p class="color">Produto:</p>
+            <h2 *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
            
           </ion-label>
         

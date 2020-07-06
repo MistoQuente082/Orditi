@@ -20,7 +20,7 @@ export class FiltroBuscaPage implements OnInit {
   produto: any[];
   bairro: any[] = [];
 
-  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos', 'Ornamentos', 'Confecções', 'Calçados', 'Artigos de uso pessoal', 'Louças', 'Ferragens', 'Artefatos de plástico, borracha ou couro', 'Utensílios Domésticos', 'Artesanato e Antiguidades', 'Arte em geral', 'Outros'];
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
 
   min_area: any = null;
   max_area: any = null;
@@ -28,18 +28,11 @@ export class FiltroBuscaPage implements OnInit {
 
   constructor(
     public modalController: ModalController,
-    private loginBanco: LoginBancoService,
-    private sqlOrditi: SqlOrditiService,
     private listaAmbulante: ListaAmbulantesService,
-    private listaFiltrada: ListaAmbulantesService,
   ) {
 
-    this.listaAmbulante.recuperar('lista1').then((data)=>{
-      this.listaFiltro = data;
-      console.log(data)
-    })
-
     this.listaAmbulante.recuperar('lista').then((data)=>{
+      this.listaFiltro = data;
           this.pessoasTotal = data;
         }, error => {
           console.log(error);

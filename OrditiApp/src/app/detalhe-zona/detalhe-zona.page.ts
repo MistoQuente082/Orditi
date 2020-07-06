@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 import { AppModule } from '../app.module';
+import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 @Component({
   selector: 'app-detalhe-zona',
@@ -21,11 +22,16 @@ export class DetalheZonaPage implements OnInit {
 
   count
 
+  listaFiltro: any;
+
+  
+
   constructor(
     public db: AngularFirestore,
     private navParams: NavParams,
     public alertas: AlertasService,
     private modalCtrl: ModalController,
+    private listaAmbulante: ListaAmbulantesService,
   ) {
     this.count = 0;
     console.log(this.info);
@@ -35,6 +41,16 @@ export class DetalheZonaPage implements OnInit {
     this.ambulantes.forEach(doc => {
       this.count += 1
     })
+
+    this.listaAmbulante.recuperar('lista').then((data)=>{
+      data.forEach( e=> {
+        if(e.regiao === this.local.nome){
+          this.listaFiltro.push(e);
+        }
+      })
+        }, error => {
+          console.log(error);
+        });;
 
   }
 

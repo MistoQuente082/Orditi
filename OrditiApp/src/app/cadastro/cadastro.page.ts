@@ -125,7 +125,7 @@ export class CadastroPage implements OnInit {
     }
   ];
 
-  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos', 'Ornamentos', 'Confecções', 'Calçados', 'Artigos de uso pessoal', 'Louças', 'Ferragens', 'Artefatos de plástico, borracha ou couro', 'Utensílios Domésticos', 'Artesanato e Antiguidades', 'Arte em geral', 'Outros'];
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
 
   returnHome() {
     this.router.navigate(['/home']);
