@@ -27,7 +27,7 @@ export class AppComponent {
       icon: 'map'
     },
     {
-      title: 'Buscar Região',
+      title: 'Pesquisar Região',
       url: '/busca',
       icon: 'search'
     },
@@ -63,15 +63,11 @@ export class AppComponent {
     },
 
     {
-      title: 'Buscar Região',
+      title: 'Pesquisar',
       url: '/busca',
       icon: 'search'
     },
-    {
-      title: 'Buscar Pessoa',
-      url: '/busca-ambulante',
-      icon: 'search'
-    },
+ 
     {
       title: 'Gerar Listas',
       url: '/filtro-busca',

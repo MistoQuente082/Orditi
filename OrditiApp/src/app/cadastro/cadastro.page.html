@@ -147,7 +147,7 @@
 
       <ion-item>
         <ion-label color="secondary" position="floating">Dias:</ion-label>
-        <ion-select multiple="true" [(ngModel)]="diasAtend" placeholder="Ex.: Segunda">
+        <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diasAtend" placeholder="Ex.: Segunda">
           <ion-select-option value=" Segunda-feira">Segunda-feira</ion-select-option>
           <ion-select-option value=" Terça-feira">Terça-feira</ion-select-option>
           <ion-select-option value=" Quarta-feira">Quarta-feira</ion-select-option>
@@ -179,19 +179,20 @@
         </ion-card-subtitle>
       </ion-card-header>
 
-      <ion-item>
-        <ion-label color="secondary" position="floating">Relatar atividade:</ion-label>
-        <ion-textarea [(ngModel)]="relatoAtividade" rows="8" cols="15" placeholder="Atividade a ser Desenvolvida">
-        </ion-textarea>
-      </ion-item>
-
       <ion-item >
-        <ion-label color="medium" position="floating">Tipo de Produto/Serviço</ion-label>
-        <ion-select placeholder="Todos" [(ngModel)]="produto" multiple>
+        <ion-label color="secondary" position="floating">Tipo de Produto/Serviço</ion-label>
+        <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produto" multiple>
           <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
         </ion-select>
       </ion-item>
 
+      <ion-item *ngIf="produto == '14'">
+        <ion-label color="secondary" position="floating">Relatar atividade:</ion-label>
+        <ion-textarea [(ngModel)]="relatoAtividade" rows="4" cols="15" placeholder="Atividade a ser Desenvolvida">
+        </ion-textarea>
+      </ion-item>
+
+     
     </ion-card>
 
     <ion-card>

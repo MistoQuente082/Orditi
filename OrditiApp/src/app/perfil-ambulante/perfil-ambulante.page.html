@@ -74,7 +74,7 @@
           </ion-label>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="produto == 14">
           <ion-label>
             <p class="color">Descrição</p>
             <h2>{{ambulante.relato_atividade}}</h2>
@@ -117,20 +117,21 @@
     <div *ngIf="informacoes">
 
       <ion-list>
+      
         <ion-item>
           <ion-label>
             <p class="color">Produto:</p>
             <h2 *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
            
+            <p class="color">Nome:</p>
+            <h2>{{ambulante.nome}}</h2>
           </ion-label>
-        
-          
         </ion-item>
 
         <ion-item>
           <ion-label>
-            <p class="color">Nome:</p>
-            <h2>{{ambulante.nome}}</h2>
+            <p class="color">Nome Materno:</p>
+            <h2>{{ambulante.nome_materno}}</h2>
           </ion-label>
         </ion-item>
 
@@ -140,6 +141,14 @@
             <h2>{{ambulante.identidade}}</h2>
           </ion-label>
         </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="color">RG:</p>
+            <h2>{{ambulante.rg}}</h2>
+          </ion-label>
+        </ion-item>
+
 
 
         <ion-item>
