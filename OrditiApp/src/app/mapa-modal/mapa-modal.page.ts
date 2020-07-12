@@ -4,10 +4,7 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AlertController } from '@ionic/angular';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
-import { CadastroPage } from '../cadastro/cadastro.page';
-import { DenunciaPage } from '../denuncia/denuncia.page';
 
 @Component({
 	selector: 'app-mapa-modal',
@@ -30,7 +27,6 @@ export class MapaModalPage implements OnInit {
 
 	constructor(public modalController: ModalController,
 		navParams: NavParams,
-		public db: AngularFirestore,
 		private geolocation: Geolocation,
 		private nativeGeocoder: NativeGeocoder,
 		public alertController: AlertController, ) {
@@ -65,11 +61,11 @@ export class MapaModalPage implements OnInit {
 
 				/** Criar poligonos a partir de dados do firebase */
 				//Código de acesso à coleção das zonas no firebase 
-				this.db.collection('zonas').get().toPromise().then(snapshot => {
-					snapshot.forEach(doc => {
-						this.criarPoligono(doc);
-					})
-				})
+				//this.db.collection('zonas').get().toPromise().then(snapshot => {
+				//	snapshot.forEach(doc => {
+				//		this.criarPoligono(doc);
+				//	})
+				//})
 				//Fim do acesso ao Firebasse
 
 			}).catch((error) => {

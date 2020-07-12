@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 
 
 import { LoadingController, ToastController } from '@ionic/angular';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AppModule } from '../app.module';
 import { LoginBancoService } from '../services/login/login-banco.service';
@@ -31,7 +29,6 @@ export class LoginPage implements OnInit {
   constructor(
     public router: Router,
     public httpClient: HttpClient,
-    public fAuth: AngularFireAuth,
     public loadingController: LoadingController,
     private loginBanco: LoginBancoService,
     public toastCtrl: ToastController
