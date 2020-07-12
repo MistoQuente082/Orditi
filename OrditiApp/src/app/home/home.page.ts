@@ -50,11 +50,11 @@ const LeafIconZone = L.Icon.extend({
   }
 });
 
-const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
-  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-amarelo2.png' }),
-  ambulanteVerdeIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-verde.png' }),
-  ambulanteVermelhoIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-vermelho.png' }),
-  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/icon-denuncia.png' }),
+const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker.png' }),
+  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' }),
+  ambulanteVerdeIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' }),
+  ambulanteVermelhoIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-2.png' }),
+  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-3.png' }),
   areaIcon = new LeafIconZone({ iconUrl: '../../assets/leaflet/images/marker.png' })
 
 // L.Marker.prototype.options.icon = iconDefault;
@@ -159,8 +159,8 @@ export class HomePage {
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.map = new Map('mapId').setView([this.lat, this.long], 30);
-        tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
+          attribution: ' &copy;', maxZoom: 18
         }).addTo(this.map);
 
         this.poli.addTo(this.map);

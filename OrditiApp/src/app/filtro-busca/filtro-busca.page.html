@@ -12,43 +12,52 @@
 
 <ion-content>
 
-  <ion-item >
-    <ion-label color="medium" position="floating">Bairro</ion-label>
+  <ion-item>
+    <ion-label color="label-color" position="floating">Bairro</ion-label>
     <ion-select placeholder="Escolha o bairro" [(ngModel)]="bairro" multiple>
-            <ion-select-option *ngFor="let bai of bairros" value={{bai}}>{{bai}}</ion-select-option>
+      <ion-select-option *ngFor="let bai of bairros" value={{bai}}>{{bai}}</ion-select-option>
     </ion-select>
   </ion-item>
 
-  <ion-item >
-    <ion-label color="medium" position="floating">Tipo de Equipamento</ion-label>
+  <ion-item>
+    <ion-label color="label-color" position="floating">Tipo de Equipamento</ion-label>
     <ion-select placeholder="Todos" [(ngModel)]="equipamento" multiple>
       <ion-select-option value="pessoa">Carrinho</ion-select-option>
       <ion-select-option value="zona">Barraca</ion-select-option>
     </ion-select>
   </ion-item>
 
-  <ion-item >
-    <ion-label color="medium" position="floating">Tipo de Produto/Serviço</ion-label>
+  <ion-item>
+    <ion-label color="label-color" position="floating">Tipo de Produto/Serviço</ion-label>
     <ion-select placeholder="Todos" [(ngModel)]="produto" multiple>
       <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
     </ion-select>
   </ion-item>
 
-    <ion-item> 
-      <ion-card>
-        <ion-item>
-          <ion-input type="number" placeholder="Min " [(ngModel)]="min_area"></ion-input>
-        </ion-item>
-      </ion-card>
-      até
-      <ion-card>
-        <ion-item>
-          <ion-input type="number" placeholder="Max" [(ngModel)]="max_area"></ion-input>
-        </ion-item>
-      </ion-card>
-    </ion-item>
+  <ion-item>
+    <ion-card>
+      <ion-item>
+        <ion-input type="number" placeholder="Min " [(ngModel)]="min_area"></ion-input>
+      </ion-item>
+    </ion-card>
+    até
+    <ion-card>
+      <ion-item>
+        <ion-input type="number" placeholder="Max" [(ngModel)]="max_area"></ion-input>
+      </ion-item>
+    </ion-card>
+  </ion-item>
 
-    <ion-button expand="block"  (click)='gerarLista()' color="medium">Gerar Lista</ion-button>
-    <ion-button expand="block" (click)='verLista()' color="medium">Ver Lista Salva Anteriormente</ion-button>
+  <br>
+  
+
+  <div style="display: flex;">
+    <ion-button style="width: 49%; float: left;" expand="block" fill="outline" (click)='verLista()'>
+
+      Ver Lista
+    </ion-button>
+    <ion-button style="width: 49%; float: right;" expand="block" (click)='gerarLista()' color="primary"> Gerar Lista</ion-button>
+
+  </div>
 
 </ion-content>

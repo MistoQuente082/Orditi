@@ -17,11 +17,11 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-item>
-      <ion-label color="secondary" position="floating">Seu nome:</ion-label>
+      <ion-label color="label-color" position="floating">Seu nome:</ion-label>
       <ion-input type="text" [(ngModel)]="seunome" placeholder="Ex.: Maria das Dores"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label color="secondary" position="floating">Período:</ion-label>
+      <ion-label color="label-color" position="floating">Período:</ion-label>
 
       <ion-datetime display-format="DD MMM YYYY" strin cancelText="Cancelar" doneText="Escolher"
         ([ngModel])="dataDenuncia.toISOString()" placeholder="Seleciona o Dia" (ionChange)="mudaData( $event )">
@@ -37,7 +37,7 @@
 
 
     <ion-item (click)="leafletMap()">
-      <ion-label color="secondary" position="floating">Local:</ion-label>
+      <ion-label color="label-color" position="floating">Local:</ion-label>
       <ion-input ype="text" [(ngModel)]="localDenuncia" disabled="{{mostraMapa}}"
         placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde"></ion-input>
       <ion-note text-end>
@@ -47,7 +47,7 @@
 
 
     <ion-item>
-      <ion-label color="secondary" position="floating">Informe a situação:</ion-label>
+      <ion-label color="label-color" position="floating">Informe a situação:</ion-label>
       <ion-textarea [(ngModel)]="infoDenuncia" rows="5" cols="30" placeholder="Mensagem"></ion-textarea>
     </ion-item>
   </ion-card>
@@ -75,7 +75,7 @@
 
   
 
-  <ion-button (click)="subDenuncia()" expand="block">Enviar Denuncia</ion-button>
+  <ion-button (click)="subDenuncia()"color="primary" expand="block">Enviar Denuncia</ion-button>
 
 
 </ion-content>

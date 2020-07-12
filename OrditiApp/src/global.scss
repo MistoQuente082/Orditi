@@ -24,3 +24,46 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+.input-color {
+    color: #555;
+
+}
+
+.label-color {
+    color: #444444;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style : normal;
+    font-weight: normal;
+    src        : url('../src/assets/fonts/OpenSans-Regular.ttf');
+}
+
+ion-card-header {
+    --background: #2d98a2;
+}
+
+ion-card-subtitle {
+    --color    : white;
+    font-weight: bold;
+}
+
+ion-button {
+    font-weight: bold;
+}
+
+
+
+.item-interactive.ion-invalid {
+    --highlight-background: #ed2e54;
+
+}
+
+.item-interactive.ion-valid {
+    --highlight-background: #2d98a2;
+
+}

@@ -28,11 +28,11 @@
       </ion-card-header>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Nome:</ion-label>
+        <ion-label color="label-color" position="floating">Nome:</ion-label>
         <ion-input type="text" [(ngModel)]="nome" placeholder="Ex.: Maria das Dores"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label color="secondary" position="floating">CPF/CNPJ:</ion-label>
+        <ion-label color="label-color" position="floating">CPF/CNPJ:</ion-label>
         <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}"
           minlength="14">
         </ion-input>
@@ -42,53 +42,53 @@
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">RG:</ion-label>
+        <ion-label color="label-color" position="floating">RG:</ion-label>
         <ion-input type="text" [(ngModel)]="rg" placeholder="12.456.789-0">
         </ion-input>
 
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Nome da Mãe:</ion-label>
+        <ion-label color="label-color" position="floating">Nome da Mãe:</ion-label>
         <ion-input type="text" [(ngModel)]="nomeMaterno" placeholder="Ex.: Glória das Dores" minlength="3"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label color="secondary" position="floating">CEP:</ion-label>
+        <ion-label color="label-color" position="floating">CEP:</ion-label>
         <ion-input type="text" [(ngModel)]="cep" placeholder="Ex.: 57033-424" [brmasker]="{mask:'00000-000', len:9}"
           (focusout)="consultaCep(cep)" minlength="9"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Cidade:</ion-label>
+        <ion-label color="label-color" position="floating">Cidade:</ion-label>
         <ion-input type="text" [(ngModel)]="cidade" placeholder="Ex.: Maceió" minlength="3"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Bairro:</ion-label>
+        <ion-label color="label-color" position="floating">Bairro:</ion-label>
         <ion-input type="text" [(ngModel)]="bairro" placeholder="Ex.: Benedito Bentes" minlength="3"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Rua:</ion-label>
+        <ion-label color="label-color" position="floating">Rua:</ion-label>
         <ion-input type="text" [(ngModel)]="rua" placeholder="Ex.: Senador Rui Palmeira" minlength="3"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">N°:</ion-label>
+        <ion-label color="label-color" position="floating">N°:</ion-label>
         <ion-input type="number" [(ngModel)]="numero" placeholder="Ex.: 3" minlength="1"></ion-input>
       </ion-item>
 
 
       <ion-item>
-        <ion-label color="secondary" position="floating">N° de Contato:</ion-label>
+        <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
         <ion-input type="text" [(ngModel)]="fone" placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}"
           minlength="14"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Email:</ion-label>
+        <ion-label color="label-color" position="floating">Email:</ion-label>
         <ion-input type="email" [(ngModel)]="email" placeholder="Ex.: exemplo@email.com"></ion-input>
       </ion-item>
 
@@ -146,8 +146,9 @@
 
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Dias:</ion-label>
-        <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diasAtend" placeholder="Ex.: Segunda">
+        <ion-label color="label-color" position="floating">Dias:</ion-label>
+        <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diasAtend"
+          placeholder="Ex.: Segunda">
           <ion-select-option value=" Segunda-feira">Segunda-feira</ion-select-option>
           <ion-select-option value=" Terça-feira">Terça-feira</ion-select-option>
           <ion-select-option value=" Quarta-feira">Quarta-feira</ion-select-option>
@@ -160,13 +161,13 @@
       </ion-item>
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Início</ion-label>
+        <ion-label color="label-color" position="floating">Início</ion-label>
         <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher" ([ngModel])="hInicio"
           placeholder="Ex.: 15:00" (ionChange)="horaInicio( $event )">
         </ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label color="secondary" position="floating">Fim</ion-label>
+        <ion-label color="label-color" position="floating">Fim</ion-label>
         <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher" ([ngModel])="hfim"
           placeholder="Ex.: 18:30" (ionChange)="horaFim( $event )">
         </ion-datetime>
@@ -179,20 +180,20 @@
         </ion-card-subtitle>
       </ion-card-header>
 
-      <ion-item >
-        <ion-label color="secondary" position="floating">Tipo de Produto/Serviço</ion-label>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Tipo de Produto/Serviço</ion-label>
         <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produto" multiple>
           <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item *ngIf="produto == '7'">
-        <ion-label color="secondary" position="floating">Relatar atividade:</ion-label>
+        <ion-label color="label-color" position="floating">Relatar atividade:</ion-label>
         <ion-textarea [(ngModel)]="relatoAtividade" rows="4" cols="15" placeholder="Atividade a ser Desenvolvida">
         </ion-textarea>
       </ion-item>
 
-     
+
     </ion-card>
 
     <ion-card>
@@ -207,29 +208,29 @@
 
 
       <ion-item>
-        <ion-label color="secondary" position="floating">Ponto de referência:</ion-label>
+        <ion-label color="label-color" position="floating">Ponto de referência:</ion-label>
         <ion-input type="text" [(ngModel)]="pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
       </ion-item>
 
 
       <div>
         <ion-item (click)="leafletMap()">
-          <ion-label color="secondary" position="floating">Local de Atividade:</ion-label>
+          <ion-label color="label-color" position="floating">Local de Atividade:</ion-label>
           <ion-input type="text" [(ngModel)]="enderecoLocal" disabled="{{mostrarMapa}}"
             placeholder="Ex.: R. Jagandeiros Alagoanos - Ponta Verde">
             <!--Poe isso aqui pra ser aquela coisinha de buscar o endereco -->
           </ion-input>
-          <ion-note *ngIf="mostrarMapa == false"text-end (click)="leafletMap()">
+          <ion-note *ngIf="mostrarMapa == false" text-end (click)="leafletMap()">
             Marque no mapa
           </ion-note>
 
-         
+
         </ion-item>
       </div>
     </ion-card>
 
     <ion-card *ngIf="mostrarMapa" id="mapId3" style="height: 300px">
-      
+
     </ion-card>
 
     <ion-card *ngIf="cpf">
@@ -250,6 +251,18 @@
         </ion-card-subtitle>
       </ion-card-header>
 
+
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Comprimento:</ion-label>
+        <ion-input type="number" [(ngModel)]="compr" placeholder="Ex.: 2"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Largura:</ion-label>
+        <ion-input type="number" [(ngModel)]="larg" placeholder="Ex.: 1"></ion-input>
+      </ion-item>
+
       <ion-item>
         <ion-thumbnail *ngIf="imgProduto" slot="start">
           <ion-img [src]=imgProduto></ion-img>
@@ -262,25 +275,15 @@
         <ion-button *ngIf="imgProduto" slot="end" color="danger" size="small" (click)="remover(2)">Remover</ion-button>
       </ion-item>
 
-      <ion-item>
-        <ion-label color="secondary" position="floating">Comprimento:</ion-label>
-        <ion-input type="number" [(ngModel)]="compr" placeholder="Ex.: 2"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="secondary" position="floating">Largura:</ion-label>
-        <ion-input type="number" [(ngModel)]="larg" placeholder="Ex.: 1"></ion-input>
-      </ion-item>
-
-      
-
     </ion-card>
 
-    <ion-button expand="block" fill="outline" (click)="verifiEtapa(2)">
-      Voltar
-    </ion-button>
 
-    <ion-button expand="block" (click)="cadastrar()">
-      Solicitar Cadastro
-    </ion-button>
+    <div style="display: flex;">
+      <ion-button style="width: 49%; float: left;" expand="block" fill="outline"  (click)="verifiEtapa(2)">
+  
+        Voltar
+      </ion-button>
+      <ion-button style="width: 49%; float: right;" expand="block" (click)="cadastrar()" color="primary"> Solicitar</ion-button>
+  
+    </div>
   </div>

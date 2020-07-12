@@ -71,7 +71,7 @@ export class AppComponent {
     {
       title: 'Gerar Listas',
       url: '/filtro-busca',
-      icon: 'search'
+      icon: 'albums'
     },
     {
       title: 'Cadastro de Ambulante',

@@ -129,7 +129,7 @@ export class PerfilAmbulantePage implements OnInit {
       this.map = new Map('mapId').setView([ambulante.latitude, ambulante.longitude], 18);
 
 
-      tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
         attribution: '&copy; ', maxZoom: 18
       }).addTo(this.map);
 

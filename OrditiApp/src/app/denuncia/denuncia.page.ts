@@ -39,9 +39,7 @@ const LeafIcon = L.Icon.extend({
   }
 });
 
-const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
-  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
-  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/icon-denuncia.png' });
+const denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-3.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
@@ -177,8 +175,8 @@ export class DenunciaPage implements OnInit {
         this.map2 = new Map('mapId2').setView([this.lat, this.long], 18);
         this.map2.on('click', (e) => { this.mapMarker(e); });
 
-        tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', maxZoom: 18
+        tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
+          attribution: '', maxZoom: 18
         }).addTo(this.map2);
 
       }).catch((error) => {
@@ -192,7 +190,7 @@ export class DenunciaPage implements OnInit {
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
-    this.L = marker(e.latlng, { icon: ambulanteIcon })
+    this.L = marker(e.latlng, { icon: denunciaIcon })
 
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
@@ -217,7 +215,7 @@ export class DenunciaPage implements OnInit {
   // ENVIAR DENUNCIA
   subDenuncia() {
     if (this.dataDenuncia === undefined || this.horaDenuncia === undefined ||
-      this.infoDenuncia === undefined || this.local === undefined || this.imgDenuncia === undefined ) {
+      this.infoDenuncia === undefined || this.local === undefined || this.imgDenuncia === undefined) {
       this.alertas.presentToast('Preencha os campos!');
     } else {
       if (this.localDenuncia === undefined) {

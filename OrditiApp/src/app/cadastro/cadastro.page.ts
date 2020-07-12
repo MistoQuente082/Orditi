@@ -32,9 +32,7 @@ const LeafIcon = L.Icon.extend({
   }
 });
 
-const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-icon.png' }),
-  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambulante-marker-icon.png' }),
-  denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/icon-denuncia.png' });
+const  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 
@@ -290,8 +288,8 @@ export class CadastroPage implements OnInit {
         this.map2 = new Map('mapId3').setView([this.lat, this.long], 18);
         this.map2.on('  click', (e) => { this.mapMarker(e); });
 
-        tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; <a href="https://www.openenderecomap.org/"></a>', maxZoom: 18
+        tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
+          attribution: '', maxZoom: 18
         }).addTo(this.map2);
 
       }).catch((error) => {
@@ -435,10 +433,10 @@ export class CadastroPage implements OnInit {
   // Botão de cadastro
   cadastrar() {
 
-    console.log('roduto a: ', this.produto);
 
-    let produto = this.produto.toString();
-    console.log('roduto s: ', produto);
+    let produto =this.produto.join('');
+
+
 
     let condicoes = this.produto === undefined || this.hInicio === undefined
       || this.hfim === undefined
