@@ -17,8 +17,8 @@ export class EventosPage implements OnInit {
   public modalController: ModalController;
   public router: Router;
 
-  constructor(public db: AngularFirestore, ) {
-    this.eventos = this.db.collection('eventos', ref => ref.orderBy('dataInicio', 'asc')).valueChanges();
+  constructor( ) {
+    //this.eventos = this.db.collection('eventos', ref => ref.orderBy('dataInicio', 'asc')).valueChanges();
   }
 
   ngOnInit() {

@@ -4,7 +4,6 @@ import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'le
 import 'leaflet/dist/leaflet.css';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AppModule } from '../app.module';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AlertasService } from '../services/alertas.service';
 import * as L from 'leaflet';
@@ -95,7 +94,6 @@ export class HomePage {
     private geolocation: Geolocation,
     public alertas: AlertasService,
     public alertController: AlertController,
-    public db: AngularFirestore,
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner,
     private loginBanco: LoginBancoService,
@@ -298,7 +296,6 @@ export class HomePage {
     var area = []
 
     for (var ponto in zona) {
-      //Ao usar geopoints do firebase sempre confira se as coordenadas de longitude e latitude estão no lugar certo pq sei lá
       area.push(zona[ponto])
     }
 

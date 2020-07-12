@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { ModalController, ActionSheetController } from '@ionic/angular';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { AlertController } from '@ionic/angular';
@@ -38,7 +37,6 @@ const  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/mark
 
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -148,7 +146,6 @@ export class CadastroPage implements OnInit {
 
   constructor(
     private geolocation: Geolocation,
-
     public alertas: AlertasService,
     private sqlOrditi: SqlOrditiService,
     private nativeGeocoder: NativeGeocoder,
@@ -262,10 +259,6 @@ export class CadastroPage implements OnInit {
 
 
   }
-
-
-
-
 
   //Funcoes para o mapa
   ocultarMapa() {
