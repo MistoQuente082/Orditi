@@ -78,8 +78,8 @@ export class CadastroPage implements OnInit {
 
 
   // QrCode
-  public qrCodeAmbulante: string;
-  public elementType: 'canvas';
+  //public qrCodeAmbulante: string;
+  //public elementType: 'canvas';
 
 
 
@@ -95,6 +95,9 @@ export class CadastroPage implements OnInit {
   public hfim: Date;
   public relatoAtividade: string;
   public dimensao: string;
+  public compr: number;
+  public larg: number;
+
 
   //Variaveis do mapa
   L: any = null;
@@ -123,7 +126,15 @@ export class CadastroPage implements OnInit {
     }
   ];
 
-  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
+  produtos: any[] = [
+    'Alimentos',
+    'Bebidas não alcoólicas',
+    'Bebidas Alcoólicas',
+    'Briquedos e Ornamentos',
+    'Confecções, Calçados, Artigos de uso pessoal',
+    'Louças, Ferragens, Artefatos, Utensílios Domésticos',
+    'Artesanato, Antiguidades e arte',
+    'Outros'];
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -236,15 +247,15 @@ export class CadastroPage implements OnInit {
   // REMOVE IMAGENS MOSTRADAS NA TELA
   remover(tipo) {
     if (tipo === 2) {
-      this.imgProduto = null;
+      this.imgProduto = undefined;
     }
 
     if (tipo === 3) {
-      this.imgCpf = null;
+      this.imgCpf = undefined;
     }
 
     if (tipo === 4) {
-      this.imgRg = null;
+      this.imgRg = undefined;
 
     }
 
@@ -406,31 +417,36 @@ export class CadastroPage implements OnInit {
 
   }
 
-  // Obtem a imagem a partir do cpf do ambulante
-  // Envia pro banco de Dados 
-  obterQrCode() {
-    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
-    this.qrCodeAmbulante = canvas.toDataURL('image/jpeg').toString();
-
-  }
+  // // Obtem a imagem a partir do cpf do ambulante
+  // // Envia pro banco de Dados 
+  // obterQrCode() {
+  //   const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+  //   this.qrCodeAmbulante = canvas.toDataURL('image/jpeg').toString();
+  //
+  // }
 
   // Botão de cadastro
   cadastrar() {
 
+    console.log('roduto a: ', this.produto);
 
     let produto = this.produto.toString();
-    let condicicoes = this.produto === undefined || this.hInicio === undefined
+    console.log('roduto s: ', produto);
+
+    let condicoes = this.produto === undefined || this.hInicio === undefined
       || this.hfim === undefined
       || this.local === undefined
-      || this.dimensao === undefined || this.imgProduto === undefined;
+      || this.compr === undefined
+      || this.larg === undefined
+      || this.imgProduto === undefined;
 
-    if ((condicicoes && produto === '14' && this.relatoAtividade === undefined) || condicicoes) {
+    if ((condicoes && produto === '7' && this.relatoAtividade === undefined) || condicoes) {
       this.alertas.presentToast('Preencha os campos ');
     }
 
     else {
       this.diasAtend = this.diasAtend.toString();
-      this.obterQrCode();
+
 
       if (this.localAtiv === undefined) {
         this.localAtiv = " "
@@ -459,14 +475,14 @@ export class CadastroPage implements OnInit {
           'longitude': this.local.lng,
           'regiao': 0,
           'atendimento_dias': this.diasAtend,
-          'atendimento_incio': this.hInicio,
+          'atendimento_inicio': this.hInicio,
           'atendimento_fim': this.hfim,
           'relato_atividade': this.relatoAtividade,
-          'qr_code': this.qrCodeAmbulante,
           'foto_cpf': this.imgCpf,
           'foto_rg': this.imgRg,
           'foto_equipamento': this.imgProduto,
-          'area_equipamento': this.dimensao,
+          'comprimento': this.compr,
+          'largura': this.larg,
           'situacao': 0, // 0: ainda n pagou, 1: pagou 
         };
 
