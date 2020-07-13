@@ -50,9 +50,10 @@
   <div *ngIf="tipo == 'zona'">
 
     <ion-list>
-      <ion-item *ngFor="let area of zonas " (click)="modal(area, tipo)">
+      <ion-item *ngFor="let area of zonas " (click)="modal(area, tipo, areaFoto)">
         <ion-avatar slot="start">
-          <img src="{{area.foto}}">
+          <img *ngIf="area.foto == null || area.foto == ''" [src]="areaFoto">
+          <img *ngIf="area.foto != null || area.foto != ''" [src]="area.foto">
         </ion-avatar>
         <ion-label>
           <h3>{{area.nome}}</h3>

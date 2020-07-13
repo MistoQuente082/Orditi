@@ -10,7 +10,9 @@
 </ion-header>
 
 <ion-content>
-  <img [src]="local.foto">
+  <img *ngIf="local.foto != null || local.foto != ''" [src]="local.foto">
+  <img *ngIf="local.foto == null || local.foto == ''" [src]="areaFoto">
+
 
   <ion-card>
     <ion-card-header class="header">

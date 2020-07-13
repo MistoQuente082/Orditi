@@ -19,6 +19,7 @@ export class DetalheZonaPage implements OnInit {
   count
 
   listaFiltro: any;
+  areaFoto: any;
 
   constructor(
     private navParams: NavParams,
@@ -29,6 +30,7 @@ export class DetalheZonaPage implements OnInit {
     this.count = 0;
     console.log(this.info);
     this.local = this.navParams.get('info');
+    this.areaFoto = this.navParams.get('foto');
 
     this.listaAmbulante.recuperar('lista').then((data)=>{
       console.log(data)

@@ -19,6 +19,7 @@ import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
 export class BuscaPage implements OnInit {
 
   public zonas: any[];
+  public areaFoto: any = "../../assets/img/Região.jpg";
 
   public ambulantesTotal: any[];
   public ambulantes: any[];
@@ -114,7 +115,7 @@ export class BuscaPage implements OnInit {
 
 
 
-  async modal(item, tipo) {
+  async modal(item, tipo, foto) {
 
     if (tipo !== 'zona') {
       const modal = await this.modalCtrl.create({
@@ -130,7 +131,9 @@ export class BuscaPage implements OnInit {
       const modal = await this.modalCtrl.create({
         component: DetalheZonaPage,
         componentProps: {
-          info: item
+          info: item,
+          foto: foto
+
         }
       });
       return await modal.present();
