@@ -19,15 +19,16 @@ import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
 import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
-
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 
 const iconRetinaUrl = '../../assets/leaflet/images/marker-icon-2x.png';
 const iconUrl = '../../assets/leaflet/images/marker-icon.png';
 const shadowUrl = '../../assets/leaflet/images/marker-shadow.png';
 
 const LeafIcon = L.Icon.extend({
-  // iconRetinaUrl,
-  // iconUrl,
   options: {
     shadowUrl,
     iconSize: [25, 32],
@@ -80,7 +81,12 @@ export class HomePage {
   poli: any = polygon([], {});
 
   markersA: any;
+  markersA1: any;
+  markersA2: any;
   markersD: any;
+  markersArea: any;
+
+  poliAreas: any[]=[];
 
 
   //  qrCode
@@ -89,6 +95,12 @@ export class HomePage {
 
   elementType: 'url' | 'canvas' | 'img' = 'canvas';
   tipoUsuario: boolean = this.loginBanco.res_usuario;
+  tileLayer: any[] =[];
+  map_layers: any[] =[];
+  ctr_layers: any[] = [];
+  
+  
+  
   constructor(
     private sqlOrditi: SqlOrditiService,
     private geolocation: Geolocation,
@@ -157,19 +169,45 @@ export class HomePage {
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.map = new Map('mapId').setView([this.lat, this.long], 30);
-        tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
+        this.tileLayer['Mapa'] = tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
           attribution: ' &copy;', maxZoom: 18
-        }).addTo(this.map);
+        });
 
-        this.poli.addTo(this.map);
+        var map_layers: any[]=[];
+        map_layers["Áreas"] = L.layerGroup();
+        this.ctr_layers["Áreas"] = map_layers["Áreas"];
+
+        map_layers["Status - Em dia"] = L.layerGroup();
+        this.ctr_layers["Status - Em dia"] = map_layers["Status - Em dia"];
+
+        map_layers["Status - Pendente"] = L.layerGroup();
+        this.ctr_layers["Status - Pendente"] = map_layers["Status - Pendente"];
+
+        map_layers["Status - Vencido"] = L.layerGroup();
+        this.ctr_layers["Status - Vencido"] = map_layers["Status - Vencido"];
+
+        map_layers["Denúncias"] = L.layerGroup();
+        this.ctr_layers["Denúncias"] = map_layers["Denúncias"];
+
+        this.tileLayer['Mapa'].addTo(this.map);
+
+        L.control.layers(this.tileLayer, this.ctr_layers).addTo(this.map);
 
         this.markersA = L.markerClusterGroup({
+          polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
+        });
+        this.markersA1 = L.markerClusterGroup({
+          polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
+        });
+        this.markersA2 = L.markerClusterGroup({
           polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
         });
         this.markersD = L.markerClusterGroup({
           polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
         });
-
+        this.markersArea = L.featureGroup({
+          polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
+        })
 
         //Criar Pins de Ambulantes
         this.listaAmbulante.recuperar('lista').then((data)=>{
@@ -190,6 +228,43 @@ export class HomePage {
         }, error => {
           console.log(error);
         });;
+
+        var A = this.markersA;
+        var A1 = this.markersA1;
+        var A2 = this.markersA2;
+        var D = this.markersD;
+        var Area = this.markersArea;
+        var poli = this.poliAreas;
+        
+        //
+        this.map.on('overlayadd', function(this, e){
+          var groupMarker = new L.MarkerClusterGroup({
+            disableClusteringAtZoom: 14,
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            spiderfyOnMaxZoom: true
+        });
+        if(e.name === "Status - Em dia"){
+          map_layers[e.name].addLayer(A1)
+        }else if(e.name === "Status - Pendente"){
+          map_layers[e.name].addLayer(A);
+        }else if(e.name === "Status - Vencido"){
+          map_layers[e.name].addLayer(A2);
+        }else if(e.name === "Denúncias"){
+          map_layers[e.name].addLayer(D);
+        }else if(e.name === "Áreas"){
+          map_layers[e.name].addLayer(Area);
+          poli.forEach(element=>{
+            element.addTo(map_layers[e.name]);
+            console.log(element);
+          });
+        }
+        })
+        //
+
+        this.poli.addTo(this.map);
+
+        
         console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
         //Adicionar condição para só mostrar se for fiscal
         if (this.tipoUsuario !== false) {
@@ -236,15 +311,15 @@ export class HomePage {
     var ambulanteStatus = geo['situacao'];
     if (ambulanteStatus === '1') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
-      amb.addTo(this.map);
+      amb.addTo(this.markersA1);
     }
     if (ambulanteStatus === '2') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVermelhoIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
-      amb.addTo(this.map);
+      amb.addTo(this.markersA2);
     }
     if (ambulanteStatus === '0') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
-      amb.addTo(this.map);
+      amb.addTo(this.markersA);
     }
     
   }
@@ -257,15 +332,26 @@ export class HomePage {
     var denunciaInfo = den['descricao'];
     var denunciaData = moment(den.dataDenuncia).format('DD/MM/YYYY');
     var denMarker = L.marker([denunciaLat, denunciaLong], { icon: denunciaIcon }).bindPopup('<strong>Denuncia feita<br>' + denunciaData + '<img src="' + denunciaFoto + '"><br>  Diz: ' + denunciaInfo + '</strong>').openPopup();
-    denMarker.addTo(this.map);
+    denMarker.addTo(this.markersD);
   }
 
   criarPoligono(doc) {
     var coordenadas = doc['centroide']
-
+    var area = [coordenadas[1], coordenadas[0]];
     //Constrói a matriz area com arrays de coordenadas(latitude e longitude)
-    var markerArea = L.marker(coordenadas, { icon: areaIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
-    markerArea.addTo(this.map);
+    var markerArea = L.marker(area, { icon: areaIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+    markerArea.addTo(this.markersArea);
+
+    var zona = doc['poligono'];
+    var area = []
+    for (var ponto in zona) {
+      var a = zona[ponto]
+      area.push([a[1], a[0]])
+    }
+    //Constrói um poligono com as coordenadas presentes em 'area'
+    var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
+    this.poliAreas.push(regiao);
+    console.log(this.poliAreas)
   }
 
   /** Create an alert when geolocation function fails **/
@@ -292,24 +378,15 @@ export class HomePage {
   }
 
   regiaoClicada(doc) {
-    var zona = doc['poligono'];
-    var area = []
-
-    for (var ponto in zona) {
-      area.push(zona[ponto])
-    }
-
+  
     JSON.stringify(doc);
     this.zona = doc;
     console.log(doc);
-
-    //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
     //regiao.on('click', (e) => { this.regiaoClicada(doc); });
     //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
-    this.poli.setStyle({ opacity: 0.0 })
-    this.poli = regiao;
-    this.poli.addTo(this.map);
+    //this.poli.setStyle({ opacity: 0.0 })
+    //this.poli = regiao;
+    //this.poli.addTo(this.map);
     this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
   }
 
