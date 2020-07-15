@@ -44,3 +44,16 @@
 	background-color: aliceblue;
 	opacity         : 85%;
 }
+
+ion-header{
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	align-items: flex-end;
+	text-align: center;
+	width: 100%;
+}
+ion-title{
+	margin-left: -60px;
+}

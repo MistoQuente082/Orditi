@@ -14,18 +14,18 @@
 
 <ion-content>
   <div id="mapId" class="tamanho_mapa">
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="localAtual()" class="btn_gps">
-      <ion-fab-button size="small">
-        <ion-icon name="locate" class="icon_gps"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
   </div>
 
-  <ion-fab (click)='LeerCode()' *ngIf="tipoUsuario" vertical="top" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" style='margin-bottom: 5%;'>
     <ion-fab-button>
-      <ion-icon name="barcode"></ion-icon>
+      <ion-icon name="settings"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)='LeerCode()' ><ion-icon name="barcode"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="localAtual()" ><ion-icon name="locate" class="icon_gps"></ion-icon></ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
+
 
   <ion-fab *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">

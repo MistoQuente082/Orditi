@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Map, latLng, tileLayer, Layer, marker, circle, Icon, polygon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { AlertController, ModalController, NavParams } from '@ionic/angular';
+import { AlertController, ModalController, NavParams, MenuController } from '@ionic/angular';
 import { AppModule } from '../app.module';
 
 import { AlertasService } from '../services/alertas.service';
@@ -109,10 +109,10 @@ export class HomePage {
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner,
     private loginBanco: LoginBancoService,
+    private menuCtrl: MenuController,
     private listaAmbulante: ListaAmbulantesService
   ) {
-    console.log(this.listaAmbulante.recuperar('lista'));
-    console.log(this.loginBanco.recuperar('fiscal'));
+    this.menuCtrl.swipeEnable(false);
   }
 
 
@@ -191,7 +191,7 @@ export class HomePage {
 
         this.tileLayer['Mapa'].addTo(this.map);
 
-        L.control.layers(this.tileLayer, this.ctr_layers).addTo(this.map);
+        L.control.layers( this.tileLayer, this.ctr_layers, ).addTo(this.map);
 
         this.markersA = L.markerClusterGroup({
           polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
