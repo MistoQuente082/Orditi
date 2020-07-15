@@ -19,7 +19,7 @@ export class DetalheZonaPage implements OnInit {
   count
 
   listaFiltro: any;
-  areaFoto: any;
+  areaFoto: any = "../../assets/img/Região.jpg";
 
   constructor(
     private navParams: NavParams,
@@ -32,16 +32,16 @@ export class DetalheZonaPage implements OnInit {
     this.local = this.navParams.get('info');
     this.areaFoto = this.navParams.get('foto');
 
-    this.listaAmbulante.recuperar('lista').then((data)=>{
+    this.listaAmbulante.recuperar('lista').then((data) => {
       console.log(data)
-      data.forEach( e=> {
-        if(e.regiao === this.local.nome){
+      data.forEach(e => {
+        if (e.regiao === this.local.nome) {
           this.listaFiltro.push(e);
         }
       })
-        }, error => {
-          console.log(error);
-        });;
+    }, error => {
+      console.log(error);
+    });;
 
   }
 
@@ -52,7 +52,7 @@ export class DetalheZonaPage implements OnInit {
   //Retorna o tipo do perfil
   fiscal() {
     return AppModule.getUsuarioStatus();
-  
+
   }
 
   async verMais(item) {

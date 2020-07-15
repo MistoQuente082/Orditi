@@ -13,3 +13,12 @@
   width: 120px;
   margin: auto;
 }
+
+ion-card-header {
+  --background: #2d98a2;
+}
+
+ion-card-subtitle {
+  --color    : white;
+  font-weight: bold;
+}

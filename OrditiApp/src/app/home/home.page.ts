@@ -370,7 +370,8 @@ export class HomePage {
     const modal = await this.modalCtrl.create({
       component: DetalheZonaPage,
       componentProps: {
-        info: zona
+        info: zona,
+        foto: '../../assets/img/Região.jpg'
       }
     });
     return await modal.present();
