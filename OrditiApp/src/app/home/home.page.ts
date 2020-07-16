@@ -52,7 +52,7 @@ const LeafIconZone = L.Icon.extend({
 
 const defaultIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker.png' }),
   ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' }),
-  ambulanteVerdeIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' }),
+  ambulanteVerdeIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-1.png' }),
   ambulanteVermelhoIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-2.png' }),
   denunciaIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-3.png' }),
   areaIcon = new LeafIconZone({ iconUrl: '../../assets/leaflet/images/marker.png' })
@@ -339,19 +339,26 @@ export class HomePage {
     var coordenadas = doc['centroide']
     var area = [coordenadas[1], coordenadas[0]];
     //Constrói a matriz area com arrays de coordenadas(latitude e longitude)
-    var markerArea = L.marker(area, { icon: areaIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
-    markerArea.addTo(this.markersArea);
-
     var zona = doc['poligono'];
-    var area = []
+    var arealist = []
     for (var ponto in zona) {
       var a = zona[ponto]
-      area.push([a[1], a[0]])
+      arealist.push([a[1], a[0]])
     }
     //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(area, { color: 'gray', fillColor: '#838b8b' });
+    var regiao = polygon(arealist, { color: '#f5a42c', fillColor: '#f5a42c'  });
+
+    var markerArea = L.marker(area, { icon: ambulanteIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+    if(doc['quantidade_ambulantes']<=49/100*doc['limite_ambulantes']){
+      markerArea = L.marker(area, { icon: ambulanteVerdeIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+      regiao = polygon(arealist, { color: '#5ea9a4', fillColor: '#5ea9a4'});
+    } else if(doc['quantidade_ambulantes']>=99/100*doc['limite_ambulantes']){
+      markerArea = L.marker(area, { icon: ambulanteVermelhoIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+      regiao = polygon(arealist, { color: '#ed2e54', fillColor: '#ed2e54' });
+    }
+    markerArea.addTo(this.markersArea);
+ 
     this.poliAreas.push(regiao);
-    console.log(this.poliAreas)
   }
 
   /** Create an alert when geolocation function fails **/
