@@ -186,8 +186,12 @@ export class HomePage {
         map_layers["Status - Vencido"] = L.layerGroup();
         this.ctr_layers["Status - Vencido"] = map_layers["Status - Vencido"];
 
-        map_layers["Denúncias"] = L.layerGroup();
-        this.ctr_layers["Denúncias"] = map_layers["Denúncias"];
+        console.log(this.tipoUsuario)
+        if(this.tipoUsuario == true){
+          console.log('entrou')
+          map_layers["Denúncias"] = L.layerGroup();
+          this.ctr_layers["Denúncias"] = map_layers["Denúncias"];
+        }
 
         this.tileLayer['Mapa'].addTo(this.map);
 
