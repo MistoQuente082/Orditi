@@ -31,12 +31,13 @@ const LeafIcon = L.Icon.extend({
   }
 });
 
-const  ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' });
+const ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { ValidaCadastroService } from '../services/validaCadastro/valida-cadastro.service';
 
 
 
@@ -54,8 +55,8 @@ export class CadastroPage implements OnInit {
   public imgCpf: string;
   public imgRg: string;
   public imagem: string;
-  public imgDefaultP: string = "../../assets/img/avatar.svg";
-  public imgDefaultL: string = "../../assets/img/avatar.svg";
+  public imgDefaultP: string = "../../assets/img/avatar.png";
+  public imgDefaultL: string = "../../assets/img/avatar.png";
 
   // Variaveis da pessoa
   public nome: string;
@@ -133,6 +134,10 @@ export class CadastroPage implements OnInit {
     'Louças, Ferragens, Artefatos, Utensílios Domésticos',
     'Artesanato, Antiguidades e arte',
     'Outros'];
+  statusCPF: boolean = true;
+  statusCNPJ: boolean = true;
+  statusEMAIL: boolean = true;
+  statusNUM: boolean = true;
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -154,6 +159,7 @@ export class CadastroPage implements OnInit {
     public router: Router,
     public webView: WebView,
     public actionSheetController: ActionSheetController,
+    public validador: ValidaCadastroService,
     public Cam: Camera,
 
     public httpClient: HttpClient
@@ -370,7 +376,30 @@ export class CadastroPage implements OnInit {
   };
 
 
+  valida(info, tipo) {
+    if (tipo === 'cpf') {
+      info = info.replace(/\D+/g, '');
+      console.log(info);
+      if (tipo.length > 11) {
+        this.statusCNPJ = this.validador.validaCNPJ(info);
+        console.log('cnpj', this.statusCNPJ);
+      } else {
 
+        this.statusCPF = this.validador.validaCPF(info);
+      }
+
+    }
+
+    else if (tipo === 'email') {
+      this.statusEMAIL = this.validador.validaEMAIL(info);
+    }
+
+    else {
+      this.statusNUM = this.validador.validaNUM(info);
+
+    }
+
+  }
 
 
   // Botão de Seguinte Etapa
@@ -380,8 +409,15 @@ export class CadastroPage implements OnInit {
     let condicoes = this.nome === undefined || this.cpf === undefined || this.fone === undefined ||
       this.rg === undefined || this.nomeMaterno === undefined || this.bairro === undefined
       || this.rua === undefined || this.imgRg === undefined || this.imgCpf === undefined
-      || this.cidade === undefined; //this.imgPessoa !== '../../assets/img/avatar.svg';
-    if (etapa === 1) {
+      || this.cidade === undefined;
+    let status = this.statusCPF === false || this.statusCNPJ === false
+      || this.statusEMAIL === false || this.statusNUM === false;
+
+    if (status) {
+      this.alertas.presentToast('Dados invalidos!');
+
+    }
+    else if (etapa === 1) {
       if (condicoes) {
         this.alertas.presentToast('Preencha os campos!');
       }
@@ -427,7 +463,7 @@ export class CadastroPage implements OnInit {
   cadastrar() {
 
 
-    let produto =this.produto.join('');
+    let produto = this.produto.join('');
 
 
 

@@ -14,7 +14,7 @@
   <div *ngIf="etapaCadastro == 1">
     <div class="centro">
       <img *ngIf="imgPessoa" class="conteudo" [src]="imgPessoa" (click)="cam(1)">
-      <img *ngIf="imgDefaultP" class="conteudo" [src]="imgDefaultP" (click)="cam(1)">
+      <img *ngIf="imgDefaultP" class="conteudo" src="../../assets/img/avatar.jpg  " (click)="cam(1)">
 
     </div>
 
@@ -33,9 +33,12 @@
       </ion-item>
       <ion-item>
         <ion-label color="label-color" position="floating">CPF/CNPJ:</ion-label>
-        <ion-input type="text" [(ngModel)]="cpf" placeholder="123.456.789-10" [brmasker]="{person: true}"
-          minlength="14">
+        <ion-input type="text" (focusout)="valida(cpf, 'cpf')" [(ngModel)]="cpf" placeholder="123.456.789-10"
+          [brmasker]="{person: true}" minlength="14">
         </ion-input>
+        <ion-note *ngIf="!statusCPF || !statusCNPJ" color="danger">
+          Valor invalido
+        </ion-note>
 
 
 
@@ -83,13 +86,20 @@
 
       <ion-item>
         <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
-        <ion-input type="text" [(ngModel)]="fone" placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}"
-          minlength="14"></ion-input>
+        <ion-input type="text" [(ngModel)]="fone" (focusout)="valida(fone, 'fone')" placeholder="Ex.: (12) 984567-8910"
+          [brmasker]="{phone: true}" minlength="14"></ion-input>
+        <ion-note *ngIf="!statusNUM" color="danger">
+          Valor invalido
+        </ion-note>
       </ion-item>
 
       <ion-item>
         <ion-label color="label-color" position="floating">Email:</ion-label>
-        <ion-input type="email" [(ngModel)]="email" placeholder="Ex.: exemplo@email.com"></ion-input>
+        <ion-input type="email" [(ngModel)]="email" (focusout)="valida(email, 'email')"
+          placeholder="Ex.: exemplo@email.com"></ion-input>
+        <ion-note *ngIf="!statusEMAIL" color="danger">
+          Valor invalido
+        </ion-note>
       </ion-item>
 
 
@@ -133,6 +143,24 @@
       Seguinte
     </ion-button>
   </div>
+
+
+  <!-- 
+  
+  
+  SIGUIENTE ETAPA
+
+
+
+-->
+
+
+
+
+
+
+
+
   <div *ngIf="etapaCadastro == 2">
 
     <ion-card>
@@ -233,16 +261,7 @@
 
     </ion-card>
 
-    <ion-card *ngIf="cpf">
-      <ion-card-header>
-        <ion-card-subtitle>qrCode Do Ambulante</ion-card-subtitle>
-      </ion-card-header>
-      <br>
-
-      <ngx-qrcode class="ion-text-center" qrc-element-type="canvas" [qrc-value]="cpf">
-      </ngx-qrcode>
-
-    </ion-card>
+ 
 
     <ion-card>
       <ion-card-header>
@@ -279,11 +298,12 @@
 
 
     <div style="display: flex;">
-      <ion-button style="width: 49%; float: left;" expand="block" fill="outline"  (click)="verifiEtapa(2)">
-  
+      <ion-button style="width: 49%; float: left;" expand="block" fill="outline" (click)="verifiEtapa(2)">
+
         Voltar
       </ion-button>
-      <ion-button style="width: 49%; float: right;" expand="block" (click)="cadastrar()" color="primary"> Solicitar</ion-button>
-  
+      <ion-button style="width: 49%; float: right;" expand="block" (click)="cadastrar()" color="primary"> Solicitar
+      </ion-button>
+
     </div>
   </div>
