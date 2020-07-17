@@ -48,16 +48,30 @@ import { ValidaCadastroService } from '../services/validaCadastro/valida-cadastr
   styleUrls: ['./cadastro.page.scss'],
 })
 export class CadastroPage implements OnInit {
+  public tipoCadastro: any = '1';
 
   // Var Camera
   public imgPessoa: string;
   public imgProduto: string;
   public imgCpf: string;
   public imgRg: string;
+  public imgCNPJ: string;
+  public imgCS: string;
+  public imgAlvara: string;
+  public imgOutro: string;
   public imagem: string;
+
   public imgDefaultP: string = "../../assets/img/avatar.png";
   public imgDefaultL: string = "../../assets/img/avatar.png";
 
+  //CNPJ
+  public cnpj: string;
+  public cmc: string;
+  public nomeFantasia: string;
+  public foneEmpresa: number;
+  public outroProduto: string;
+  public tipoEquipamento: string;
+  public qtdEquipamento: number;
   // Variaveis da pessoa
   public nome: string;
   public cpf: string;
@@ -108,6 +122,8 @@ export class CadastroPage implements OnInit {
 
   // Necessário para cadastrar no Banco
   private url_banco = 'http://syphan.com.br/orditiServices/cadastrarAmbulante.php';
+  private url_banco_PJ = 'http://syphan.com.br/orditiServices/cadastrarEmpresa.php';
+
   private alerta_texto = 'Não foi possível realizar a cadastro'
 
   mostrarMapa: boolean = false;
@@ -236,6 +252,35 @@ export class CadastroPage implements OnInit {
         }
       }
 
+      if (tipo === 5) {
+        if (imagem) {
+          this.imgCS = imagem;
+          imagem = null;
+        }
+      }
+
+      if (tipo === 6) {
+        if (imagem) {
+          this.imgCNPJ = imagem;
+          imagem = null;
+        }
+      }
+
+
+      if (tipo === 7) {
+        if (imagem) {
+          this.imgAlvara = imagem;
+          imagem = null;
+        }
+      }
+
+      if (tipo === 8) {
+        if (imagem) {
+          this.imgOutro = imagem;
+          imagem = null;
+        }
+      }
+
       else {
         if (imagem) {
           this.imgDefaultL = null
@@ -263,6 +308,22 @@ export class CadastroPage implements OnInit {
 
     }
 
+    if (tipo === 5) {
+      this.imgCS = undefined;
+    }
+    if (tipo === 6) {
+      this.imgCNPJ = undefined;
+
+    }
+
+
+    if (tipo === 7) {
+      this.imgAlvara = undefined;
+    }
+
+    else {
+      this.imgOutro = undefined;
+    }
 
   }
 
@@ -377,18 +438,24 @@ export class CadastroPage implements OnInit {
 
 
   valida(info, tipo) {
+
     if (tipo === 'cpf') {
       info = info.replace(/\D+/g, '');
-      console.log(info);
-      if (tipo.length > 11) {
-        this.statusCNPJ = this.validador.validaCNPJ(info);
-        console.log('cnpj', this.statusCNPJ);
-      } else {
 
-        this.statusCPF = this.validador.validaCPF(info);
-      }
+      console.log(info);
+
+      this.statusCPF = this.validador.validaCPF(info);
+
 
     }
+
+    else if (tipo === 'cnpj') {
+      info = info.replace(/\D+/g, '');
+
+      this.statusCNPJ = this.validador.validaCNPJ(info);
+      console.log('cnpj', this.statusCNPJ);
+    }
+
 
     else if (tipo === 'email') {
       this.statusEMAIL = this.validador.validaEMAIL(info);
@@ -403,8 +470,12 @@ export class CadastroPage implements OnInit {
 
 
   // Botão de Seguinte Etapa
-  verifiEtapa(etapa) {
-
+  verifiEtapa(etapa, tipoCadastro) {
+    const condPJ = this.nome === undefined || this.nomeMaterno === undefined || this.cpf === undefined || this.fone === undefined ||
+      this.rg === undefined || this.bairro === undefined || this.cnpj === undefined || this.cmc === undefined
+      || this.nomeFantasia === undefined || this.foneEmpresa === undefined || this.cnpj === undefined
+      || this.rua === undefined
+      || this.cidade === undefined;
 
     let condicoes = this.nome === undefined || this.cpf === undefined || this.fone === undefined ||
       this.rg === undefined || this.nomeMaterno === undefined || this.bairro === undefined
@@ -418,7 +489,7 @@ export class CadastroPage implements OnInit {
 
     }
     else if (etapa === 1) {
-      if (condicoes) {
+      if ((condicoes && tipoCadastro === '1') || (condPJ && tipoCadastro === '2')) {
         this.alertas.presentToast('Preencha os campos!');
       }
 
@@ -459,6 +530,13 @@ export class CadastroPage implements OnInit {
   //
   // }
 
+
+
+
+
+
+
+
   // Botão de cadastro
   cadastrar() {
 
@@ -466,7 +544,9 @@ export class CadastroPage implements OnInit {
     let produto = this.produto.join('');
 
 
-
+    const condPJ = this.imgCpf === undefined || this.imgRg === undefined || this.imgCNPJ === undefined ||
+      this.imgCS === undefined || this.imgAlvara === undefined || this.produto === undefined ||
+      this.relatoAtividade === undefined || this.qtdEquipamento === undefined
     let condicoes = this.produto === undefined || this.hInicio === undefined
       || this.hfim === undefined
       || this.local === undefined
@@ -474,24 +554,17 @@ export class CadastroPage implements OnInit {
       || this.larg === undefined
       || this.imgProduto === undefined;
 
-    if ((condicoes && produto === '7' && this.relatoAtividade === undefined) || condicoes) {
+    if ((condicoes && produto === '7' && this.relatoAtividade === undefined && this.tipoCadastro === '1')
+      || (condPJ && this.tipoCadastro === '2') || (condicoes && this.tipoCadastro === '1')) {
       this.alertas.presentToast('Preencha os campos ');
     }
 
     else {
-      this.diasAtend = this.diasAtend.toString();
-
-
-      if (this.localAtiv === undefined) {
-        this.localAtiv = " "
-        //this.alertas.presentToast('Selecione um ponto no mapa!');
-      } else {
-        if (this.pontoRef === undefined) {
-          this.pontoRef = " "
-        }
-        var dados = {
+      if (this.tipoCadastro === '2') {
+        console.log('entreeeeeeo')
+        var dadosPJ = {
           'nome': this.nome,
-          'identidade': this.cpf,
+          'cpf': this.cpf,
           'rg': this.rg,
           'fone': this.fone,
           'email': this.email,
@@ -501,26 +574,72 @@ export class CadastroPage implements OnInit {
           'bairro': this.bairro,
           'cidade': this.cidade,
           'cep': this.cep,
-          'end_local': this.enderecoLocal,
-          'ponto_referencia': this.pontoRef,
-          'produto': produto,
           'foto_cliente': this.imgPessoa,
-          'latitude': this.local.lat,
-          'longitude': this.local.lng,
-          'regiao': 0,
-          'atendimento_dias': this.diasAtend,
-          'atendimento_inicio': this.hInicio,
-          'atendimento_fim': this.hfim,
-          'relato_atividade': this.relatoAtividade,
           'foto_cpf': this.imgCpf,
           'foto_rg': this.imgRg,
-          'foto_equipamento': this.imgProduto,
-          'comprimento': this.compr,
-          'largura': this.larg,
-          'situacao': 0, // 0: ainda n pagou, 1: pagou 
-        };
+          'foto_cnpj': this.imgCNPJ,
+          'foto_cs': this.imgCS,
+          'foto_alvara': this.imgAlvara,
+          'foto_outro': this.imgOutro,
+          'produto': this.produto,
+          'relato_atividade': this.relatoAtividade,
+          'cnpj': this.cnpj,
+          'cmc': this.cmc,
+          'nome_fantasia': this.nomeFantasia,
+          'fone_empresa': this.foneEmpresa,
+          'outro_produto': this.outroProduto,
+          'qtd_equipamento': this.qtdEquipamento,
 
-        this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
+        }
+
+        console.table(dadosPJ);
+        this.presentAlertCadastro(dadosPJ, this.url_banco_PJ, this.alerta_texto);
+
+      } else {
+        console.log('entreeeeeeo')
+
+        this.diasAtend = this.diasAtend.toString();
+        if (this.localAtiv === undefined) {
+          this.localAtiv = " "
+          //this.alertas.presentToast('Selecione um ponto no mapa!');
+        } else {
+          if (this.pontoRef === undefined) {
+            this.pontoRef = " "
+          }
+          var dados = {
+            'nome': this.nome,
+            'identidade': this.cpf,
+            'rg': this.rg,
+            'fone': this.fone,
+            'email': this.email,
+            'nome_materno': this.nomeMaterno,
+            'endereco': this.rua,
+            'numero': this.numero,
+            'bairro': this.bairro,
+            'cidade': this.cidade,
+            'cep': this.cep,
+            'end_local': this.enderecoLocal,
+            'ponto_referencia': this.pontoRef,
+            'produto': produto,
+            'foto_cliente': this.imgPessoa,
+            'latitude': this.local.lat,
+            'longitude': this.local.lng,
+            'regiao': 0,
+            'atendimento_dias': this.diasAtend,
+            'atendimento_inicio': this.hInicio,
+            'atendimento_fim': this.hfim,
+            'relato_atividade': this.relatoAtividade,
+            'foto_cpf': this.imgCpf,
+            'foto_rg': this.imgRg,
+            'foto_equipamento': this.imgProduto,
+            'comprimento': this.compr,
+            'largura': this.larg,
+            'situacao': 0, // 0: ainda n pagou, 1: pagou 
+            'tipo_equipamento': this.tipoEquipamento
+          };
+
+          this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
+        }
       }
     }
 
