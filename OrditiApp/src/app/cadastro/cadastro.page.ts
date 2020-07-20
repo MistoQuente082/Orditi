@@ -581,7 +581,7 @@ export class CadastroPage implements OnInit {
           'foto_cs': this.imgCS,
           'foto_alvara': this.imgAlvara,
           'foto_outro': this.imgOutro,
-          'produto': this.produto,
+          'produto': produto,
           'relato_atividade': this.relatoAtividade,
           'cnpj': this.cnpj,
           'cmc': this.cmc,
@@ -637,7 +637,7 @@ export class CadastroPage implements OnInit {
             'situacao': 0, // 0: ainda n pagou, 1: pagou 
             'tipo_equipamento': this.tipoEquipamento
           };
-
+          console.table(dados);
           this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
         }
       }
