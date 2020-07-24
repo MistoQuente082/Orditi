@@ -8,6 +8,7 @@ export class ListaAmbulantesService {
 
   public res_lista: boolean = false;
   dados_lista;
+  public dadosEmpresa;
 
   constructor(
     public storage: Storage,

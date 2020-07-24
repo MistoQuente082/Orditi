@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header >
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -8,8 +8,9 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-  <div *ngIf="etapaCadastro == 1">
+  <div *ngIf="etapaCadastro == 1 && valoresEmpresa == undefined">
     <ion-item>
 
       <ion-label position="floating">Tipo Cadastro</ion-label>
@@ -33,7 +34,7 @@
       <ion-card>
         <ion-card-header>
           <ion-card-subtitle>
-            Dados do cadastrante
+            Dados do Representante
           </ion-card-subtitle>
         </ion-card-header>
         <ion-item>
@@ -461,13 +462,13 @@
           <ion-label color="label-color" position="floating">Dias:</ion-label>
           <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diasAtend"
             placeholder="Ex.: Segunda">
-            <ion-select-option value=" Segunda-feira">Segunda-feira</ion-select-option>
-            <ion-select-option value=" Terça-feira">Terça-feira</ion-select-option>
-            <ion-select-option value=" Quarta-feira">Quarta-feira</ion-select-option>
-            <ion-select-option value=" Quinta-feira">Quinta-feira</ion-select-option>
-            <ion-select-option value=" Sexta-feira">Sexta-feira</ion-select-option>
-            <ion-select-option value=" Sabado">Sabado</ion-select-option>
-            <ion-select-option value=" Domingo">Domingo</ion-select-option>
+            <ion-select-option value="0">Domingo</ion-select-option>
+            <ion-select-option value="1">Segunda-feira</ion-select-option>
+            <ion-select-option value="2">Terça-feira</ion-select-option>
+            <ion-select-option value="3">Quarta-feira</ion-select-option>
+            <ion-select-option value="4">Quinta-feira</ion-select-option>
+            <ion-select-option value="5">Sexta-feira</ion-select-option>
+            <ion-select-option value="6">Sabado</ion-select-option>
 
           </ion-select>
         </ion-item>

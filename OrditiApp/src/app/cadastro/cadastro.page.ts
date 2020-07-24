@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
-import { ModalController, ActionSheetController } from '@ionic/angular';
+import { ModalController, ActionSheetController, NavParams } from '@ionic/angular';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { AlertController } from '@ionic/angular';
@@ -9,7 +9,7 @@ import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
 
 import { Map, tileLayer, marker } from 'leaflet';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -38,6 +38,7 @@ const ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marke
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { ValidaCadastroService } from '../services/validaCadastro/valida-cadastro.service';
+import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 
 
 
@@ -68,7 +69,7 @@ export class CadastroPage implements OnInit {
   public cnpj: string;
   public cmc: string;
   public nomeFantasia: string;
-  public foneEmpresa: number;
+  public foneEmpresa: string;
   public outroProduto: string;
   public tipoEquipamento: string;
   public qtdEquipamento: number;
@@ -102,7 +103,7 @@ export class CadastroPage implements OnInit {
   public localAtiv: string;
   public regiao: string;
   public local: any;
-  public diasAtend: any;
+  public diasAtend: any[];
   public enderecoLocal: any;
   public hInicio: Date;
   public hfim: Date;
@@ -118,7 +119,6 @@ export class CadastroPage implements OnInit {
 
   // Etapas do Cadastro
   private etapaCadastro: number = 1;
-
 
   // Necessário para cadastrar no Banco
   private url_banco = 'http://syphan.com.br/orditiServices/cadastrarAmbulante.php';
@@ -154,6 +154,9 @@ export class CadastroPage implements OnInit {
   statusCNPJ: boolean = true;
   statusEMAIL: boolean = true;
   statusNUM: boolean = true;
+  cadastroFuncionario: boolean = false;
+  idEmpresa: any;
+  valoresEmpresa: any;
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -177,10 +180,12 @@ export class CadastroPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public validador: ValidaCadastroService,
     public Cam: Camera,
-
-    public httpClient: HttpClient
+    public httpClient: HttpClient,
+    public dadosEmpresa: ListaAmbulantesService
 
   ) {
+
+
 
   }
 
@@ -471,6 +476,8 @@ export class CadastroPage implements OnInit {
 
   // Botão de Seguinte Etapa
   verifiEtapa(etapa, tipoCadastro) {
+
+
     const condPJ = this.nome === undefined || this.nomeMaterno === undefined || this.cpf === undefined || this.fone === undefined ||
       this.rg === undefined || this.bairro === undefined || this.cnpj === undefined || this.cmc === undefined
       || this.nomeFantasia === undefined || this.foneEmpresa === undefined || this.cnpj === undefined
@@ -513,35 +520,21 @@ export class CadastroPage implements OnInit {
   // OBTEM OS HORÁRIOS DE FUNCIONAMENTO
   horaInicio(event) {
     this.hInicio = new Date(event.detail.value);
+    console.log('hi', this.hInicio);
 
   }
   // OBTEM OS HORÁRIOS DE FUNCIONAMENTO
 
   horaFim(event) {
     this.hfim = new Date(event.detail.value);
+    console.log('hi', this.hfim);
 
   }
 
-  // // Obtem a imagem a partir do cpf do ambulante
-  // // Envia pro banco de Dados 
-  // obterQrCode() {
-  //   const canvas = document.querySelector('canvas') as HTMLCanvasElement;
-  //   this.qrCodeAmbulante = canvas.toDataURL('image/jpeg').toString();
-  //
-  // }
-
-
-
-
-
-
-
-
   // Botão de cadastro
   cadastrar() {
-
-
     let produto = this.produto.join('');
+
 
 
     const condPJ = this.imgCpf === undefined || this.imgRg === undefined || this.imgCNPJ === undefined ||
@@ -560,8 +553,16 @@ export class CadastroPage implements OnInit {
     }
 
     else {
+
+
+
+
       if (this.tipoCadastro === '2') {
         console.log('entreeeeeeo')
+        if (this.outroProduto === undefined) {
+          this.outroProduto = null;
+        }
+
         var dadosPJ = {
           'nome': this.nome,
           'cpf': this.cpf,
@@ -578,7 +579,7 @@ export class CadastroPage implements OnInit {
           'foto_cpf': this.imgCpf,
           'foto_rg': this.imgRg,
           'foto_cnpj': this.imgCNPJ,
-          'foto_cs': this.imgCS,
+          'foto_contrato_social': this.imgCS,
           'foto_alvara': this.imgAlvara,
           'foto_outro': this.imgOutro,
           'produto': produto,
@@ -588,7 +589,7 @@ export class CadastroPage implements OnInit {
           'nome_fantasia': this.nomeFantasia,
           'fone_empresa': this.foneEmpresa,
           'outro_produto': this.outroProduto,
-          'qtd_equipamento': this.qtdEquipamento,
+          'quantidade_equipamentos': this.qtdEquipamento,
 
         }
 
@@ -596,9 +597,15 @@ export class CadastroPage implements OnInit {
         this.presentAlertCadastro(dadosPJ, this.url_banco_PJ, this.alerta_texto);
 
       } else {
+
+
+
         console.log('entreeeeeeo')
 
-        this.diasAtend = this.diasAtend.toString();
+        var atenDias = this.diasAtend.join('');
+
+
+
         if (this.localAtiv === undefined) {
           this.localAtiv = " "
           //this.alertas.presentToast('Selecione um ponto no mapa!');
@@ -606,7 +613,16 @@ export class CadastroPage implements OnInit {
           if (this.pontoRef === undefined) {
             this.pontoRef = " "
           }
+
+          if (this.relatoAtividade === undefined) {
+            this.relatoAtividade = null;
+          }
+          this.idEmpresa = this.valoresEmpresa.idEmpresa;
+          let novoContadorAmbulante = this.valoresEmpresa.contador
+
           var dados = {
+            'contador_ambulante': novoContadorAmbulante,
+            'id_empresa': this.idEmpresa,
             'nome': this.nome,
             'identidade': this.cpf,
             'rg': this.rg,
@@ -625,7 +641,7 @@ export class CadastroPage implements OnInit {
             'latitude': this.local.lat,
             'longitude': this.local.lng,
             'regiao': 0,
-            'atendimento_dias': this.diasAtend,
+            'atendimento_dias': atenDias,
             'atendimento_inicio': this.hInicio,
             'atendimento_fim': this.hfim,
             'relato_atividade': this.relatoAtividade,
@@ -637,7 +653,7 @@ export class CadastroPage implements OnInit {
             'situacao': 0, // 0: ainda n pagou, 1: pagou 
             'tipo_equipamento': this.tipoEquipamento
           };
-          console.table(dados);
+          console.log(dados);
           this.presentAlertCadastro(dados, this.url_banco, this.alerta_texto);
         }
       }
@@ -646,6 +662,11 @@ export class CadastroPage implements OnInit {
   }
 
   ngOnInit() {
+    this.valoresEmpresa = this.dadosEmpresa.dadosEmpresa;
+    this.dadosEmpresa.dadosEmpresa = null;
+
+    console.log('valores empresa ', this.valoresEmpresa)
+
 
   }
 
@@ -686,6 +707,8 @@ export class CadastroPage implements OnInit {
     return resp;
 
   }
+
+
 
 
 }

@@ -23,10 +23,11 @@ const routes: Routes = [
   { path: 'busca', loadChildren: './busca/busca.module#BuscaPageModule' },
   { path: 'editar-ambulante', loadChildren: './editar-ambulante/editar-ambulante.module#EditarAmbulantePageModule' },
   { path: 'eventos', loadChildren: './eventos/eventos.module#EventosPageModule' },
-  { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' },  { path: 'busca-ambulante', loadChildren: './busca-ambulante/busca-ambulante.module#BuscaAmbulantePageModule' },
+  { path: 'detalhe-eventos', loadChildren: './detalhe-eventos/detalhe-eventos.module#DetalheEventosPageModule' },
   { path: 'filtro-busca', loadChildren: './filtro-busca/filtro-busca.module#FiltroBuscaPageModule' },
   { path: 'notificar-ambulante', loadChildren: './notificar-ambulante/notificar-ambulante.module#NotificarAmbulantePageModule' },
-  { path: 'mostrar-lista', loadChildren: './mostrar-lista/mostrar-lista.module#MostrarListaPageModule' }
+  { path: 'mostrar-lista', loadChildren: './mostrar-lista/mostrar-lista.module#MostrarListaPageModule' },
+  { path: 'perfil-empresa', loadChildren: './perfil-empresa/perfil-empresa.module#PerfilEmpresaPageModule' },
 
 
 

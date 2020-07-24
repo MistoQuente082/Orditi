@@ -18,6 +18,8 @@
       <ion-select-option value="zona">Zonas</ion-select-option>
       <ion-select-option value="cpf">CPF</ion-select-option>
       <ion-select-option value="nome">Nome</ion-select-option>
+      <ion-select-option value="cnpj">CNPJ</ion-select-option>
+
 
     </ion-select>
   </ion-item>
@@ -33,7 +35,7 @@
   </div>
 
 
-  <div *ngIf="tipo != 'zona'">
+  <div *ngIf="tipo == 'nome' || tipo == 'cpf'">
     <ion-list>
       <ion-item *ngFor="let pessoa of ambulantes" (click)="modal(pessoa, tipo)">
         <ion-avatar slot="start">
@@ -42,6 +44,20 @@
         <ion-label>
           <h3>{{pessoa.nome}}</h3>
           <p>{{pessoa.produto}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="tipo == 'cnpj'">
+    <ion-list>
+      <ion-item *ngFor="let empresa of empresas" (click)="modal(empresa, tipo)">
+        <ion-avatar slot="start">
+          <img src="{{empresa.foto}}">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{empresa.nome_fantasia}}</h3>
+          <p>{{empresa.cnpj}}</p>
         </ion-label>
       </ion-item>
     </ion-list>

@@ -5,24 +5,22 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { BuscaAmbulantePage } from './busca-ambulante.page';
-import { BrMaskerModule } from 'br-mask';
+import { PerfilEmpresaPage } from './perfil-empresa.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: BuscaAmbulantePage
+    component: PerfilEmpresaPage
   }
 ];
 
 @NgModule({
   imports: [
-    BrMaskerModule,
     CommonModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [BuscaAmbulantePage]
+  declarations: [PerfilEmpresaPage]
 })
-export class BuscaAmbulantePageModule {}
+export class PerfilEmpresaPageModule {}

@@ -1,0 +1,194 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="centro">
+    <img class="conteudo" [src]="empresa['foto']" (click)="cam()">
+
+  </div>
+
+  <ion-card>
+    <ion-card-header (click)="mostrarAtividade()">
+      <ion-card-subtitle>
+        Informações da Atividade
+      </ion-card-subtitle>
+    </ion-card-header>
+    <div *ngIf="atividade">
+      <ion-item>
+        <ion-label>
+          <p class="label-color">Nome Fantasia:</p>
+          <h2 class="input-color">{{empresa.nome_fantasia}}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item >
+        <ion-label>
+          <p class="label-color">Produto:</p>
+          <h2 class="input-color" *ngFor="let num of empresa.produto.split(',')">{{produtos[num]}}</h2>
+
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="empresa.produto == '7'">
+        <ion-label>
+          <p class="label-color">Outros:</p>
+          <h2 class="input-color">{{empresa.outro_produto}}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p class="label-color">Relato Atividade:</p>
+          <h2 class="input-color">{{empresa.relato_atividade}}</h2>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-header (click)="mostrarTrabalho()">
+      <ion-card-subtitle>
+        Informações da Empresa
+      </ion-card-subtitle>
+    </ion-card-header>
+    <div *ngIf="trabalho">
+
+       <ion-item>
+        <ion-label>
+          <p class="label-color">CNPJ:</p>
+          <h2 class="input-color">{{empresa.cnpj}}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p class="label-color">CMC:</p>
+          <h2 class="input-color">{{empresa.cmc}}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p class="label-color">Fone:</p>
+          <h2 class="input-color">{{empresa.fone_empresa}}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p class="label-color">Email:</p>
+          <h2 class="input-color">{{empresa.email}}</h2>
+        </ion-label>
+      </ion-item>
+
+    </div>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-header (click)="mostrarInfor()">
+      <ion-card-subtitle>
+        Informações do Representante
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <div *ngIf="informacoes">
+
+      <ion-list>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Nome:</p>
+            <h2 class="input-color">{{empresa.nome}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Nome Materno:</p>
+            <h2 class="input-color">{{empresa.nome_materno}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">CPF:</p>
+            <h2 class="input-color">{{empresa.cpf}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">RG:</p>
+            <h2 class="input-color">{{empresa.rg}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Nº de Contato:</p>
+            <h2 class="input-color">{{empresa.fone}}</h2>
+          </ion-label>
+        </ion-item>
+
+      </ion-list>
+    </div>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        Funcionários: {{empresa.contador_ambulantes}}/{{empresa.quantidade_equipamentos}}
+      </ion-card-subtitle>
+
+
+    </ion-card-header>
+
+
+    <ion-list>
+
+      <div>
+        <ion-item *ngFor="let funcionario of funcionarios">
+          <ion-avatar slot="start">
+            <img [src]="funcionario.foto">
+          </ion-avatar>
+          <ion-label>
+            <h3>{{funcionario.nome}}</h3>
+            <p>{{funcionario.tipo_equipamento}}</p>
+
+          </ion-label>
+
+        </ion-item>
+
+      </div>
+
+
+      <ion-item *ngIf="empresa.contador_ambulantes < empresa.quantidade_equipamentos">
+
+        <ion-avatar slot="start">
+          <img src="../../assets/img/avatar.jpg">
+        </ion-avatar>
+        <ion-label>
+          <h3>Novo Funcionário</h3>
+          <p>Produto</p>
+
+        </ion-label>
+
+        <ion-button slot="end" color="secondary" size="small"
+          (click)="adicionarAmbulante(empresa.id, empresa.contador_ambulantes, empresa.quantidade_equipamentos)">
+          Adicionar</ion-button>
+
+      </ion-item>
+
+
+
+    </ion-list>
+  </ion-card>
+</ion-content>

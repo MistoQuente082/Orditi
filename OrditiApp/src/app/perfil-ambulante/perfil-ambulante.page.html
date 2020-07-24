@@ -16,21 +16,21 @@
 
   </div>
 
-  
+
 
   <ion-card>
-    <ion-card-header (click)="mostrarTrabalho()">
+    <ion-card-header >
       <ion-card-subtitle>
         Informações do local de trabalho
       </ion-card-subtitle>
     </ion-card-header>
-    <div *ngIf="trabalho">
+    <div >
       <ion-list>
-        <ion-item (click)="leafletMap(ambulante)">
+        <ion-item >
           <ion-label>
             <p class="label-color">Produto:</p>
-            <h2 class="input-color"   *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
-            
+            <h2 class="input-color" *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
+
           </ion-label>
         </ion-item>
 
@@ -39,29 +39,29 @@
         <ion-item>
           <ion-label>
             <p class="label-color">Area do Equipamento:</p>
-            <h2 class="input-color" >{{ambulante.area_equipamento}}</h2>
+            <h2 class="input-color">{{ambulante.area_equipamento}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item>
           <ion-label>
             <p class="label-color">Tipo do Equipamento</p>
-            <h2 class="input-color" >ppp</h2>
+            <h2 class="input-color">{{ambulante.tipo_equipamento}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item *ngIf="ambulante.regiao != '0'">
           <ion-label>
             <p class="label-color">Região</p>
-            <h2 class="input-color" >{{ambulante.regiao}}</h2>
+            <h2 class="input-color">{{ambulante.regiao}}</h2>
           </ion-label>
         </ion-item>
 
 
-        <ion-item *ngIf="ambulante.ponto_referencia!='NULL'">
+        <ion-item *ngIf="ambulante.ponto_referencia !=''">
           <ion-label>
             <p class="label-color">Ponto de Referencia:</p>
-            <h2 class="input-color" >{{ambulante.ponto_referencia}}</h2>
+            <h2 class="input-color">{{ambulante.ponto_referencia}}</h2>
           </ion-label>
         </ion-item>
 
@@ -70,43 +70,36 @@
         <ion-item>
           <ion-label>
             <p class="label-color">Dias de Trabalho:</p>
-            <h2 class="input-color" >{{ambulante.atendimento_dias}}</h2>
+            <h2 class="input-color" *ngFor="let num of ambulante.atendimento_dias.split(',')">{{dias[num]}}</h2>
+
           </ion-label>
         </ion-item>
 
         <ion-item *ngIf="produto == 14">
           <ion-label>
             <p class="label-color">Descrição</p>
-            <h2 class="input-color" >{{ambulante.relato_atividade}}</h2>
+            <h2 class="input-color">{{ambulante.relato_atividade}}</h2>
           </ion-label>
         </ion-item>
+
+
+        <ion-item *ngIf="ambulante.end_local">
+          <ion-label>
+            <p class="label-color">Local de Atividade:</p>
+            <div id="mapId" style="height: 300px"></div>
+          </ion-label>
+
+        </ion-item>
       </ion-list>
-
-
-      <ion-item *ngIf="ambulante.end_local" >
-        <ion-label>
-          <p class="label-color">Local de Atividade:</p>
-          <ion-textarea>
-            {{ambulante.end_local}}
-
-
-          </ion-textarea>
-     
-
-        </ion-label>
-
-      </ion-item>
 
 
     </div>
   </ion-card>
 
 
-  <ion-card *ngIf="trabalho && mostrarMapa" id="mapId" style="height: 300px">
 
-  </ion-card>
 
-  
+
   <ion-card>
     <ion-card-header (click)="mostrarInfor()">
       <ion-card-subtitle>
@@ -117,35 +110,32 @@
     <div *ngIf="informacoes">
 
       <ion-list>
-      
+
         <ion-item>
           <ion-label>
-            <p class="label-color">Produto:</p>
-            <h2 class="input-color"  *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
-           
             <p class="label-color">Nome:</p>
-            <h2 class="input-color" >{{ambulante.nome}}</h2>
+            <h2 class="input-color">{{ambulante.nome}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item>
           <ion-label>
             <p class="label-color">Nome Materno:</p>
-            <h2 class="input-color" >{{ambulante.nome_materno}}</h2>
+            <h2 class="input-color">{{ambulante.nome_materno}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item>
           <ion-label>
             <p class="label-color">CPF/CNPJ:</p>
-            <h2 class="input-color" >{{ambulante.identidade}}</h2>
+            <h2 class="input-color">{{ambulante.identidade}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item>
           <ion-label>
             <p class="label-color">RG:</p>
-            <h2 class="input-color" >{{ambulante.rg}}</h2>
+            <h2 class="input-color">{{ambulante.rg}}</h2>
           </ion-label>
         </ion-item>
 
@@ -154,21 +144,21 @@
         <ion-item>
           <ion-label>
             <p class="label-color">Endereço:</p>
-            <h2 class="input-color" >{{ambulante.endereco}}</h2>
+            <h2 class="input-color">{{ambulante.endereco}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item>
           <ion-label>
             <p class="label-color">Telefone:</p>
-            <h2 class="input-color" >{{ambulante.fone}}</h2>
+            <h2 class="input-color">{{ambulante.fone}}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item>
           <ion-label>
             <p class="label-color">Email:</p>
-            <h2 class="input-color" >{{ambulante.email}}</h2>
+            <h2 class="input-color">{{ambulante.email}}</h2>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -185,7 +175,7 @@
     <div *ngIf="historico">
       <ion-item *ngFor="let ocorrencia of historicoLista">
         <ion-label>
-          <h2 class="input-color"  class="label-color">{{ocorrencia.titulo}}</h2>
+          <h2 class="input-color" class="label-color">{{ocorrencia.titulo}}</h2>
           <h4>{{ocorrencia.descricao}}</h4>
           <p>Dia: {{ocorrencia.data_notificacao}}</p>
         </ion-label>
