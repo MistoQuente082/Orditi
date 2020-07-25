@@ -41,10 +41,10 @@ const ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambul
 })
 export class PerfilAmbulantePage implements OnInit {
   historico: boolean = false;
-  trabalho: boolean = true;
   informacoes: boolean = false;
 
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
+  dias: any[] = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo'];
 
   historicoLista: any[] = [];
   ambulante: any;
@@ -69,6 +69,8 @@ export class PerfilAmbulantePage implements OnInit {
       )
       console.log(data);
       this.historicoLista = data;
+      this.leafletMap(this.ambulante);
+
     })
   }
 
@@ -77,7 +79,6 @@ export class PerfilAmbulantePage implements OnInit {
     await this.modalController.dismiss();
   }
   ngOnInit() {
-    
   }
 
 
@@ -118,14 +119,6 @@ export class PerfilAmbulantePage implements OnInit {
     await modal.present();
   }
   leafletMap(ambulante) {
-
-    this.mostrarMapa = true;
-    if (this.map !== 'undefined' && this.map !== null) {
-      this.map = null;
-    }
-    else {
-
-
       this.map = new Map('mapId').setView([ambulante.latitude, ambulante.longitude], 18);
 
 
@@ -134,24 +127,15 @@ export class PerfilAmbulantePage implements OnInit {
       }).addTo(this.map);
 
       this.criarMarkerAmbulantes(ambulante);
-    }
   }
   mostrarNotificacoes() {
     if (this.historico === false) {
       this.historico = true;
+
     }
     else {
       this.historico = false;
-    }
-  }
-  mostrarTrabalho() {
-    if (this.trabalho === false) {
-      this.trabalho = true;
 
-
-    }
-    else {
-      this.trabalho = false;
     }
   }
 

@@ -31,6 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotificarAmbulantePageModule } from './notificar-ambulante/notificar-ambulante.module';
 import { MostrarListaPageModule } from './mostrar-lista/mostrar-lista.module';
 import { EditarAmbulantePageModule } from './editar-ambulante/editar-ambulante.module';
+import { PerfilEmpresaPageModule } from './perfil-empresa/perfil-empresa.module';
 
 
 @NgModule({
@@ -39,16 +40,15 @@ import { EditarAmbulantePageModule } from './editar-ambulante/editar-ambulante.m
   imports: [
     BrowserModule,
     BrMaskerModule,
-
     HomePageModule,
     DetalheZonaPageModule,
     PerfilAmbulantePageModule,
     EditarAmbulantePageModule,
+    PerfilEmpresaPageModule,
     NotificarAmbulantePageModule,
     EditarAmbulantePageModule,
     MostrarListaPageModule,
     HttpClientModule,
-
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),

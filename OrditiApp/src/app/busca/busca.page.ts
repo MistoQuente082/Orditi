@@ -9,6 +9,7 @@ import { SqlOrditiService } from '../services/banco/sql-orditi.service';
 import { LoginBancoService } from '../services/login/login-banco.service';
 import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 import { PerfilAmbulantePage } from '../perfil-ambulante/perfil-ambulante.page';
+import { PerfilEmpresaPage } from '../perfil-empresa/perfil-empresa.page';
 //import { DetalheZonaPage } from '../detalhe-zona/detalhe-zona.page';
 
 @Component({
@@ -35,7 +36,6 @@ export class BuscaPage implements OnInit {
   public regiao: any;
   labelPesquisa: any;
   tipo1: string;
-  
 
   constructor(
     private loginBanco: LoginBancoService,
@@ -50,7 +50,15 @@ export class BuscaPage implements OnInit {
     }, error => {
       console.log(error);
     });;
-    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
+
+    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarEmpresas.php').subscribe(data => {
+      this.empresasTotal = data;
+      this.empresas = this.empresasTotal;
+    }, error => {
+      console.log(error);
+    });;
+
+    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
       this.zonasTotal = data;
       this.zonas = this.zonasTotal;
     }, error => {
@@ -90,7 +98,7 @@ export class BuscaPage implements OnInit {
     let val = busca.target.value;
     console.log(val)
     console.log('ZONA 1', this.tipo1)
-    if (this.tipo !== 'zona') {
+    if (this.tipo === 'nome' || this.tipo === 'cpf') {
       if (val && val.trim() != "") {
         this.ambulantes = _.values(this.ambulantesTotal);
         this.ambulantes = this.ambulantes.filter(pessoa => {
@@ -103,19 +111,32 @@ export class BuscaPage implements OnInit {
             return (pessoa.nome.toLowerCase().indexOf(val.toLowerCase()) > -1)
           }
 
+
         })
       }
       else {
         this.ambulantes = this.ambulantesTotal;
       }
     }
+
     else {
       if (val && val.trim() != "") {
-        this.zonas = _.values(this.zonasTotal);
-        console.log(this.zonas);
-        this.zonas = this.zonas.filter(zona => {
-          return (zona.nome.toLowerCase().indexOf(val.toLowerCase()) > -1)
-        });
+        if (tipo === 'zona') {
+          this.zonas = _.values(this.zonasTotal);
+          console.log(this.zonas);
+          this.zonas = this.zonas.filter(zona => {
+            return (zona.nome.toLowerCase().indexOf(val.toLowerCase()) > -1)
+          });
+        }
+        else {
+
+          this.empresas = _.values(this.empresasTotal);
+          console.log(this.empresas);
+          this.empresas = this.empresas.filter(empresa => {
+            return (empresa.cnpj.toLowerCase().indexOf(val.toLowerCase()) > -1)
+          });
+
+        }
       }
 
 
@@ -128,16 +149,7 @@ export class BuscaPage implements OnInit {
 
   async modal(item, tipo, foto) {
 
-    if (tipo !== 'zona') {
-      const modal = await this.modalCtrl.create({
-        component: PerfilAmbulantePage,
-        componentProps: {
-          info: item
-        }
-      });
-      return await modal.present();
-    } else {
-
+    if (tipo === 'zona') {
       console.log('click')
       const modal = await this.modalCtrl.create({
         component: DetalheZonaPage,
@@ -148,8 +160,32 @@ export class BuscaPage implements OnInit {
         }
       });
       return await modal.present();
-      //this.alertas.presentModal(DetalheZonaPage, this.zona);
+
     }
+    if (tipo === 'cnpj') {
+      const modal = await this.modalCtrl.create({
+        component: PerfilEmpresaPage,
+        componentProps: {
+          info: item
+        }
+      });
+      return await modal.present();
+    }
+
+
+
+    else {
+      const modal = await this.modalCtrl.create({
+        component: PerfilAmbulantePage,
+        componentProps: {
+          info: item
+        }
+      });
+      return await modal.present();
+    }
+
+
+
   }
 
   ngOnInit() {
