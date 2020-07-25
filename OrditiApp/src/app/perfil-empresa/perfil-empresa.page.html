@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="centro">
+    <img class="conteudo" [src]="ambulante['foto']" (click)="cam()">
+  </div>
+
+  <ion-card>
+    <ion-card-header (click)="mostrarInfor()">
+      <ion-card-subtitle>
+        Informações da empresa
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <div *ngIf="informacoes">
+
+      <ion-list>
+      
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Produto:</p>
+            <h2 class="input-color"  *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
+           
+            <p class="label-color">Nome:</p>
+            <h2 class="input-color" >{{empresa.nome}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">CNPJ:</p>
+            <h2 class="input-color" >{{empresa.cnpj}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">CMC:</p>
+            <h2 class="input-color" >{{empresa.cmc}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Endereço:</p>
+            <h2 class="input-color" >{{empresa.endereco}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Telefone:</p>
+            <h2 class="input-color" >{{empresa.fone}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Email:</p>
+            <h2 class="input-color" >{{empresa.email}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+    </div>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header (click)="mostrarAmbulantes()">
+      <ion-card-subtitle>
+        Ambulantes associados
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <div *ngIf="ambulantes">
+
+      <ion-list>
+      </ion-list>
+
+    </div>
+  </ion-card>
+
+</ion-content>

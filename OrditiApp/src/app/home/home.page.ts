@@ -224,7 +224,7 @@ export class HomePage {
         });;
 
         //Criar Pind de Zonas
-        this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
+        this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
           console.log(data)
           data.forEach(element => {
             this.criarPoligono(element);
@@ -272,7 +272,7 @@ export class HomePage {
         console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
         //Adicionar condição para só mostrar se for fiscal
         if (this.tipoUsuario !== false) {
-          this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarDenuncias.php').subscribe(data => {
+          this.sqlOrditi.receberDados('http://localhost/orditiServices/listarDenuncias.php').subscribe(data => {
             data.forEach(element => {
               console.log(element);
               this.criarMarkerDenuncias(element);
@@ -306,6 +306,8 @@ export class HomePage {
   }
 
   criarMarkerAmbulantes(geo) {
+
+    console.log(geo);
 
     var ambulanteFoto = geo['foto'];
     var ambulanteNome = geo['nome'];

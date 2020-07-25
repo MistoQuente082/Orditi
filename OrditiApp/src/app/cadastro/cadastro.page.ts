@@ -121,8 +121,8 @@ export class CadastroPage implements OnInit {
 
 
   // Necessário para cadastrar no Banco
-  private url_banco = 'http://syphan.com.br/orditiServices/cadastrarAmbulante.php';
-  private url_banco_PJ = 'http://syphan.com.br/orditiServices/cadastrarEmpresa.php';
+  private url_banco = 'http://localhost/orditiServices/cadastrarAmbulante.php';
+  private url_banco_PJ = 'http://localhost/orditiServices/cadastrarEmpresa.php';
 
   private alerta_texto = 'Não foi possível realizar a cadastro'
 
@@ -513,6 +513,7 @@ export class CadastroPage implements OnInit {
   // OBTEM OS HORÁRIOS DE FUNCIONAMENTO
   horaInicio(event) {
     this.hInicio = new Date(event.detail.value);
+    console.log(this.hInicio);
 
   }
   // OBTEM OS HORÁRIOS DE FUNCIONAMENTO

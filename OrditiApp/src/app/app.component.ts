@@ -61,7 +61,6 @@ export class AppComponent {
       url: '/home',
       icon: 'map'
     },
-
     {
       title: 'Pesquisar',
       url: '/busca',
@@ -107,7 +106,7 @@ export class AppComponent {
     private listaAmbulante: ListaAmbulantesService,
     private sqlOrditi: SqlOrditiService) {
     this.initializeApp();
-    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarAmbulantes.php').subscribe(data => {
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarAmbulantes.php').subscribe(data => {
       this.listaAmbulante.inserir('lista', data)
       this.listaAmbulante.recuperar('lista').then((data)=>{
         console.log(data)

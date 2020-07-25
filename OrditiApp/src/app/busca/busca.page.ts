@@ -24,6 +24,9 @@ export class BuscaPage implements OnInit {
   public ambulantesTotal: any[];
   public ambulantes: any[];
 
+  public empresasTotal: any[];
+  public empresas: any[];
+
   public zonasTotal: any[];
 
   public tipo: any = "zona";
@@ -32,6 +35,7 @@ export class BuscaPage implements OnInit {
   public regiao: any;
   labelPesquisa: any;
   tipo1: string;
+  
 
   constructor(
     private loginBanco: LoginBancoService,
@@ -46,9 +50,16 @@ export class BuscaPage implements OnInit {
     }, error => {
       console.log(error);
     });;
-    this.sqlOrditi.receberDados('http://syphan.com.br/orditiServices/listarZonas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
       this.zonasTotal = data;
       this.zonas = this.zonasTotal;
+    }, error => {
+      console.log(error);
+    });;
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarEmpresas.php').subscribe(data => {
+      this.empresasTotal = data;
+      this.empresas = this.empresasTotal;
+      console.log(this.empresas);
     }, error => {
       console.log(error);
     });;

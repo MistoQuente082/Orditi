@@ -30,6 +30,7 @@ import { HomePageModule } from './home/home.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificarAmbulantePageModule } from './notificar-ambulante/notificar-ambulante.module';
 import { MostrarListaPageModule } from './mostrar-lista/mostrar-lista.module';
+import { EditarAmbulantePageModule } from './editar-ambulante/editar-ambulante.module';
 
 
 @NgModule({
@@ -42,7 +43,9 @@ import { MostrarListaPageModule } from './mostrar-lista/mostrar-lista.module';
     HomePageModule,
     DetalheZonaPageModule,
     PerfilAmbulantePageModule,
+    EditarAmbulantePageModule,
     NotificarAmbulantePageModule,
+    EditarAmbulantePageModule,
     MostrarListaPageModule,
     HttpClientModule,
 

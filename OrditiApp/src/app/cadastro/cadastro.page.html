@@ -518,16 +518,10 @@
             Local
           </ion-card-subtitle>
         </ion-card-header>
-
-
-
-
         <ion-item>
           <ion-label color="label-color" position="floating">Ponto de referência:</ion-label>
           <ion-input type="text" [(ngModel)]="pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
         </ion-item>
-
-
         <div>
           <ion-item (click)="leafletMap()">
             <ion-label color="label-color" position="floating">Local de Atividade:</ion-label>
@@ -538,8 +532,6 @@
             <ion-note *ngIf="mostrarMapa == false" text-end (click)="leafletMap()">
               Marque no mapa
             </ion-note>
-
-
           </ion-item>
         </div>
       </ion-card>
@@ -559,7 +551,7 @@
 
         <ion-item>
           <ion-label color="label-color" position="floating">Tipo de Equipamento:</ion-label>
-          <ion-input type="text" [(ngModel)]="tipoEquipamento" placeholder="Ex.: barraca, carrinho" minlength="1">
+          <ion-input type="text" [(ngModel)]="ambulante.tipo_equipamento" placeholder="Ex.: barraca, carrinho" minlength="1">
           </ion-input>
         </ion-item>
 
@@ -592,7 +584,6 @@
       <div style="display: flex;">
         <ion-button style="width: 49%; float: left;" expand="block" fill="outline"
           (click)="verifiEtapa(2, tipoCadastro)">
-
           Voltar
         </ion-button>
         <ion-button style="width: 49%; float: right;" expand="block" (click)="cadastrar()" color="primary"> Solicitar
