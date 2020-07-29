@@ -11,9 +11,7 @@
 
 <ion-content>
   <div class="centro">
-    <img *ngIf="imgPessoa" class="conteudo" [src]="imgPessoa" (click)="cam(1)">
-    <img  class="conteudo" src="../../assets/img/avatar.jpg  " (click)="cam(1)">
-
+    <img  class="conteudo" [src]="ambulante.foto" (click)="takePicture()">
   </div>
 
   <ion-card>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertasService } from '../services/alertas.service';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { ModalController, ActionSheetController, NavParams } from '@ionic/angular';
 import { MapaModalPage } from '../mapa-modal/mapa-modal.page';
 import { Observable } from 'rxjs';
@@ -25,6 +25,18 @@ export class EditarAmbulantePage implements OnInit {
   public imgPessoa: string;
   public ambulante: any;
 
+  public imgProduto: string;
+  public imgCpf: string;
+  public imgRg: string;
+  public imgCNPJ: string;
+  public imgCS: string;
+  public imgAlvara: string;
+  public imgOutro: string;
+  public imagem: string;
+
+  public imgDefaultP: string = "../../assets/img/avatar.png";
+  public imgDefaultL: string = "../../assets/img/avatar.png";
+
   trabalho: boolean = true;
   informacoes: boolean = false;
   horario: boolean = false;
@@ -35,7 +47,7 @@ export class EditarAmbulantePage implements OnInit {
   constructor(
     private geolocation: Geolocation,
     public alertas: AlertasService,
-    public camera: Camera,
+    public Cam: Camera,
     private nativeGeocoder: NativeGeocoder,
     public alertController: AlertController,
     public modalController: ModalController,
@@ -69,7 +81,6 @@ export class EditarAmbulantePage implements OnInit {
 
   async presentAlertCadastro(dados, url, alerta) {
     var resp: string = ' ';
-
     const alert = await this.alertController.create({
       header: 'Atenção',
       message: "Deseja alterar essa pessoa?",
@@ -126,5 +137,28 @@ export class EditarAmbulantePage implements OnInit {
     else {
       this.equipamento = false;
     }
+  }
+
+  takePicture(sourceType: PictureSourceType, tipo) {
+
+    var options: CameraOptions = {
+      quality: 100,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      correctOrientation: true,
+      destinationType: this.Cam.DestinationType.DATA_URL,
+      encodingType: this.Cam.EncodingType.JPEG,
+      mediaType: this.Cam.MediaType.PICTURE,
+    }
+
+    this.Cam.getPicture(options).then((imgData) => {
+      let imagem = 'data:image/jpeg;base64,' + imgData;
+        if (imagem) {
+          console.log('entrou');
+          this.ambulante.foto = null
+          this.ambulante.foto = imagem;
+          imagem = null;
+        }
+    })
   }
 }

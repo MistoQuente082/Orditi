@@ -497,8 +497,7 @@
 
         <ion-item>
           <ion-label color="label-color" position="floating">Tipo de Produto/Serviço</ion-label>
-          <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produto"
-            multiple>
+          <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produto" multiple>
             <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -552,7 +551,7 @@
 
         <ion-item>
           <ion-label color="label-color" position="floating">Tipo de Equipamento:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.tipo_equipamento" placeholder="Ex.: barraca, carrinho" minlength="1">
+          <ion-input type="text" [(ngModel)]="tipoEquipamento" placeholder="Ex.: barraca, carrinho" minlength="1">
           </ion-input>
         </ion-item>
 

@@ -115,25 +115,25 @@ export class HomePage {
     this.menuCtrl.swipeEnable(false);
   }
 
-
-
-
   LeerCode() {
-
     this.barcodeScanner.scan().then(barcodeData => {
       this.scannedCode = barcodeData;
       console.log(barcodeData.text);
       alert(barcodeData.text);
       try {
+        this.sqlOrditi.receberPerfil(this.scannedCode.text);
         this.sqlOrditi.receberPerfil(this.scannedCode.text).subscribe(data => {
+          console.log(data)
           if(data[0] === undefined){
+            console.log(data)
             this.alertas.presentToast('Nenhum usuário com esse código');
           }
           else{
             this.irPerfis(data[0]);
           }
         })
-      } catch{
+      } catch(err){
+        console.log(err);
         this.alertas.presentToast('Nenhum usuário com esse código');
       }
     });

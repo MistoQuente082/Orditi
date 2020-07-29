@@ -141,15 +141,8 @@ export class CadastroPage implements OnInit {
     }
   ];
 
-  produtos: any[] = [
-    'Alimentos',
-    'Bebidas não alcoólicas',
-    'Bebidas Alcoólicas',
-    'Briquedos e Ornamentos',
-    'Confecções, Calçados, Artigos de uso pessoal',
-    'Louças, Ferragens, Artefatos, Utensílios Domésticos',
-    'Artesanato, Antiguidades e arte',
-    'Outros'];
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
+
   statusCPF: boolean = true;
   statusCNPJ: boolean = true;
   statusEMAIL: boolean = true;
@@ -227,8 +220,6 @@ export class CadastroPage implements OnInit {
       destinationType: this.Cam.DestinationType.DATA_URL,
       encodingType: this.Cam.EncodingType.JPEG,
       mediaType: this.Cam.MediaType.PICTURE,
-
-
     }
 
     this.Cam.getPicture(options).then((imgData) => {
@@ -270,8 +261,6 @@ export class CadastroPage implements OnInit {
           imagem = null;
         }
       }
-
-
       if (tipo === 7) {
         if (imagem) {
           this.imgAlvara = imagem;
@@ -590,7 +579,6 @@ export class CadastroPage implements OnInit {
           'fone_empresa': this.foneEmpresa,
           'outro_produto': this.outroProduto,
           'quantidade_equipamentos': this.qtdEquipamento,
-
         }
 
         console.table(dadosPJ);
@@ -598,13 +586,7 @@ export class CadastroPage implements OnInit {
 
       } else {
 
-
-
-        console.log('entreeeeeeo')
-
         var atenDias = this.diasAtend.join('');
-
-
 
         if (this.localAtiv === undefined) {
           this.localAtiv = " "
@@ -617,8 +599,14 @@ export class CadastroPage implements OnInit {
           if (this.relatoAtividade === undefined) {
             this.relatoAtividade = null;
           }
-          this.idEmpresa = this.valoresEmpresa.idEmpresa;
-          let novoContadorAmbulante = this.valoresEmpresa.contador
+
+          let novoContadorAmbulante = null;
+          this.idEmpresa = 0;
+
+          if(this.valoresEmpresa){
+            this.idEmpresa = this.valoresEmpresa.idEmpresa;
+            novoContadorAmbulante = this.valoresEmpresa.contador
+          }
 
           var dados = {
             'contador_ambulante': novoContadorAmbulante,

@@ -42,6 +42,8 @@ const ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/ambul
 export class PerfilAmbulantePage implements OnInit {
   historico: boolean = false;
   informacoes: boolean = false;
+  mostrarMapa: boolean = false;
+  trabalho: boolean = false;
 
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
   dias: any[] = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo'];
@@ -49,7 +51,8 @@ export class PerfilAmbulantePage implements OnInit {
   historicoLista: any[] = [];
   ambulante: any;
   map: any;
-  mostrarMapa: boolean = false;
+  produtoslista: any[]= [];
+  
   // Variaveis da pessoa
   constructor(
     public sqlOrditi: SqlOrditiService,
@@ -72,6 +75,11 @@ export class PerfilAmbulantePage implements OnInit {
       this.leafletMap(this.ambulante);
 
     })
+
+    //Transforma string de produtos em lista -- Necessário para usar o *ngFor
+    for(let prod of this.ambulante.produto){
+      this.produtoslista.push(prod);
+    }
   }
 
 
@@ -140,11 +148,21 @@ export class PerfilAmbulantePage implements OnInit {
   }
 
   mostrarInfor() {
+    
     if (this.informacoes === false) {
       this.informacoes = true;
     }
     else {
       this.informacoes = false;
+    }
+  }
+
+  mostrarTrabalho() {
+    if (this.trabalho === false) {
+      this.trabalho = true;
+    }
+    else {
+      this.trabalho = false;
     }
   }
 

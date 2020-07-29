@@ -12,29 +12,24 @@
 <ion-content>
 
   <div class="centro">
-    <img class="conteudo" [src]="ambulante['foto']" (click)="cam()">
-
+    <img class="conteudo" [src]="ambulante['foto']">
   </div>
 
-
-
   <ion-card>
-    <ion-card-header >
+    <ion-card-header (click)="mostrarTrabalho()">
       <ion-card-subtitle>
         Informações do local de trabalho
       </ion-card-subtitle>
     </ion-card-header>
-    <div >
+    <div *ngIf="trabalho">
       <ion-list>
         <ion-item >
           <ion-label>
             <p class="label-color">Produto:</p>
-            <h2 class="input-color" *ngFor="let num of ambulante.produto.split(',')">{{produtos[num]}}</h2>
+            <h2 class="input-color" *ngFor="let num of produtoslista">{{produtos[num]}}</h2>
 
           </ion-label>
         </ion-item>
-
-
 
         <ion-item>
           <ion-label>
