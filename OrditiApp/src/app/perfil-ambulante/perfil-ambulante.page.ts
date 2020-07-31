@@ -43,7 +43,7 @@ export class PerfilAmbulantePage implements OnInit {
   historico: boolean = false;
   informacoes: boolean = false;
   mostrarMapa: boolean = false;
-  trabalho: boolean = false;
+  trabalho: boolean = true;
 
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
   dias: any[] = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo'];
@@ -52,6 +52,7 @@ export class PerfilAmbulantePage implements OnInit {
   ambulante: any;
   map: any;
   produtoslista: any[]= [];
+  diaslista: any[]=[];
   
   // Variaveis da pessoa
   constructor(
@@ -72,14 +73,8 @@ export class PerfilAmbulantePage implements OnInit {
       )
       console.log(data);
       this.historicoLista = data;
-      this.leafletMap(this.ambulante);
-
     })
 
-    //Transforma string de produtos em lista -- Necessário para usar o *ngFor
-    for(let prod of this.ambulante.produto){
-      this.produtoslista.push(prod);
-    }
   }
 
 
@@ -87,6 +82,15 @@ export class PerfilAmbulantePage implements OnInit {
     await this.modalController.dismiss();
   }
   ngOnInit() {
+    //Transforma string de produtos em lista -- Necessário para usar o *ngFor
+    for(let prod of this.ambulante.produto){
+      this.produtoslista.push(prod);
+    }
+    for(let dia of this.ambulante.atendimento_dias){
+      this.diaslista.push(dia);
+    }
+
+    this.leafletMap(this.ambulante);
   }
 
 
@@ -126,15 +130,22 @@ export class PerfilAmbulantePage implements OnInit {
 
     await modal.present();
   }
-  leafletMap(ambulante) {
-      this.map = new Map('mapId').setView([ambulante.latitude, ambulante.longitude], 18);
 
+  leafletMap(ambulante) {
+
+    if (this.map !== undefined && this.map !== null) {
+      this.map.off();
+      this.map.remove();
+    } else {
+      
+    this.map = new Map('mapIdd').setView([ambulante['latitude'], ambulante['longitude']], 15);
 
       tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
         attribution: '&copy; ', maxZoom: 18
       }).addTo(this.map);
 
-      this.criarMarkerAmbulantes(ambulante);
+      this.criarMarkerAmbulantes(ambulante); 
+    }
   }
   mostrarNotificacoes() {
     if (this.historico === false) {
@@ -158,6 +169,7 @@ export class PerfilAmbulantePage implements OnInit {
   }
 
   mostrarTrabalho() {
+    
     if (this.trabalho === false) {
       this.trabalho = true;
     }

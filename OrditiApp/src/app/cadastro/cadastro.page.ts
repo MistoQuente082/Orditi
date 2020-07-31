@@ -359,9 +359,6 @@ export class CadastroPage implements OnInit {
 
   mapMarker(e) {
 
-
-
-
     if (this.L !== null) {
       this.map2.removeLayer(this.L);
     }
@@ -510,14 +507,12 @@ export class CadastroPage implements OnInit {
   horaInicio(event) {
     this.hInicio = new Date(event.detail.value);
     console.log('hi', this.hInicio);
-
   }
   // OBTEM OS HORÁRIOS DE FUNCIONAMENTO
 
   horaFim(event) {
     this.hfim = new Date(event.detail.value);
     console.log('hi', this.hfim);
-
   }
 
   // Botão de cadastro

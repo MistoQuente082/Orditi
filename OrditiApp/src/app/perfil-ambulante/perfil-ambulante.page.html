@@ -11,6 +11,8 @@
 
 <ion-content>
 
+  <div id="mapIdd" style="height: 150px"></div>
+
   <div class="centro">
     <img class="conteudo" [src]="ambulante['foto']">
   </div>
@@ -60,12 +62,18 @@
           </ion-label>
         </ion-item>
 
-
-
         <ion-item>
           <ion-label>
             <p class="label-color">Dias de Trabalho:</p>
-            <h2 class="input-color" *ngFor="let num of ambulante.atendimento_dias.split(',')">{{dias[num]}}</h2>
+            <h2 class="input-color" *ngFor="let num of diaslista">{{dias[num]}}</h2>
+
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <p class="label-color">Horário de Trabalho:</p>
+            <h2 class="input-color" >{{ ambulante.atendimento_inicio | date: 'HH:mm' }} - {{ ambulante.atendimento_fim | date: 'HH:mm' }}</h2>
 
           </ion-label>
         </ion-item>
@@ -76,24 +84,11 @@
             <h2 class="input-color">{{ambulante.relato_atividade}}</h2>
           </ion-label>
         </ion-item>
-
-
-        <ion-item *ngIf="ambulante.end_local">
-          <ion-label>
-            <p class="label-color">Local de Atividade:</p>
-            <div id="mapId" style="height: 300px"></div>
-          </ion-label>
-
-        </ion-item>
       </ion-list>
 
 
     </div>
   </ion-card>
-
-
-
-
 
   <ion-card>
     <ion-card-header (click)="mostrarInfor()">

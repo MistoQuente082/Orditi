@@ -34,7 +34,6 @@ export class EditarAmbulantePage implements OnInit {
   public imgOutro: string;
   public imagem: string;
 
-  public imgDefaultP: string = "../../assets/img/avatar.png";
   public imgDefaultL: string = "../../assets/img/avatar.png";
 
   trabalho: boolean = true;
@@ -43,6 +42,13 @@ export class EditarAmbulantePage implements OnInit {
   atividade: boolean = false;
   equipamento: boolean;
   private url_banco = 'http://localhost/orditiServices/atualizarAmbulante.php';
+
+  produtoslista: any[] = [];
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
+  diaslista: any[]=[];
+  public hInicio: any;
+  public hFim: any;
+  dimensoes: any[];
 
   constructor(
     private geolocation: Geolocation,
@@ -68,7 +74,14 @@ export class EditarAmbulantePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.ambulante);
+    for(let prod of this.ambulante.produto){
+      this.produtoslista.push(prod);
+    }
+    for(let dia of this.ambulante.atendimento_dias){
+      this.diaslista.push(dia);
+    }
+
+    this.dimensoes = this.ambulante.area_equipamento.split(" x ");
   }
 
   Editar() {
@@ -76,6 +89,9 @@ export class EditarAmbulantePage implements OnInit {
   }
 
   alterarDados(){
+    this.ambulante.produto = this.produtoslista.join('');
+    this.ambulante.atendimento_dias = this.diaslista.join('');
+    this.ambulante.area_equipamento = this.dimensoes.join(' x ');
     this.presentAlertCadastro(this.ambulante, this.url_banco, "Yeetz");
   }
 
@@ -100,7 +116,6 @@ export class EditarAmbulantePage implements OnInit {
 
     await alert.present();
     return resp;
-
   }
 
   mostrarInfor() {
@@ -139,7 +154,36 @@ export class EditarAmbulantePage implements OnInit {
     }
   }
 
+  async cam(tipo) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Escolher Imagem',
+      buttons: [{
+        text: 'Galeria',
+        icon: 'images',
+        handler: () => {
+          this.takePicture(this.Cam.PictureSourceType.PHOTOLIBRARY, tipo);
+        }
+      },
+      {
+        text: 'Capturar',
+        icon: 'camera',
+        handler: () => {
+          this.takePicture(this.Cam.PictureSourceType.CAMERA, tipo);
+
+        },
+
+      }, {
+        text: 'Cancelar',
+        role: 'cancel'
+      }]
+    });
+
+    await actionSheet.present();
+  }
+
   takePicture(sourceType: PictureSourceType, tipo) {
+
+    console.log(tipo);
 
     var options: CameraOptions = {
       quality: 100,
@@ -155,9 +199,26 @@ export class EditarAmbulantePage implements OnInit {
       let imagem = 'data:image/jpeg;base64,' + imgData;
         if (imagem) {
           console.log('entrou');
-          this.ambulante.foto = null
-          this.ambulante.foto = imagem;
-          imagem = null;
+          if(tipo === 1){
+            this.ambulante.foto = null
+            this.ambulante.foto = imagem;
+            imagem = null;
+          }
+          if(tipo === 2){
+            this.ambulante.foto_equipamento = null
+            this.ambulante.foto_equipamento = imagem;
+            imagem = null;
+          }
+          if(tipo === 3){
+            this.ambulante.foto_cpf = null
+            this.ambulante.foto_cpf = imagem;
+            imagem = null;
+          }
+          if(tipo === 4){
+            this.ambulante.foto_rg = null
+            this.ambulante.foto_rg = imagem;
+            imagem = null;
+          }
         }
     })
   }
