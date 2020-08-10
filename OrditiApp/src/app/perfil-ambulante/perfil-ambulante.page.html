@@ -1,6 +1,23 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
+      <ion-button  (click)="notificar()">
+        <ion-icon slot="icon-only"  name="hand"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+
+
+    <ion-buttons slot="end">
+      <ion-button (click)="enviarEditar()">
+        <ion-icon slot="icon-only"  name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+
+    <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -10,8 +27,9 @@
 </ion-header>
 
 <ion-content>
+  <br>
 
-  <div >
+  <div>
     <ion-slides pager="true" [options]="slideOpts">
       <ion-slide>
         <img class="conteudo" [src]="ambulante['foto']">
@@ -22,10 +40,12 @@
       <ion-slide>
         <img class="conteudo" [src]="ambulante['foto_rg']">
       </ion-slide>
+      <ion-slide>
+        <img class="conteudo" [src]="ambulante['foto_cpf']">
+      </ion-slide>
     </ion-slides>
   </div>
 
-  <ion-card id="mapIdd" style="height: 150px"></ion-card>
 
   <ion-card>
     <ion-card-header (click)="mostrarTrabalho()">
@@ -100,6 +120,7 @@
 
     </div>
   </ion-card>
+  <ion-card id="mapIdd" style="height: 150px"></ion-card>
 
   <ion-card>
     <ion-card-header (click)="mostrarInfor()">
@@ -167,35 +188,7 @@
     </div>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header (click)="mostrarDocumentos()">
-      <ion-card-subtitle>
-        Documentos
-      </ion-card-subtitle>
-    </ion-card-header>
-    <div *ngIf="documentos">
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-img [src]="ambulante.foto_cpf"></ion-img>
-        </ion-thumbnail>
-
-        <ion-label>
-          CPF </ion-label>
-        <ion-button slot="end" color="secondary" size="small" (click)="cam(3)">Ver Mais
-        </ion-button>
-      </ion-item>
-
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <ion-img [src]="ambulante.foto_rg"></ion-img>
-        </ion-thumbnail>
-
-        <ion-label>RG</ion-label>
-
-        <ion-button slot="end" color="secondary" size="small" (click)="cam(4)">Ver Mais</ion-button>
-      </ion-item>
-    </div>
-  </ion-card>
+  
 
 
   <ion-card>
@@ -216,11 +209,6 @@
     </div>
 
   </ion-card>
-
-  <ion-button (click)="notificar()" expand="block">Notificar</ion-button>
-  <ion-button (click)="enviarEditar()" expand="block">Editar Informações</ion-button>
-
-
 
 
 </ion-content>
