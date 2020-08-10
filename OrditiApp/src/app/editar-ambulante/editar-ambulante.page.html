@@ -27,8 +27,8 @@
         </ion-item>
         <ion-item>
           <ion-label color="label-color" position="floating">CPF:</ion-label>
-          <ion-input type="text" (focusout)="valida(cpf, 'cpf')" [(ngModel)]="ambulante.identidade" placeholder="123.456.789-10"
-            [brmasker]="{person: true}" minlength="11">
+          <ion-input type="text" (focusout)="valida(ambulante.identidade, 'cpf')" [(ngModel)]="ambulante.identidade" placeholder="123.456.789-10"
+            [brmasker]="{person: true}" minlength="11" maxlength="14">
           </ion-input>
           <ion-note *ngIf="!statusCPF || !statusCNPJ" color="danger">
             Valor invalido
@@ -78,7 +78,7 @@
 
         <ion-item>
           <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.fone" (focusout)="valida(fone, 'fone')"
+          <ion-input type="text" [(ngModel)]="ambulante.fone" (focusout)="valida(ambulante.fone, 'fone')"
             placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}" minlength="14"></ion-input>
           <ion-note *ngIf="!statusNUM" color="danger">
             Valor invalido
@@ -87,7 +87,7 @@
 
         <ion-item>
           <ion-label color="label-color" position="floating">Email:</ion-label>
-          <ion-input type="email" [(ngModel)]="ambulante.email" (focusout)="valida(email, 'email')"
+          <ion-input type="email" [(ngModel)]="ambulante.email" (focusout)="valida(ambulante.email, 'email')"
             placeholder="Ex.: exemplo@email.com"></ion-input>
           <ion-note *ngIf="!statusEMAIL" color="danger">
             Valor invalido

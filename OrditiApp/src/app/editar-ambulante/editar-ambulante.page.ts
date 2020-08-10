@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CameraService } from '../services/camera/camera.service';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { ValidaCadastroService } from '../services/validaCadastro/valida-cadastro.service';
 
 @Component({
   selector: 'app-editar-ambulante',
@@ -37,7 +38,7 @@ export class EditarAmbulantePage implements OnInit {
   public imgDefaultL: string = "../../assets/img/avatar.png";
 
   trabalho: boolean = true;
-  informacoes: boolean = false;
+  informacoes: boolean = true;
   horario: boolean = false;
   atividade: boolean = false;
   equipamento: boolean;
@@ -45,10 +46,15 @@ export class EditarAmbulantePage implements OnInit {
 
   produtoslista: any[] = [];
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
-  diaslista: any[]=[];
+  diaslista: any[] = [];
   public hInicio: any;
   public hFim: any;
   dimensoes: any[];
+
+  statusCPF: boolean = true;
+  statusCNPJ: boolean = true;
+  statusEMAIL: boolean = true;
+  statusNUM: boolean = true;
 
   constructor(
     private geolocation: Geolocation,
@@ -59,6 +65,8 @@ export class EditarAmbulantePage implements OnInit {
     public modalController: ModalController,
     public router: Router,
     public webView: WebView,
+    public validador: ValidaCadastroService,
+
     public actionSheetController: ActionSheetController,
     public usarCamara: CameraService,
     private sqlOrditi: SqlOrditiService,
@@ -74,10 +82,10 @@ export class EditarAmbulantePage implements OnInit {
   }
 
   ngOnInit() {
-    for(let prod of this.ambulante.produto){
+    for (let prod of this.ambulante.produto) {
       this.produtoslista.push(prod);
     }
-    for(let dia of this.ambulante.atendimento_dias){
+    for (let dia of this.ambulante.atendimento_dias) {
       this.diaslista.push(dia);
     }
 
@@ -88,10 +96,44 @@ export class EditarAmbulantePage implements OnInit {
     //this.db.collection('ambulantes').doc(this.ambulante.cpf).set(this.ambulante);
   }
 
-  alterarDados(){
+
+  valida(info, tipo) {
+
+    if (tipo === 'cpf') {
+      info = info.replace(/\D+/g, '');
+
+      console.log(info);
+
+      this.statusCPF = this.validador.validaCPF(info);
+
+
+    }
+
+    else if (tipo === 'cnpj') {
+      info = info.replace(/\D+/g, '');
+
+      this.statusCNPJ = this.validador.validaCNPJ(info);
+      console.log('cnpj', this.statusCNPJ);
+    }
+
+
+    else if (tipo === 'email') {
+      this.statusEMAIL = this.validador.validaEMAIL(info);
+    }
+
+    else {
+      this.statusNUM = this.validador.validaNUM(info);
+
+    }
+
+  }
+
+
+  alterarDados() {
     this.ambulante.produto = this.produtoslista.join('');
     this.ambulante.atendimento_dias = this.diaslista.join('');
     this.ambulante.area_equipamento = this.dimensoes.join(' x ');
+
     this.presentAlertCadastro(this.ambulante, this.url_banco, "Yeetz");
   }
 
@@ -197,29 +239,29 @@ export class EditarAmbulantePage implements OnInit {
 
     this.Cam.getPicture(options).then((imgData) => {
       let imagem = 'data:image/jpeg;base64,' + imgData;
-        if (imagem) {
-          console.log('entrou');
-          if(tipo === 1){
-            this.ambulante.foto = null
-            this.ambulante.foto = imagem;
-            imagem = null;
-          }
-          if(tipo === 2){
-            this.ambulante.foto_equipamento = null
-            this.ambulante.foto_equipamento = imagem;
-            imagem = null;
-          }
-          if(tipo === 3){
-            this.ambulante.foto_cpf = null
-            this.ambulante.foto_cpf = imagem;
-            imagem = null;
-          }
-          if(tipo === 4){
-            this.ambulante.foto_rg = null
-            this.ambulante.foto_rg = imagem;
-            imagem = null;
-          }
+      if (imagem) {
+        console.log('entrou');
+        if (tipo === 1) {
+          this.ambulante.foto = null
+          this.ambulante.foto = imagem;
+          imagem = null;
         }
+        if (tipo === 2) {
+          this.ambulante.foto_equipamento = null
+          this.ambulante.foto_equipamento = imagem;
+          imagem = null;
+        }
+        if (tipo === 3) {
+          this.ambulante.foto_cpf = null
+          this.ambulante.foto_cpf = imagem;
+          imagem = null;
+        }
+        if (tipo === 4) {
+          this.ambulante.foto_rg = null
+          this.ambulante.foto_rg = imagem;
+          imagem = null;
+        }
+      }
     })
   }
 }
