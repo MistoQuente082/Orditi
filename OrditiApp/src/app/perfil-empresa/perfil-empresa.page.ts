@@ -5,6 +5,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ListaAmbulantesService } from '../services/lista-ambulantes/lista-ambulantes.service';
 import * as moment from 'moment';
 import { SqlOrditiService } from '../services/banco/sql-orditi.service';
+import { EditarEmpresaPage } from '../editar-empresa/editar-empresa.page';
 
 @Component({
   selector: 'app-perfil-empresa',
@@ -18,9 +19,15 @@ export class PerfilEmpresaPage implements OnInit {
   historicoLista: any;
   funcionarios: any[];
   atividade: boolean = true;
-  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
 
-  produtoslista: any[]= [];
+  produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
+  produtoslista: any[] = [];
+
+  slideOpts = {
+    initialSlide: 1,
+    speed: 400
+  };
+
 
   constructor(
     public sqlOrditi: SqlOrditiService,
@@ -38,6 +45,21 @@ export class PerfilEmpresaPage implements OnInit {
     });
 
   }
+
+
+  async enviarEditar() {
+    const modal = await this.modalController.create({
+      component: EditarEmpresaPage,
+      componentProps: {
+        item: this.empresa
+      }
+    });
+
+    await modal.present();
+  }
+
+
+
   async adicionarAmbulante(idEmpresa, contadorAmbulante, maximo) {
     contadorAmbulante = parseInt(contadorAmbulante, 10);
     maximo = parseInt(maximo, 10);
@@ -96,7 +118,7 @@ export class PerfilEmpresaPage implements OnInit {
   }
 
   ngOnInit() {
-    for(let prod of this.empresa.produto){
+    for (let prod of this.empresa.produto) {
       this.produtoslista.push(prod);
     }
   }

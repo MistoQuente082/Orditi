@@ -1,0 +1,261 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Editar Informações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="centro">
+    <img class="conteudo" [src]="empresa.foto" (click)="cam(1)">
+  </div>
+
+  <ion-card>
+    <ion-card-header (click)="mostrarAtividade()">
+      <ion-card-subtitle>
+        Informações da Atividade
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <div *ngIf="atividade">
+      <ion-item>
+        <ion-label color="label-color" position="floating">Nome Fantasia:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.nome_fantasia" placeholder="Ex.: Xpress"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Tipo de Produto/Serviço</ion-label>
+        <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produtoslista"
+          multiple>
+          <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+      <ion-item *ngIf="produto == '7'">
+        <ion-label color="label-color" position="floating">Relatar atividade:</ion-label>
+        <ion-textarea [(ngModel)]="relatoAtividade" rows="4" cols="15" placeholder="Atividade a ser Desenvolvida">
+        </ion-textarea>
+      </ion-item>
+
+
+    </div>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header (click)="mostrarTrabalho()">
+      <ion-card-subtitle>
+        Informações da Empresa
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <div *ngIf="trabalho">
+      <ion-item>
+        <ion-label color="label-color" position="floating">CNPJ:</ion-label>
+        <ion-input type="text" (focusout)="valida(empresa.cnpj, 'cnpj')" [(ngModel)]="empresa.cnpj"
+          placeholder="XX.XXX.XXX/XXXX-XX" [brmasker]="{person: true}" minlength="12" maxlength="18">
+        </ion-input>
+        <ion-note *ngIf="!statusCPF || !statusCNPJ" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">CMC:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.cmc" placeholder="00000-00">
+        </ion-input>
+
+      </ion-item>
+
+
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">CEP:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.cep" placeholder="Ex.: 57033-424"
+          [brmasker]="{mask:'00000-000', len:9}" (focusout)="consultaCep(cep)" minlength="9"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Cidade:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.cidade" placeholder="Ex.: Maceió" minlength="3"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Bairro:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.bairro" placeholder="Ex.: Benedito Bentes" minlength="3">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Rua:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.endereco" placeholder="Ex.: Senador Rui Palmeira" minlength="3">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">N°:</ion-label>
+        <ion-input type="number" [(ngModel)]="empresa.numero" placeholder="Ex.: 3" minlength="1"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.fone" (focusout)="valida(empresa.fone, 'fone')"
+          placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}" minlength="14"></ion-input>
+        <ion-note *ngIf="!statusNUM" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Email:</ion-label>
+        <ion-input type="email" [(ngModel)]="empresa.email" (focusout)="valida(empresa.email, 'email')"
+          placeholder="Ex.: exemplo@email.com"></ion-input>
+        <ion-note *ngIf="!statusEMAIL" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
+    </div>
+  </ion-card>
+
+
+
+  <ion-card>
+    <ion-card-header (click)="mostrarInfor()">
+      <ion-card-subtitle>
+        Informações do Representante
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <div *ngIf="informacoes">
+      <ion-item>
+        <ion-label color="label-color" position="floating">Nome:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.nome" placeholder="Juan da Silva">
+        </ion-input>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Nome da Mãe:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.nome_materno" placeholder="Glória da Silva">
+        </ion-input>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">CPF:</ion-label>
+        <ion-input type="text" (focusout)="valida(empresa.cpf, 'cpf')" [(ngModel)]="empresa.cpf"
+          placeholder="XX.XXX.XXX/XXXX-XX" [brmasker]="{person: true}" minlength="11" maxlength="14">
+        </ion-input>
+        <ion-note *ngIf="!statusCPF || !statusCNPJ" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">RG:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.rg" placeholder="00000-00">
+        </ion-input>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
+        <ion-input type="text" [(ngModel)]="empresa.fone" (focusout)="valida(empresa.fone, 'fone')"
+          placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}" minlength="14"></ion-input>
+        <ion-note *ngIf="!statusNUM" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
+    </div>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-header (click)="mostrarDocumentos()">
+      <ion-card-subtitle>
+        Documentos
+      </ion-card-subtitle>
+    </ion-card-header>
+    <div>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="empresa.foto_cpf"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>
+          CPF </ion-label>
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(3)">Alterar
+        </ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="empresa.foto_rg"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>RG</ion-label>
+
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(4)">Alterar</ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="empresa.foto_cnpj"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>CNPJ</ion-label>
+
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(6)">Alterar</ion-button>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="empresa.foto_contrato_social"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>Contrato Social</ion-label>
+
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(5)">Alterar</ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="empresa.foto_alvara"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>Alvara de Funcionamento</ion-label>
+
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(7)">Alterar</ion-button>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="empresa.foto_outro"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>Outro</ion-label>
+
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(8)">Alterar</ion-button>
+      </ion-item>
+
+
+
+
+      
+    </div>
+  </ion-card>
+
+  <ion-button expand="block" (click)="alterarDados()">
+    Salvar
+  </ion-button>
+
+
+
+
+</ion-content>

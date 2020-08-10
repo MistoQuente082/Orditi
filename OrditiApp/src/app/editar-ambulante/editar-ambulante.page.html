@@ -11,7 +11,7 @@
 
 <ion-content>
   <div class="centro">
-    <img  class="conteudo" [src]="ambulante.foto" (click)="cam(1)">
+    <img class="conteudo" [src]="ambulante.foto" (click)="cam(1)">
   </div>
 
   <ion-card>
@@ -21,78 +21,80 @@
       </ion-card-subtitle>
     </ion-card-header>
     <div *ngIf="informacoes">
-    <ion-item>
-          <ion-label color="label-color" position="floating">Nome:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.nome" placeholder="Ex.: Maria das Dores"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label color="label-color" position="floating">CPF:</ion-label>
-          <ion-input type="text" (focusout)="valida(ambulante.identidade, 'cpf')" [(ngModel)]="ambulante.identidade" placeholder="123.456.789-10"
-            [brmasker]="{person: true}" minlength="11" maxlength="14">
-          </ion-input>
-          <ion-note *ngIf="!statusCPF || !statusCNPJ" color="danger">
-            Valor invalido
-          </ion-note>
-        </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Nome:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.nome" placeholder="Ex.: Maria das Dores"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">CPF:</ion-label>
+        <ion-input type="text" (focusout)="valida(ambulante.identidade, 'cpf')" [(ngModel)]="ambulante.identidade"
+          placeholder="123.456.789-10" [brmasker]="{person: true}" minlength="11" maxlength="14">
+        </ion-input>
+        <ion-note *ngIf="!statusCPF || !statusCNPJ" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
 
-        <ion-item>
-          <ion-label color="label-color" position="floating">RG:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.rg" placeholder="12.456.789-0">
-          </ion-input>
+      <ion-item>
+        <ion-label color="label-color" position="floating">RG:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.rg" placeholder="12.456.789-0">
+        </ion-input>
 
-        </ion-item>
+      </ion-item>
 
-        <ion-item>
-          <ion-label color="label-color" position="floating">Nome da Mãe:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.nome_materno" placeholder="Ex.: Glória das Dores" minlength="3">
-          </ion-input>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label color="label-color" position="floating">CEP:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.cep" placeholder="Ex.: 57033-424" [brmasker]="{mask:'00000-000', len:9}"
-            (focusout)="consultaCep(cep)" minlength="9"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label color="label-color" position="floating">Cidade:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.cidade" placeholder="Ex.: Maceió" minlength="3"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label color="label-color" position="floating">Bairro:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.bairro" placeholder="Ex.: Benedito Bentes" minlength="3"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label color="label-color" position="floating">Rua:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.rua" placeholder="Ex.: Senador Rui Palmeira" minlength="3"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label color="label-color" position="floating">N°:</ion-label>
-          <ion-input type="number" [(ngModel)]="ambulante.numero" placeholder="Ex.: 3" minlength="1"></ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Nome da Mãe:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.nome_materno" placeholder="Ex.: Glória das Dores" minlength="3">
+        </ion-input>
+      </ion-item>
 
 
-        <ion-item>
-          <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
-          <ion-input type="text" [(ngModel)]="ambulante.fone" (focusout)="valida(ambulante.fone, 'fone')"
-            placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}" minlength="14"></ion-input>
-          <ion-note *ngIf="!statusNUM" color="danger">
-            Valor invalido
-          </ion-note>
-        </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">CEP:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.cep" placeholder="Ex.: 57033-424"
+          [brmasker]="{mask:'00000-000', len:9}" (focusout)="consultaCep(cep)" minlength="9"></ion-input>
+      </ion-item>
 
-        <ion-item>
-          <ion-label color="label-color" position="floating">Email:</ion-label>
-          <ion-input type="email" [(ngModel)]="ambulante.email" (focusout)="valida(ambulante.email, 'email')"
-            placeholder="Ex.: exemplo@email.com"></ion-input>
-          <ion-note *ngIf="!statusEMAIL" color="danger">
-            Valor invalido
-          </ion-note>
-        </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Cidade:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.cidade" placeholder="Ex.: Maceió" minlength="3"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Bairro:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.bairro" placeholder="Ex.: Benedito Bentes" minlength="3">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Rua:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.rua" placeholder="Ex.: Senador Rui Palmeira" minlength="3">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">N°:</ion-label>
+        <ion-input type="number" [(ngModel)]="ambulante.numero" placeholder="Ex.: 3" minlength="1"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">N° de Contato:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.fone" (focusout)="valida(ambulante.fone, 'fone')"
+          placeholder="Ex.: (12) 984567-8910" [brmasker]="{phone: true}" minlength="14"></ion-input>
+        <ion-note *ngIf="!statusNUM" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="label-color" position="floating">Email:</ion-label>
+        <ion-input type="email" [(ngModel)]="ambulante.email" (focusout)="valida(ambulante.email, 'email')"
+          placeholder="Ex.: exemplo@email.com"></ion-input>
+        <ion-note *ngIf="!statusEMAIL" color="danger">
+          Valor invalido
+        </ion-note>
+      </ion-item>
     </div>
   </ion-card>
 
@@ -105,33 +107,35 @@
 
     <div *ngIf="horario">
 
-    <ion-item>
-      <ion-label color="label-color" position="floating">Dias:</ion-label>
-      <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diaslista"
-        placeholder="Ex.: Segunda">
-        <ion-select-option value="0">Domingo</ion-select-option>
-        <ion-select-option value="1">Segunda-feira</ion-select-option>
-        <ion-select-option value="2">Terça-feira</ion-select-option>
-        <ion-select-option value="3">Quarta-feira</ion-select-option>
-        <ion-select-option value="4">Quinta-feira</ion-select-option>
-        <ion-select-option value="5">Sexta-feira</ion-select-option>
-        <ion-select-option value="6">Sabado</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Dias:</ion-label>
+        <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diaslista"
+          placeholder="Ex.: Segunda">
+          <ion-select-option value="0">Domingo</ion-select-option>
+          <ion-select-option value="1">Segunda-feira</ion-select-option>
+          <ion-select-option value="2">Terça-feira</ion-select-option>
+          <ion-select-option value="3">Quarta-feira</ion-select-option>
+          <ion-select-option value="4">Quinta-feira</ion-select-option>
+          <ion-select-option value="5">Sexta-feira</ion-select-option>
+          <ion-select-option value="6">Sabado</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="label-color" position="floating">Início</ion-label>
-      <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher" [(ngModel)]="ambulante.atendimento_inicio">
-      </ion-datetime>
-    </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Início</ion-label>
+        <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher"
+          [(ngModel)]="ambulante.atendimento_inicio">
+        </ion-datetime>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="label-color" position="floating">Fim</ion-label>
-      <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher" [(ngModel)]="ambulante.atendimento_fim">
-      </ion-datetime>
-    </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Fim</ion-label>
+        <ion-datetime display-format="HH:mm" cancelText="Cancelar" doneText="Escolher"
+          [(ngModel)]="ambulante.atendimento_fim">
+        </ion-datetime>
+      </ion-item>
 
-  </div>
+    </div>
 
   </ion-card>
 
@@ -165,32 +169,33 @@
     </ion-card-header>
 
     <div *ngIf="equipamento">
-    <ion-item>
-      <ion-label color="label-color" position="floating">Tipo de Equipamento:</ion-label>
-      <ion-input type="text" [(ngModel)]="ambulante.tipo_equipamento" placeholder="Ex.: barraca, carrinho" minlength="1">
-      </ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Tipo de Equipamento:</ion-label>
+        <ion-input type="text" [(ngModel)]="ambulante.tipo_equipamento" placeholder="Ex.: barraca, carrinho"
+          minlength="1">
+        </ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="label-color" position="floating">Comprimento:</ion-label>
-      <ion-input type="number" [(ngModel)]="dimensoes[0]" placeholder="Ex.: 2"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Comprimento:</ion-label>
+        <ion-input type="number" [(ngModel)]="dimensoes[0]" placeholder="Ex.: 2"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="label-color" position="floating">Largura:</ion-label>
-      <ion-input type="number" [(ngModel)]="dimensoes[1]" placeholder="Ex.: 1"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label color="label-color" position="floating">Largura:</ion-label>
+        <ion-input type="number" [(ngModel)]="dimensoes[1]" placeholder="Ex.: 1"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="ambulante.foto_equipamento"></ion-img>
-      </ion-thumbnail>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="ambulante.foto_equipamento"></ion-img>
+        </ion-thumbnail>
 
-      <ion-label>Imagem</ion-label>
-      <ion-button *ngIf="!imgProduto" slot="end" color="secondary" size="small" (click)="cam(2)">Alterar
-      </ion-button>
-    </ion-item>
-  </div>
+        <ion-label>Imagem</ion-label>
+        <ion-button *ngIf="!imgProduto" slot="end" color="secondary" size="small" (click)="cam(2)">Alterar
+        </ion-button>
+      </ion-item>
+    </div>
   </ion-card>
 
   <ion-card>
@@ -200,27 +205,27 @@
       </ion-card-subtitle>
     </ion-card-header>
     <div>
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="ambulante.foto_cpf"></ion-img>
-      </ion-thumbnail>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="ambulante.foto_cpf"></ion-img>
+        </ion-thumbnail>
 
-      <ion-label>
-        CPF </ion-label>
-      <ion-button slot="end" color="secondary" size="small" (click)="cam(3)">Alterar
-      </ion-button>
-    </ion-item>
+        <ion-label>
+          CPF </ion-label>
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(3)">Alterar
+        </ion-button>
+      </ion-item>
 
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="ambulante.foto_rg"></ion-img>
-      </ion-thumbnail>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img [src]="ambulante.foto_rg"></ion-img>
+        </ion-thumbnail>
 
-      <ion-label>RG</ion-label>
+        <ion-label>RG</ion-label>
 
-      <ion-button slot="end" color="secondary" size="small" (click)="cam(4)">Alterar</ion-button>
-    </ion-item>
-  </div>
+        <ion-button slot="end" color="secondary" size="small" (click)="cam(4)">Alterar</ion-button>
+      </ion-item>
+    </div>
   </ion-card>
 
   <ion-button expand="block" (click)="alterarDados()">
