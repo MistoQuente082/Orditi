@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertasService } from '../alertas.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ export class SqlOrditiService {
 
   constructor(
     public httpClient: HttpClient,
+    public router: Router,
     public alertas: AlertasService) {
   }
 
@@ -35,7 +37,8 @@ export class SqlOrditiService {
         console.log(data);
         
         if (data['retorno'] == 1) {          
-          this.alertas.presentToast('Executado com sucesso!')
+          this.alertas.presentToast('Executado com sucesso!');
+          this.returnHome();
         } else {
           this.alertas.presentToast(alerta)
         }
@@ -44,6 +47,10 @@ export class SqlOrditiService {
         this.alertas.presentToast('Não foi possível realizar o cadastro!')
       });
 
+  }
+
+  returnHome() {
+    this.router.navigate(['/home']);
   }
 
   // Recebe os dados
