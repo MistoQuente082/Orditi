@@ -172,7 +172,7 @@
           <ion-label color="label-color" position="floating">Tipo de Produto/Serviço</ion-label>
           <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produto"
             multiple>
-            <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
+            <ion-select-option text-wrap *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item *ngIf="produto == '7'">
@@ -462,13 +462,13 @@
           <ion-label color="label-color" position="floating">Dias:</ion-label>
           <ion-select okText="Confirmar" cancelText="Cancelar" multiple="true" [(ngModel)]="diasAtend"
             placeholder="Ex.: Segunda">
-            <ion-select-option value="0">Domingo</ion-select-option>
-            <ion-select-option value="1">Segunda-feira</ion-select-option>
-            <ion-select-option value="2">Terça-feira</ion-select-option>
-            <ion-select-option value="3">Quarta-feira</ion-select-option>
-            <ion-select-option value="4">Quinta-feira</ion-select-option>
-            <ion-select-option value="5">Sexta-feira</ion-select-option>
-            <ion-select-option value="6">Sabado</ion-select-option>
+            <ion-select-option text-wrap value="0">Domingo</ion-select-option>
+            <ion-select-option text-wrap value="1">Segunda-feira</ion-select-option>
+            <ion-select-option text-wrap value="2">Terça-feira</ion-select-option>
+            <ion-select-option text-wrap value="3">Quarta-feira</ion-select-option>
+            <ion-select-option text-wrap value="4">Quinta-feira</ion-select-option>
+            <ion-select-option text-wrap value="5">Sexta-feira</ion-select-option>
+            <ion-select-option text-wrap value="6">Sabado</ion-select-option>
 
           </ion-select>
         </ion-item>
@@ -498,7 +498,7 @@
         <ion-item>
           <ion-label color="label-color" position="floating">Tipo de Produto/Serviço</ion-label>
           <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="produto" multiple>
-            <ion-select-option *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
+            <ion-select-option text-wrap *ngFor="let item of produtos; index as i" value="{{i}}">{{item}}</ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -519,10 +519,18 @@
           </ion-card-subtitle>
         </ion-card-header>
         <ion-item>
+          <ion-label color="label-color" position="floating">Local de trabalho</ion-label>
+          <ion-select okText="Confirmar" cancelText="Cancelar" placeholder="Selecione..." [(ngModel)]="zona">
+            <ion-select-option text-wrap value="-1">Ponto Independente</ion-select-option>
+            <ion-select-option text-wrap *ngFor="let item of zonas; index as i" value="{{i}}">{{item.nome}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
           <ion-label color="label-color" position="floating">Ponto de referência:</ion-label>
           <ion-input type="text" [(ngModel)]="pontoRef" placeholder="Ex.: Enfrente à Praça Lions"></ion-input>
         </ion-item>
-        <div>
+        <div *ngIf="zona == -1">
           <ion-item (click)="leafletMap()">
             <ion-label color="label-color" position="floating">Local de Atividade:</ion-label>
             <ion-input type="text" [(ngModel)]="enderecoLocal" disabled="{{mostrarMapa}}"
@@ -536,7 +544,7 @@
         </div>
       </ion-card>
 
-      <ion-card *ngIf="mostrarMapa" id="mapId3" style="height: 300px">
+      <ion-card *ngIf="mostrarMapa && zona ==-1" id="mapId3" style="height: 300px">
 
       </ion-card>
 

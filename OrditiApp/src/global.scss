@@ -60,3 +60,14 @@ ion-button {
     --highlight-background: #2d98a2;
 
 }
+
+//Para o ion-select mostrar o texto da oção inteiro
+.alert-tappable.alert-radio {
+    height: auto;
+    contain: content;
+}
+
+.alert-radio-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-ios {
+    white-space: normal;
+}

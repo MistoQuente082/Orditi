@@ -16,11 +16,11 @@ export class PerfilEmpresaPage implements OnInit {
   trabalho: boolean;
   informacoes: boolean;
   historicoLista: any;
-  funcionarios: any;
+  funcionarios: any[];
   atividade: boolean = true;
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
 
-
+  produtoslista: any[]= [];
 
   constructor(
     public sqlOrditi: SqlOrditiService,
@@ -34,7 +34,6 @@ export class PerfilEmpresaPage implements OnInit {
     console.log('empresa', this.empresa);
     this.sqlOrditi.receberFuncionarios(this.empresa.id).subscribe(data => {
       console.log('meu data', data)
-
       this.funcionarios = data;
     });
 
@@ -97,7 +96,9 @@ export class PerfilEmpresaPage implements OnInit {
   }
 
   ngOnInit() {
-
+    for(let prod of this.empresa.produto){
+      this.produtoslista.push(prod);
+    }
   }
 
 }

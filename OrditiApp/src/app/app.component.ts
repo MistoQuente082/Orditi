@@ -31,18 +31,11 @@ export class AppComponent {
       url: '/busca',
       icon: 'search'
     },
-
     {
       title: 'Fazer Denúncia',
       url: '/denuncia',
       icon: 'hand'
     },
-    {
-      title: 'Eventos Temporários',
-      url: '/eventos',
-      icon: 'calendar'
-    },
-
     {
       title: 'Micro-empreendedor?',
       url: '/informacoes',
@@ -81,12 +74,7 @@ export class AppComponent {
       title: 'Notificar',
       url: '/denuncia',
       icon: 'hand'
-    },
-    {
-      title: 'Eventos Temporários',
-      url: '/eventos',
-      icon: 'calendar'
-    },
+    }
 
 
   ];

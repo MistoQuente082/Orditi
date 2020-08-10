@@ -44,6 +44,7 @@ export class PerfilAmbulantePage implements OnInit {
   informacoes: boolean = false;
   mostrarMapa: boolean = false;
   trabalho: boolean = true;
+  documentos: boolean = false;
 
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
   dias: any[] = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado', 'Domingo'];
@@ -53,6 +54,12 @@ export class PerfilAmbulantePage implements OnInit {
   map: any;
   produtoslista: any[]= [];
   diaslista: any[]=[];
+
+  slideOpts = {
+    initialSlide: 1,
+    speed: 400
+  };
+  
   
   // Variaveis da pessoa
   constructor(
@@ -154,6 +161,17 @@ export class PerfilAmbulantePage implements OnInit {
     }
     else {
       this.historico = false;
+
+    }
+  }
+
+  mostrarDocumentos() {
+    if (this.documentos === false) {
+      this.documentos = true;
+
+    }
+    else {
+      this.documentos = false;
 
     }
   }

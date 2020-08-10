@@ -43,7 +43,7 @@
         </ion-avatar>
         <ion-label>
           <h3>{{pessoa.nome}}</h3>
-          <p>{{pessoa.produto}}</p>
+          <p>{{pessoa.identidade}}</p>
         </ion-label>
       </ion-item>
     </ion-list>
@@ -53,7 +53,7 @@
     <ion-list>
       <ion-item *ngFor="let empresa of empresas" (click)="modal(empresa, tipo)">
         <ion-avatar slot="start">
-          <img src="{{empresa.foto}}">
+          <img src="{{empresa.foto_cliente}}">
         </ion-avatar>
         <ion-label>
           <h3>{{empresa.nome_fantasia}}</h3>

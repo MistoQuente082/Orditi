@@ -8,7 +8,7 @@ import { AlertController } from '@ionic/angular';
 
 import * as L from 'leaflet';
 
-import { Map, tileLayer, marker } from 'leaflet';
+import { Map, tileLayer, marker, polygon } from 'leaflet';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -31,7 +31,9 @@ const LeafIcon = L.Icon.extend({
   }
 });
 
-const ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' });
+const ambulanteIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-0.png' }),
+  ambulanteVerdeIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-1.png' }),
+  ambulanteVermelhoIcon = new LeafIcon({ iconUrl: '../../assets/leaflet/images/marker-2.png' });
 // L.Marker.prototype.options.icon = iconDefault;
 
 
@@ -111,6 +113,7 @@ export class CadastroPage implements OnInit {
   public dimensao: string;
   public compr: number;
   public larg: number;
+  public zona: any;
 
 
   //Variaveis do mapa
@@ -150,6 +153,8 @@ export class CadastroPage implements OnInit {
   cadastroFuncionario: boolean = false;
   idEmpresa: any;
   valoresEmpresa: any;
+
+  zonas: any[];
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -350,6 +355,15 @@ export class CadastroPage implements OnInit {
 
       });
     }
+
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
+          console.log(data)
+          data.forEach(element => {
+            this.criarPoligono(element);
+          });
+        }, error => {
+          console.log(error);
+        });;
   }
 
   mapRemove() {
@@ -529,18 +543,14 @@ export class CadastroPage implements OnInit {
       || this.local === undefined
       || this.compr === undefined
       || this.larg === undefined
-      || this.imgProduto === undefined;
+      || this.imgProduto === undefined
+      || this.imgPessoa === undefined;
 
     if ((condicoes && produto === '7' && this.relatoAtividade === undefined && this.tipoCadastro === '1')
       || (condPJ && this.tipoCadastro === '2') || (condicoes && this.tipoCadastro === '1')) {
       this.alertas.presentToast('Preencha os campos ');
     }
-
     else {
-
-
-
-
       if (this.tipoCadastro === '2') {
         console.log('entreeeeeeo')
         if (this.outroProduto === undefined) {
@@ -647,9 +657,44 @@ export class CadastroPage implements OnInit {
   ngOnInit() {
     this.valoresEmpresa = this.dadosEmpresa.dadosEmpresa;
     this.dadosEmpresa.dadosEmpresa = null;
+    console.log('valores empresa ', this.valoresEmpresa);
 
-    console.log('valores empresa ', this.valoresEmpresa)
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
+      this.zonas = data;
+    }, error => {
+      console.log(error);
+    });;
 
+
+  }
+
+  criarPoligono(doc) {
+    var coordenadas = doc['centroide']
+    var area = [coordenadas[1], coordenadas[0]];
+    //Constrói a matriz area com arrays de coordenadas(latitude e longitude)
+    var zona = doc['poligono'];
+    var arealist = []
+    for (var ponto in zona) {
+      var a = zona[ponto]
+      arealist.push([a[1], a[0]])
+    }
+    //Constrói um poligono com as coordenadas presentes em 'area'
+    var regiao = polygon(arealist, { color: '#f5a42c', fillColor: '#f5a42c'  });
+
+    var markerArea = L.marker(area, { icon: ambulanteIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+    if(doc['quantidade_ambulantes']<=49/100*doc['limite_ambulantes']){
+      markerArea = L.marker(area, { icon: ambulanteVerdeIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+      regiao = polygon(arealist, { color: '#5ea9a4', fillColor: '#5ea9a4'});
+    } else if(doc['quantidade_ambulantes']>=99/100*doc['limite_ambulantes']){
+      markerArea = L.marker(area, { icon: ambulanteVermelhoIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
+      regiao = polygon(arealist, { color: '#ed2e54', fillColor: '#ed2e54' });
+    }
+    markerArea.addTo(this.map2);
+    regiao.addTo(this.map2);
+    console.log("yeetz")
+  }
+
+  regiaoClicada(doc){
 
   }
 
@@ -657,6 +702,7 @@ export class CadastroPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Erro',
       message: '' + e,
+
       buttons: ['OK']
     });
 

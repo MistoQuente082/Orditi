@@ -17,7 +17,7 @@ export class FiltroBuscaPage implements OnInit {
 
   bairros: any[] = ['Área Rural','Antares','Barro Duro','Bebedouro','Benedito Bentes','Bom Parto','Canaã','Centro','Chã da Jaqueira','Chã de Bebedouro','Cidade Universitária','Clima Bom','Cruz das Almas','Farol','Feitosa','Fernão Velho','Garça Torta','Gruta de Lourdes','Guaxuma','Ipioca','Jacarecica','Jacintinho','Jaraguá','Jardim Petrópolis'    ,'Jatiúca','Levada','Mangabeiras','Mutange','Ouro Preto','Pajuçara','Pescaria','Petrópolis','Pinheiro','Pitanguinha','Poço','Ponta da Terra','Ponta Grossa','Ponta Verde','Pontal da Barra','Prado','Riacho Doce','Rio Novo','Santa Amélia','Santa Lúcia','Santo Amaro','Santos Dumont','São Jorge','Serraria','Tabuleiro do Martins','Trapiche da Barra','Vergel do Lago']
   equipamento: any[];
-  produto: any[];
+  produto: any[] = [];
   bairro: any[] = [];
 
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];

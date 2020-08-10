@@ -27,14 +27,12 @@
   </ion-fab>
 
 
-  <ion-fab *ngIf="zona != null" vertical="bottom">
+  <ion-fab class = "fabZona" *ngIf="zona != null" vertical="bottom">
     <ion-card class="cardZona">
       <ion-toolbar class="ion-toolbar">
         <ion-card-header>
-
           <ion-card-title>
             {{zona.nome}}
-
           </ion-card-title>
         </ion-card-header>
         <ion-buttons slot="end">
