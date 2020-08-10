@@ -1,5 +1,14 @@
 <ion-header>
   <ion-toolbar>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="enviarEditar()">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -10,11 +19,26 @@
 </ion-header>
 
 <ion-content>
+  <br>
 
-  <div class="centro">
-    <img class="conteudo" [src]="empresa['foto_cliente']" (click)="cam()">
-
+  <div>
+    <ion-slides pager="true" [options]="slideOpts">
+      <ion-slide>
+        <img class="conteudo" [src]="empresa['foto_cliente']">
+      </ion-slide>
+      <ion-slide>
+        <img class="conteudo" [src]="empresa['foto_alvara']">
+      </ion-slide>
+      <ion-slide>
+        <img class="conteudo" [src]="empresa['foto_contrato_social']">
+      </ion-slide>
+      <ion-slide>
+        <img class="conteudo" [src]="empresa['foto_cpf']">
+      </ion-slide>
+    </ion-slides>
   </div>
+
+
 
   <ion-card>
     <ion-card-header (click)="mostrarAtividade()">
@@ -23,14 +47,14 @@
       </ion-card-subtitle>
     </ion-card-header>
     <div *ngIf="atividade">
-      <ion-item>
+      <ion-item> 
         <ion-label>
           <p class="label-color">Nome Fantasia:</p>
           <h2 class="input-color">{{empresa.nome_fantasia}}</h2>
         </ion-label>
       </ion-item>
 
-      <ion-item >
+      <ion-item>
         <ion-label>
           <p class="label-color">Produto:</p>
           <h2 class="input-color" *ngFor="let num of produtoslista">{{produtos[num]}}</h2>
@@ -54,6 +78,7 @@
   </ion-card>
 
 
+
   <ion-card>
     <ion-card-header (click)="mostrarTrabalho()">
       <ion-card-subtitle>
@@ -62,7 +87,7 @@
     </ion-card-header>
     <div *ngIf="trabalho">
 
-       <ion-item>
+      <ion-item>
         <ion-label>
           <p class="label-color">CNPJ:</p>
           <h2 class="input-color">{{empresa.cnpj}}</h2>
@@ -138,7 +163,7 @@
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>
-        Funcionários: {{empresa.contador_ambulantes}}/{{empresa.quantidade_equipamentos}}
+        Funcionários: {{empresa.contador_empresa}}/{{empresa.quantidade_equipamentos}}
       </ion-card-subtitle>
 
 
@@ -163,7 +188,7 @@
       </div>
 
 
-      <ion-item *ngIf="empresa.contador_ambulantes < empresa.quantidade_equipamentos">
+      <ion-item *ngIf="empresa.contador_empresa < empresa.quantidade_equipamentos">
 
         <ion-avatar slot="start">
           <img src="../../assets/img/avatar.jpg">
@@ -175,7 +200,7 @@
         </ion-label>
 
         <ion-button slot="end" color="secondary" size="small"
-          (click)="adicionarAmbulante(empresa.id, empresa.contador_ambulantes, empresa.quantidade_equipamentos)">
+          (click)="adicionarempresa(empresa.id, empresa.contador_empresa, empresa.quantidade_equipamentos)">
           Adicionar</ion-button>
 
       </ion-item>

@@ -32,6 +32,7 @@ import { NotificarAmbulantePageModule } from './notificar-ambulante/notificar-am
 import { MostrarListaPageModule } from './mostrar-lista/mostrar-lista.module';
 import { EditarAmbulantePageModule } from './editar-ambulante/editar-ambulante.module';
 import { PerfilEmpresaPageModule } from './perfil-empresa/perfil-empresa.module';
+import { EditarEmpresaPageModule } from './editar-empresa/editar-empresa.module';
 
 
 @NgModule({
@@ -46,7 +47,7 @@ import { PerfilEmpresaPageModule } from './perfil-empresa/perfil-empresa.module'
     EditarAmbulantePageModule,
     PerfilEmpresaPageModule,
     NotificarAmbulantePageModule,
-    EditarAmbulantePageModule,
+    EditarEmpresaPageModule,
     MostrarListaPageModule,
     HttpClientModule,
     IonicModule.forRoot(),
