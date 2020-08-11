@@ -59,12 +59,6 @@ export class AppComponent {
       url: '/busca',
       icon: 'search'
     },
- 
-    {
-      title: 'Gerar Listas',
-      url: '/filtro-busca',
-      icon: 'albums'
-    },
     {
       title: 'Cadastro de Ambulante',
       url: '/cadastro',
@@ -75,8 +69,6 @@ export class AppComponent {
       url: '/denuncia',
       icon: 'hand'
     }
-
-
   ];
 
   public out = {
