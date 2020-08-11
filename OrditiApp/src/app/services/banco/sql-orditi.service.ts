@@ -21,7 +21,7 @@ export class SqlOrditiService {
 
 
   // Envia dados 
-  async enviarDados(dados, url_enviar, alerta, ) {
+  async enviarDados(dados, url_enviar, alerta, root ) {
     let headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -38,7 +38,7 @@ export class SqlOrditiService {
         
         if (data['retorno'] == 1) {          
           this.alertas.presentToast('Executado com sucesso!');
-          this.returnHome();
+          this.returnHome(root);
         } else {
           this.alertas.presentToast(alerta)
         }
@@ -49,8 +49,10 @@ export class SqlOrditiService {
 
   }
 
-  returnHome() {
-    this.router.navigate(['/home']);
+  returnHome( root ) {
+    if(root !== undefined){
+      this.router.navigate([root]);
+    }
   }
 
   // Recebe os dados

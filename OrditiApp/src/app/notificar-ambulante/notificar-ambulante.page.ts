@@ -131,7 +131,7 @@ export class NotificarAmbulantePage implements OnInit {
           text: 'Registrar',
           handler: async () => {
             // ESTA PARTE ENVIA AO WEBSERVICE
-            await this.sqlOrditi.enviarDados(dados, url, alerta);
+            await this.sqlOrditi.enviarDados(dados, url, alerta, undefined);
           }
         }
       ]

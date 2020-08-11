@@ -150,7 +150,7 @@ export class EditarAmbulantePage implements OnInit {
           text: 'Adicionar',
           handler: async () => {
             // ESTA PARTE ENVIA AO WEBSERVICE
-            await this.sqlOrditi.enviarDados(dados, url, alerta);
+            await this.sqlOrditi.enviarDados(dados, url, alerta, undefined);
           }
         }
       ]

@@ -157,9 +157,7 @@ export class CadastroPage implements OnInit {
   zonas: any[];
   isPoli: boolean = false;
 
-  returnHome() {
-    this.router.navigate(['/home']);
-  }
+  
   //tipo de dado - Firebase
   metadata = {
     contentType: 'image/jpeg',
@@ -182,6 +180,10 @@ export class CadastroPage implements OnInit {
 
   ) {
 
+  }
+
+  returnHome() {
+    this.router.navigate(['/home']);
   }
   // CAMERA
   async cam(tipo) {
@@ -487,12 +489,13 @@ export class CadastroPage implements OnInit {
       this.rg === undefined || this.bairro === undefined || this.cnpj === undefined || this.cmc === undefined
       || this.nomeFantasia === undefined || this.foneEmpresa === undefined || this.cnpj === undefined
       || this.rua === undefined
-      || this.cidade === undefined;
+      || this.cidade === undefined || this.imgPessoa === undefined
+      ;
 
     let condicoes = this.nome === undefined || this.cpf === undefined || this.fone === undefined ||
       this.rg === undefined || this.nomeMaterno === undefined || this.bairro === undefined
       || this.rua === undefined || this.imgRg === undefined || this.imgCpf === undefined
-      || this.cidade === undefined;
+      || this.cidade === undefined || this.imgPessoa === undefined;
 
     let status = this.statusCPF === false || this.statusCNPJ === false
       || this.statusEMAIL === false || this.statusNUM === false;
@@ -734,7 +737,7 @@ export class CadastroPage implements OnInit {
           text: 'Adicionar',
           handler: async () => {
             // ESTA PARTE ENVIA AO WEBSERVICE
-            await this.sqlOrditi.enviarDados(dados, url, alerta);
+            await this.sqlOrditi.enviarDados(dados, url, alerta, '/home');
 
           }
         }
@@ -745,8 +748,5 @@ export class CadastroPage implements OnInit {
     return resp;
 
   }
-
-
-
 
 }
