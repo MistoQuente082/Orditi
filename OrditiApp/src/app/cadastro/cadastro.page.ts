@@ -155,6 +155,7 @@ export class CadastroPage implements OnInit {
   valoresEmpresa: any;
 
   zonas: any[];
+  isPoli: boolean = false;
 
   returnHome() {
     this.router.navigate(['/home']);
@@ -163,8 +164,6 @@ export class CadastroPage implements OnInit {
   metadata = {
     contentType: 'image/jpeg',
   };
-
-
 
   constructor(
     private geolocation: Geolocation,
@@ -183,10 +182,7 @@ export class CadastroPage implements OnInit {
 
   ) {
 
-
-
   }
-
   // CAMERA
   async cam(tipo) {
     const actionSheet = await this.actionSheetController.create({
@@ -203,7 +199,6 @@ export class CadastroPage implements OnInit {
         icon: 'camera',
         handler: () => {
           this.takePicture(this.Cam.PictureSourceType.CAMERA, tipo);
-
         },
 
       }, {
@@ -216,7 +211,6 @@ export class CadastroPage implements OnInit {
   }
 
   takePicture(sourceType: PictureSourceType, tipo) {
-
     var options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
@@ -228,9 +222,7 @@ export class CadastroPage implements OnInit {
     }
 
     this.Cam.getPicture(options).then((imgData) => {
-
       let imagem = 'data:image/jpeg;base64,' + imgData;
-
       if (tipo === 1) {
         if (imagem) {
           this.imgDefaultP = null
@@ -266,6 +258,7 @@ export class CadastroPage implements OnInit {
           imagem = null;
         }
       }
+
       if (tipo === 7) {
         if (imagem) {
           this.imgAlvara = imagem;
@@ -288,7 +281,6 @@ export class CadastroPage implements OnInit {
 
         }
       }
-
     })
   }
 
@@ -351,6 +343,15 @@ export class CadastroPage implements OnInit {
           attribution: '', maxZoom: 18
         }).addTo(this.map2);
 
+        this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
+          console.log(data)
+          data.forEach(element => {
+            this.criarPoligono(element);
+          });
+        }, error => {
+          console.log(error);
+        });
+
       }).catch((error) => {
 
       });
@@ -379,7 +380,7 @@ export class CadastroPage implements OnInit {
     this.L = marker(e.latlng, { icon: ambulanteIcon });
     this.L.addTo(this.map2).bindPopup('Você selecionou esse ponto').openPopup();
     this.local = e.latlng;
-
+    if(this.isPoli == false){
     let options: NativeGeocoderOptions = {
       useLocale: true,
       maxResults: 5
@@ -393,6 +394,10 @@ export class CadastroPage implements OnInit {
       });
 
     this.consultaCoord();
+    this.zona = 0;
+  } else {
+      this.isPoli = false;
+    }
 
   }
 
@@ -488,6 +493,7 @@ export class CadastroPage implements OnInit {
       this.rg === undefined || this.nomeMaterno === undefined || this.bairro === undefined
       || this.rua === undefined || this.imgRg === undefined || this.imgCpf === undefined
       || this.cidade === undefined;
+
     let status = this.statusCPF === false || this.statusCNPJ === false
       || this.statusEMAIL === false || this.statusNUM === false;
 
@@ -633,7 +639,7 @@ export class CadastroPage implements OnInit {
             'foto_cliente': this.imgPessoa,
             'latitude': this.local.lat,
             'longitude': this.local.lng,
-            'regiao': 0,
+            'regiao': this.zona,
             'atendimento_dias': atenDias,
             'atendimento_inicio': this.hInicio,
             'atendimento_fim': this.hfim,
@@ -679,15 +685,15 @@ export class CadastroPage implements OnInit {
       arealist.push([a[1], a[0]])
     }
     //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(arealist, { color: '#f5a42c', fillColor: '#f5a42c'  });
+    var regiao = polygon(arealist, { color: '#f5a42c', fillColor: '#f5a42c'  }).on('click', (e) => { this.regiaoClicada(doc); });
 
     var markerArea = L.marker(area, { icon: ambulanteIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
     if(doc['quantidade_ambulantes']<=49/100*doc['limite_ambulantes']){
       markerArea = L.marker(area, { icon: ambulanteVerdeIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
-      regiao = polygon(arealist, { color: '#5ea9a4', fillColor: '#5ea9a4'});
+      regiao = polygon(arealist, { color: '#5ea9a4', fillColor: '#5ea9a4'}).on('click', (e) => { this.regiaoClicada(doc); });
     } else if(doc['quantidade_ambulantes']>=99/100*doc['limite_ambulantes']){
       markerArea = L.marker(area, { icon: ambulanteVermelhoIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
-      regiao = polygon(arealist, { color: '#ed2e54', fillColor: '#ed2e54' });
+      regiao = polygon(arealist, { color: '#ed2e54', fillColor: '#ed2e54' }).on('click', (e) => { this.regiaoClicada(doc); });
     }
     markerArea.addTo(this.map2);
     regiao.addTo(this.map2);
@@ -695,14 +701,17 @@ export class CadastroPage implements OnInit {
   }
 
   regiaoClicada(doc){
-
+    this.zona = doc.nome;
+    console.log(doc);
+    this.enderecoLocal = doc.nome;
+    this.isPoli = true;
+    this.zona = doc.id;
   }
 
   async geocoderTesteError(e) {
     const alert = await this.alertController.create({
       header: 'Erro',
       message: '' + e,
-
       buttons: ['OK']
     });
 

@@ -37,6 +37,7 @@ export class PerfilEmpresaPage implements OnInit {
     public dadosEmpresa: ListaAmbulantesService,
     private router: Router
   ) {
+
     this.empresa = this.navParam.get('info');
     console.log('empresa', this.empresa);
     this.sqlOrditi.receberFuncionarios(this.empresa.id).subscribe(data => {
@@ -85,8 +86,6 @@ export class PerfilEmpresaPage implements OnInit {
   mostrarAtividade() {
     if (this.atividade === false) {
       this.atividade = true;
-
-
     }
     else {
       this.atividade = false;

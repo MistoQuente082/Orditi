@@ -18,7 +18,7 @@ export class DetalheZonaPage implements OnInit {
 
   count
 
-  listaFiltro: any;
+  listaFiltro: any[]=[];
   areaFoto: any = "../../assets/img/Região.jpg";
 
   constructor(
@@ -35,13 +35,15 @@ export class DetalheZonaPage implements OnInit {
     this.listaAmbulante.recuperar('lista').then((data) => {
       console.log(data)
       data.forEach(e => {
-        if (e.regiao === this.local.nome) {
+        if (e.regiao === this.local.id) {
           this.listaFiltro.push(e);
         }
       })
     }, error => {
       console.log(error);
     });;
+
+    console.log(this.listaFiltro);
 
   }
 
