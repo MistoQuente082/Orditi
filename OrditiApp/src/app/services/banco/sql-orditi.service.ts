@@ -12,6 +12,7 @@ export class SqlOrditiService {
 
   public url_receber: string;
   public estado;
+  ok: boolean;
 
   constructor(
     public httpClient: HttpClient,
@@ -37,7 +38,8 @@ export class SqlOrditiService {
         console.log(data);
         
         if (data['retorno'] == 1) {          
-          this.alertas.presentToast('Executado com sucesso!');
+          this.alertas.presentToast('Executado com sucesso!')
+          this.ok = true;
           this.returnHome(root);
         } else {
           this.alertas.presentToast(alerta)
