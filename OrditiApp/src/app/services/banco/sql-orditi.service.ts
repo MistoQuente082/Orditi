@@ -77,7 +77,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'http://localhost/orditiServices/filtrarAmbulante.php',
+      'https://www.syphan.com.br/orditi/services/filtrarAmbulante.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
   }
@@ -90,7 +90,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'http://localhost/orditiServices/listarNotificacoes.php',
+      'https://www.syphan.com.br/orditi/services/listarNotificacoes.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 
@@ -104,7 +104,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'http://localhost/orditiServices/listarFuncionarios.php',
+      'https://www.syphan.com.br/orditi/services/listarFuncionarios.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 
