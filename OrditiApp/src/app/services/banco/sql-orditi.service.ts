@@ -26,8 +26,6 @@ export class SqlOrditiService {
     let headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
-
-
     let postData = dados;
 
     this.httpClient.post(
@@ -35,13 +33,19 @@ export class SqlOrditiService {
       postData,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
       .subscribe(data => {
-        console.log(data);
-        
+        console.log( data);
         if (data['retorno'] == 1) {          
           this.alertas.presentToast('Executado com sucesso!')
           this.ok = true;
           this.returnHome(root);
-        } else {
+        } 
+        else if (data['retorno'] == 2){
+          this.alertas.presentToast('Já existe um cadastro nesse CPF');
+        }
+        else if (data['retorno'] == 3){
+          this.alertas.presentToast('Já existe um cadastro nesse CNPJ');
+        }
+        else {
           this.alertas.presentToast(alerta)
         }
       }, error => {

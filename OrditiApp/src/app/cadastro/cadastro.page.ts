@@ -124,8 +124,8 @@ export class CadastroPage implements OnInit {
   private etapaCadastro: number = 1;
 
   // Necessário para cadastrar no Banco
-  private url_banco = 'https://www.syphan.com.br/orditi/services/cadastrarAmbulante.php';
-  private url_banco_PJ = 'https://www.syphan.com.br/orditi/services/cadastrarEmpresa.php';
+  private url_banco = 'http://localhost/orditiServices/cadastrarAmbulante.php';
+  private url_banco_PJ = 'http://localhost/orditiServices/cadastrarEmpresa.php';
 
   private alerta_texto = 'Não foi possível realizar a cadastro'
 
@@ -738,7 +738,6 @@ export class CadastroPage implements OnInit {
           handler: async () => {
             // ESTA PARTE ENVIA AO WEBSERVICE
             await this.sqlOrditi.enviarDados(dados, url, alerta, '/home');
-
           }
         }
       ]
