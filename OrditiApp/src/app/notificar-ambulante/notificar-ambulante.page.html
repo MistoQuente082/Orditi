@@ -18,11 +18,6 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-item>
-      <ion-label color="color-label" position="floating">Nome do Fiscal:</ion-label>
-      <ion-input type="text" [(ngModel)]="seunome" placeholder="Ex.: Maria das Dores"></ion-input>
-    </ion-item>
-
-    <ion-item>
       <ion-label color="color-label" position="floating">Dê um nome à Ocorrência:</ion-label>
       <ion-input type="text" [(ngModel)]="titulo" placeholder="Ex.: Organização"></ion-input>
     </ion-item>
@@ -41,6 +36,21 @@
 
 
     </ion-item>
+
+    <ion-item>
+      <ion-label color="color-label" position="floating">Valor da Multa: (opcional)</ion-label>
+      
+      <ion-input type="text" [(ngModel)]="multa" [brmasker]="{money: true,  thousand: '.',  decimalCaracter: ','}" placeholder="Ex.: 25,00">
+        <ion-note slot="start">R$ </ion-note>
+      </ion-input>
+    </ion-item>
+<!--
+    <ion-item>
+      <ion-label color="color-label">Bloquear </ion-label>
+      <ion-toggle [(ngModel)]="bloquearAmbulante"></ion-toggle>
+    </ion-item>
+  -->
+
 
     <ion-item>
       <ion-label color="color-label" position="floating">Informe a situação:</ion-label>
