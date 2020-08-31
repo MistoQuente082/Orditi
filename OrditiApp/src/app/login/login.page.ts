@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export class LoginPage implements OnInit {
   loading: HTMLIonLoadingElement;
-  private url_banco = 'https://localhost/orditiServices/validaLogin.php';
+  private url_banco = 'http://localhost/orditiServices/validaLogin.php';
   public res_usuario: any = false;
 
   tipo: boolean;

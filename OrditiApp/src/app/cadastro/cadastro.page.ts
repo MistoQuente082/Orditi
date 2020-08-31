@@ -345,7 +345,7 @@ export class CadastroPage implements OnInit {
           attribution: '', maxZoom: 18
         }).addTo(this.map2);
 
-        this.sqlOrditi.receberDados('https://localhost/orditiServices/listarZonas.php').subscribe(data => {
+        this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
           console.log(data)
           data.forEach(element => {
             this.criarPoligono(element);
@@ -359,7 +359,7 @@ export class CadastroPage implements OnInit {
       });
     }
 
-    this.sqlOrditi.receberDados('https://localhost/orditiServices/listarZonas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
           console.log(data)
           data.forEach(element => {
             this.criarPoligono(element);
@@ -668,7 +668,7 @@ export class CadastroPage implements OnInit {
     this.dadosEmpresa.dadosEmpresa = null;
     console.log('valores empresa ', this.valoresEmpresa);
 
-    this.sqlOrditi.receberDados('https://localhost/orditiServices/listarZonas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('http://localhost/orditiServices/listarZonas.php').subscribe(data => {
       this.zonas = data;
     }, error => {
       console.log(error);

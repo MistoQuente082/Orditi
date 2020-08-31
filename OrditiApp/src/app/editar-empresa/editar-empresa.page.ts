@@ -23,7 +23,7 @@ export class EditarEmpresaPage implements OnInit {
   statusEMAIL: boolean = true;
   statusNUM: boolean = true;
 
-  private url_banco = 'https://localhost/orditiServices/atualizarEmpresa.php';
+  private url_banco = 'http://localhost/orditiServices/atualizarEmpresa.php';
 
   
 

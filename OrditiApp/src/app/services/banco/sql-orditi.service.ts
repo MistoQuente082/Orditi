@@ -84,7 +84,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'https://localhost/orditiServices/filtrarAmbulante.php',
+      'http://localhost/orditiServices/filtrarAmbulante.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
   }
@@ -97,7 +97,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'https://localhost/orditiServices/listarNotificacoes.php',
+      'http://localhost/orditiServices/listarNotificacoes.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 
@@ -111,7 +111,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'https://localhost/orditiServices/listarFuncionarios.php',
+      'http://localhost/orditiServices/listarFuncionarios.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 
