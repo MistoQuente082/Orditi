@@ -52,20 +52,20 @@ export class BuscaPage implements OnInit {
       console.log(error);
     });;
 
-    this.sqlOrditi.receberDados('https://www.syphan.com.br/orditi/services/listarEmpresas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('https://localhost/orditiServices/listarEmpresas.php').subscribe(data => {
       this.empresasTotal = data;
       this.empresas = this.empresasTotal;
     }, error => {
       console.log(error);
     });;
 
-    this.sqlOrditi.receberDados('https://www.syphan.com.br/orditi/services/listarZonas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('https://localhost/orditiServices/listarZonas.php').subscribe(data => {
       this.zonasTotal = data;
       this.zonas = this.zonasTotal;
     }, error => {
       console.log(error);
     });;
-    this.sqlOrditi.receberDados('https://www.syphan.com.br/orditi/services/listarEmpresas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('https://localhost/orditiServices/listarEmpresas.php').subscribe(data => {
       this.empresasTotal = data;
       this.empresas = this.empresasTotal;
       console.log(this.empresas);

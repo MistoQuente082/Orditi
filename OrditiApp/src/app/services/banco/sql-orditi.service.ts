@@ -45,6 +45,9 @@ export class SqlOrditiService {
         else if (data['retorno'] == 3){
           this.alertas.presentToast('Já existe um cadastro nesse CNPJ');
         }
+        else if (data['retorno'] == 4){
+          this.alertas.presentToast('Você não possui cadastro mercantil. Vá à SEMEC e cadastre-se');
+        }
         else {
           this.alertas.presentToast(alerta)
         }
@@ -81,7 +84,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'https://www.syphan.com.br/orditi/services/filtrarAmbulante.php',
+      'https://localhost/orditiServices/filtrarAmbulante.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
   }
@@ -94,7 +97,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'https://www.syphan.com.br/orditi/services/listarNotificacoes.php',
+      'https://localhost/orditiServices/listarNotificacoes.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 
@@ -108,7 +111,7 @@ export class SqlOrditiService {
     console.log(id)
     let lista = {token: token, id: id};
     return this.httpClient.post<any[]>(
-      'https://www.syphan.com.br/orditi/services/listarFuncionarios.php',
+      'https://localhost/orditiServices/listarFuncionarios.php',
       lista,
       { headers: new HttpHeaders({ "Content-Type": "application/json" }) })
 

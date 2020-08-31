@@ -70,7 +70,7 @@ export class DenunciaPage implements OnInit {
   mostraMapa: boolean = false;
 
   // Necessário para cadastrar no Banco
-  private url_banco = 'https://www.syphan.com.br/orditi/services/cadastrarDenuncia.php';
+  private url_banco = 'https://localhost/orditiServices/cadastrarDenuncia.php';
   private alerta_texto = 'Não foi possível realizar a denuncia!';
 
   map2: Map = null;
