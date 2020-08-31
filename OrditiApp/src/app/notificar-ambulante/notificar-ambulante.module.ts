@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { NotificarAmbulantePage } from './notificar-ambulante.page';
+import { BrMaskerModule } from 'br-mask';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    BrMaskerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [NotificarAmbulantePage]

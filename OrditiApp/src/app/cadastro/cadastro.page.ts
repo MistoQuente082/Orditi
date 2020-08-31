@@ -124,8 +124,8 @@ export class CadastroPage implements OnInit {
   private etapaCadastro: number = 1;
 
   // Necessário para cadastrar no Banco
-  private url_banco = 'http://localhost/orditiServices/teste.php';
-  private url_banco_PJ = 'http://localhost/orditiServices/cadastrarEmpresa.php';
+  private url_banco = 'http://localhost/services/cadastrarAmbulante.php';
+  private url_banco_PJ = 'http://localhost/services/cadastrarEmpresa.php';
 
   private alerta_texto = 'Não foi possível realizar a cadastro'
 
