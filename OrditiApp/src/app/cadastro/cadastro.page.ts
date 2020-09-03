@@ -120,7 +120,7 @@ export class CadastroPage implements OnInit {
   L: any = null;
 
 
-  // Etapas do Cadastro
+  // Etapas do CadastroN
   private etapaCadastro: number = 1;
 
   // Necessário para cadastrar no Banco

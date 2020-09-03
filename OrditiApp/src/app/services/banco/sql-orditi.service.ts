@@ -45,6 +45,9 @@ export class SqlOrditiService {
         else if (data['retorno'] == 3){
           this.alertas.presentToast('Já existe um cadastro nesse CNPJ');
         }
+        else if (data['retorno'] == 4){
+          this.alertas.presentToast('Você não possui cadastro mercantil. Vá à SEMEC e cadastre-se');
+        }
         else {
           this.alertas.presentToast(alerta)
         }
