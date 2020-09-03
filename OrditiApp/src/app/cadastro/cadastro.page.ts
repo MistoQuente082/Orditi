@@ -124,8 +124,8 @@ export class CadastroPage implements OnInit {
   private etapaCadastro: number = 1;
 
   // Necessário para cadastrar no Banco
-  private url_banco = 'http://localhost/services/cadastrarAmbulante.php';
-  private url_banco_PJ = 'http://localhost/services/cadastrarEmpresa.php';
+  private url_banco = 'http://www.maceio.orditi.com/services/cadastrarAmbulante.php';
+  private url_banco_PJ = 'http://www.maceio.orditi.com/services/cadastrarEmpresa.php';
 
   private alerta_texto = 'Não foi possível realizar a cadastro'
 
@@ -345,7 +345,7 @@ export class CadastroPage implements OnInit {
           attribution: '', maxZoom: 18
         }).addTo(this.map2);
 
-        this.sqlOrditi.receberDados('https://www.syphan.com.br/orditi/services/listarZonas.php').subscribe(data => {
+        this.sqlOrditi.receberDados('https://www.maceio.orditi.com/services/listarZonas.php').subscribe(data => {
           console.log(data)
           data.forEach(element => {
             this.criarPoligono(element);
@@ -359,7 +359,7 @@ export class CadastroPage implements OnInit {
       });
     }
 
-    this.sqlOrditi.receberDados('https://www.syphan.com.br/orditi/services/listarZonas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('https://www.maceio.orditi.com/services/listarZonas.php').subscribe(data => {
           console.log(data)
           data.forEach(element => {
             this.criarPoligono(element);
@@ -668,7 +668,7 @@ export class CadastroPage implements OnInit {
     this.dadosEmpresa.dadosEmpresa = null;
     console.log('valores empresa ', this.valoresEmpresa);
 
-    this.sqlOrditi.receberDados('https://www.syphan.com.br/orditi/services/listarZonas.php').subscribe(data => {
+    this.sqlOrditi.receberDados('https://www.maceio.orditi.com/services/listarZonas.php').subscribe(data => {
       this.zonas = data;
     }, error => {
       console.log(error);

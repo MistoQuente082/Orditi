@@ -23,7 +23,7 @@ export class EditarEmpresaPage implements OnInit {
   statusEMAIL: boolean = true;
   statusNUM: boolean = true;
 
-  private url_banco = 'https://www.syphan.com.br/orditi/services/atualizarEmpresa.php';
+  private url_banco = 'https://www.maceio.orditi.com/services/atualizarEmpresa.php';
 
   
 

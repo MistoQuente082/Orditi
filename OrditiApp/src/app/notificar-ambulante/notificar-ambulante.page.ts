@@ -13,7 +13,7 @@ import { AlertasService } from '../services/alertas.service';
 })
 export class NotificarAmbulantePage implements OnInit {
   //Informações do banco de dados
-  private url_banco = 'https://www.syphan.com.br/orditi/services/cadastrarNotificacao.php';
+  private url_banco = 'https://www.maceio.orditi.com/services/cadastrarNotificacao.php';
   private alerta_texto = 'Não foi possível cadastrar a ocorrência!';
   
   //public imgAut;

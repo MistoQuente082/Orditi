@@ -42,7 +42,7 @@ export class EditarAmbulantePage implements OnInit {
   horario: boolean = false;
   atividade: boolean = false;
   equipamento: boolean;
-  private url_banco = 'https://www.syphan.com.br/orditi/services/atualizarAmbulante.php';
+  private url_banco = 'https://www.maceio.orditi.com/services/atualizarAmbulante.php';
 
   produtoslista: any[] = [];
   produtos: any[] = ['Alimentos', 'Bebidas não alcoólicas', 'Bebidas Alcoólicas', 'Briquedos e Ornamentos', 'Confecções, Calçados, Artigos de uso pessoal', 'Louças, Ferragens, Artefatos, Utensílios Domésticos', 'Artesanato, Antiguidades e arte', 'Outros'];
