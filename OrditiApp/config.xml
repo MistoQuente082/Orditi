@@ -3,7 +3,7 @@
     <name>ORDITI</name>
     <description>Sistema essencial que busca solucionar os problemas de organização e distribuição dos ambulantes nas cidades.</description>
     <author email="contato@orditi.com" href="http://orditi.com">Equipe Orditi</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http:///" />
     <allow-intent href="https:///" />
