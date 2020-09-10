@@ -617,7 +617,7 @@ export class CadastroPage implements OnInit {
           let novoContadorAmbulante = null;
           this.idEmpresa = null;
 
-          if(this.valoresEmpresa){
+          if(this.valoresEmpresa !== undefined || this.valoresEmpresa !== null){
             this.idEmpresa = this.valoresEmpresa.idEmpresa;
             novoContadorAmbulante = this.valoresEmpresa.contador
           }

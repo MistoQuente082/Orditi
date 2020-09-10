@@ -86,7 +86,7 @@ export class HomePage {
   markersD: any;
   markersArea: any;
 
-  poliAreas: any[]=[];
+  poliAreas: any[] = [];
 
 
   //  qrCode
@@ -95,12 +95,12 @@ export class HomePage {
 
   elementType: 'url' | 'canvas' | 'img' = 'canvas';
   tipoUsuario: boolean = this.loginBanco.res_usuario;
-  tileLayer: any[] =[];
-  map_layers: any[] =[];
+  tileLayer: any[] = [];
+  map_layers: any[] = [];
   ctr_layers: any[] = [];
-  
-  
-  
+
+
+
   constructor(
     private sqlOrditi: SqlOrditiService,
     private geolocation: Geolocation,
@@ -115,38 +115,13 @@ export class HomePage {
     this.menuCtrl.swipeEnable(false);
   }
 
-  LeerCode() {
-    this.barcodeScanner.scan().then(barcodeData => {
-      this.scannedCode = barcodeData;
-      console.log(barcodeData.text);
-      alert(barcodeData.text);
-      try {
-        this.sqlOrditi.receberPerfil(this.scannedCode.text);
-        this.sqlOrditi.receberPerfil(this.scannedCode.text).subscribe(data => {
-          console.log(data)
-          if(data[0] === undefined){
-            console.log(data)
-            this.alertas.presentToast('Nenhum usuário com esse código');
-          }
-          else{
-            this.irPerfis(data[0]);
-          }
-        })
-      } catch(err){
-        console.log(err);
-        this.alertas.presentToast('Nenhum usuário com esse código');
-      }
-    });
-  }
-
-
-
   ionViewDidEnter() {
 
 
     if (this.map !== 'undefined' && this.map !== null) {
       this.map.remove();
     } else {
+      // SALVA OS DADOS DO USUÁRIO LOGADO
       this.loginBanco.recuperar('fiscal')
         .then((dados) => {
           if (dados !== null) {
@@ -172,30 +147,35 @@ export class HomePage {
         this.tileLayer['Mapa'] = tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=C1vu4LOmp14JjyXqidSlK8rjeSlLK1W59o1GAfoHVOpuc6YB8FSNyOyHdoz7QIk6', {
           attribution: ' &copy;', maxZoom: 18
         });
-
-        var map_layers: any[]=[];
+        // PONTOS NO MAPA A DEPENDER DO FILTRO
+        var map_layers: any[] = [];
         map_layers["Áreas"] = L.layerGroup();
         this.ctr_layers["Áreas"] = map_layers["Áreas"];
 
+        // PONTOS NO MAPA A DEPENDER DO FILTRO
         map_layers["Status - Em dia"] = L.layerGroup();
         this.ctr_layers["Status - Em dia"] = map_layers["Status - Em dia"];
 
+        // PONTOS NO MAPA A DEPENDER DO FILTRO
         map_layers["Status - Pendente"] = L.layerGroup();
         this.ctr_layers["Status - Pendente"] = map_layers["Status - Pendente"];
 
+        // PONTOS NO MAPA A DEPENDER DO FILTRO
         map_layers["Status - Vencido"] = L.layerGroup();
         this.ctr_layers["Status - Vencido"] = map_layers["Status - Vencido"];
 
         console.log(this.tipoUsuario)
-        if(this.tipoUsuario == true){
+        // VERIFICA SE O AGENTE ENTROU
+        if (this.tipoUsuario == true) {
           console.log('entrou')
+          //  AS DENUNCIAS SÃO MOSTRADAS
           map_layers["Denúncias"] = L.layerGroup();
           this.ctr_layers["Denúncias"] = map_layers["Denúncias"];
         }
 
         this.tileLayer['Mapa'].addTo(this.map);
 
-        L.control.layers( this.tileLayer, this.ctr_layers, ).addTo(this.map);
+        L.control.layers(this.tileLayer, this.ctr_layers,).addTo(this.map);
 
         this.markersA = L.markerClusterGroup({
           polygonOptions: { stroke: false, fill: true, fillColor: "gray", fillOpacity: 0.45 }
@@ -214,7 +194,7 @@ export class HomePage {
         })
 
         //Criar Pins de Ambulantes
-        this.listaAmbulante.recuperar('lista').then((data)=>{
+        this.listaAmbulante.recuperar('lista').then((data) => {
           data.forEach(element => {
             this.criarMarkerAmbulantes(element);
             console.log(element);
@@ -223,7 +203,7 @@ export class HomePage {
           console.log(error);
         });;
 
-        //Criar Pind de Zonas
+        //Criar PinS de Zonas
         this.sqlOrditi.receberDados('https://www.maceio.orditi.com/services/listarZonas.php').subscribe(data => {
           console.log(data)
           data.forEach(element => {
@@ -239,39 +219,42 @@ export class HomePage {
         var D = this.markersD;
         var Area = this.markersArea;
         var poli = this.poliAreas;
-        
+
         //
-        this.map.on('overlayadd', function(this, e){
+        this.map.on('overlayadd', function (this, e) {
           var groupMarker = new L.MarkerClusterGroup({
             disableClusteringAtZoom: 14,
             showCoverageOnHover: true,
             zoomToBoundsOnClick: true,
             spiderfyOnMaxZoom: true
-        });
-        if(e.name === "Status - Em dia"){
-          map_layers[e.name].addLayer(A1)
-        }else if(e.name === "Status - Pendente"){
-          map_layers[e.name].addLayer(A);
-        }else if(e.name === "Status - Vencido"){
-          map_layers[e.name].addLayer(A2);
-        }else if(e.name === "Denúncias"){
-          map_layers[e.name].addLayer(D);
-        }else if(e.name === "Áreas"){
-          map_layers[e.name].addLayer(Area);
-          poli.forEach(element=>{
-            element.addTo(map_layers[e.name]);
-            console.log(element);
           });
-        }
+          // FILTROS PARA O MAPA
+          if (e.name === "Status - Em dia") {
+            map_layers[e.name].addLayer(A1)
+          } else if (e.name === "Status - Pendente") {
+            map_layers[e.name].addLayer(A);
+          } else if (e.name === "Status - Vencido") {
+            map_layers[e.name].addLayer(A2);
+          } else if (e.name === "Denúncias") {
+            map_layers[e.name].addLayer(D);
+          } else if (e.name === "Áreas") {
+            map_layers[e.name].addLayer(Area);
+            poli.forEach(element => {
+              element.addTo(map_layers[e.name]);
+              console.log(element);
+            });
+          }
         })
         //
 
         this.poli.addTo(this.map);
 
-        
+
         console.log("TIPO DE USUÁRIO:", this.tipoUsuario);
-        //Adicionar condição para só mostrar se for fiscal
+
+        // AS DENUNCIAS SÃO MOSTRADAS CASO FOR FISCAL
         if (this.tipoUsuario !== false) {
+
           this.sqlOrditi.receberDados('https://www.maceio.orditi.com/services/listarDenuncias.php').subscribe(data => {
             data.forEach(element => {
               console.log(element);
@@ -295,6 +278,16 @@ export class HomePage {
     }
   }
 
+  /** Create an alert when geolocation function fails **/
+  async geolocationErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Erro de permissão!',
+      subHeader: 'Ative a localização para prosseguir',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   /** Remove map when we have multiple map object **/
   ionViewWillLeave() {
     this.map.remove();
@@ -305,6 +298,38 @@ export class HomePage {
     this.map.setView([this.lat, this.long], 30);
   }
 
+
+  // SERVE PARA LER O QRCODE
+  LeerCode() {
+    this.barcodeScanner.scan().then(barcodeData => {
+      this.scannedCode = barcodeData;
+      console.log(barcodeData.text);
+      try {
+        this.sqlOrditi.receberPerfil(this.scannedCode.text);
+        // VERIFICA ATRAVÉS DO ID DO AMBULANTE
+        this.sqlOrditi.receberPerfil(this.scannedCode.text).subscribe(data => {
+          console.log(data)
+          if (data[0] === undefined) {
+            console.log(data)
+            // CASO NÃO HAJA NENHUM USUÁRIO, MOSTRA O ALERTA NO FINAL DA TELA
+            this.alertas.presentToast('Nenhum usuário com esse código');
+          }
+          else {
+            // REDIRECIONA AO PERFIL DO USUÁRIO
+            this.irPerfis(data[0]);
+          }
+        })
+      } catch (err) {
+        console.log(err);
+        // ERRO? MOSTRA O ALERTA NO FINAL DA TELA
+
+        this.alertas.presentToast('Nenhum usuário com esse código');
+      }
+    });
+  }
+
+
+  // AMBULANTES
   criarMarkerAmbulantes(geo) {
 
     console.log(geo);
@@ -315,6 +340,7 @@ export class HomePage {
     var ambulanteLat = geo['latitude'];
     var ambulantLong = geo['longitude'];
     var ambulanteStatus = geo['situacao'];
+    // OS SEGUINTES IFS SÃO PARA ATRIBUIR CORES AOS PINS SEGUNDO O STATUS DE PAGAMENTO
     if (ambulanteStatus === '1') {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteVerdeIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
       amb.addTo(this.markersA1);
@@ -327,9 +353,24 @@ export class HomePage {
       var amb = L.marker([ambulanteLat, ambulantLong], { icon: ambulanteIcon }).bindPopup('<img src="' + ambulanteFoto + '"><br>' + 'Ambulante: <strong>' + ambulanteNome + '</strong><br>Produto: <strong>' + ambulanteProduto + '</strong>').openPopup();
       amb.addTo(this.markersA);
     }
-    
+
   }
 
+  // MODAL COM AS INFORMAÇÕES DO AMBULANTE
+  async irPerfis(item) {
+    const modal = await this.modalCtrl.create({
+      component: PerfilAmbulantePage,
+      componentProps: {
+        info: item
+      }
+    });
+
+    await modal.present();
+
+
+  }
+
+  // DENUNCIAS 
   criarMarkerDenuncias(den) {
     console.log(den);
     var denunciaFoto = den['foto'];
@@ -341,6 +382,7 @@ export class HomePage {
     denMarker.addTo(this.markersD);
   }
 
+  // POLIGONOS PARA CADA ZONA
   criarPoligono(doc) {
     var coordenadas = doc['centroide']
     var area = [coordenadas[1], coordenadas[0]];
@@ -352,31 +394,44 @@ export class HomePage {
       arealist.push([a[1], a[0]])
     }
     //Constrói um poligono com as coordenadas presentes em 'area'
-    var regiao = polygon(arealist, { color: '#f5a42c', fillColor: '#f5a42c'  });
+    var regiao = polygon(arealist, { color: '#f5a42c', fillColor: '#f5a42c' });
 
     var markerArea = L.marker(area, { icon: ambulanteIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
-    if(doc['quantidade_ambulantes']<=49/100*doc['limite_ambulantes']){
+    if (doc['quantidade_ambulantes'] <= 49 / 100 * doc['limite_ambulantes']) {
       markerArea = L.marker(area, { icon: ambulanteVerdeIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
-      regiao = polygon(arealist, { color: '#5ea9a4', fillColor: '#5ea9a4'});
-    } else if(doc['quantidade_ambulantes']>=99/100*doc['limite_ambulantes']){
+      regiao = polygon(arealist, { color: '#5ea9a4', fillColor: '#5ea9a4' });
+    } else if (doc['quantidade_ambulantes'] >= 99 / 100 * doc['limite_ambulantes']) {
       markerArea = L.marker(area, { icon: ambulanteVermelhoIcon }).bindPopup(doc['nome']).on('click', (e) => { this.regiaoClicada(doc); });
       regiao = polygon(arealist, { color: '#ed2e54', fillColor: '#ed2e54' });
     }
     markerArea.addTo(this.markersArea);
- 
+
     this.poliAreas.push(regiao);
   }
 
-  /** Create an alert when geolocation function fails **/
-  async geolocationErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'Erro',
-      subHeader: 'Não foi possível definir a localização',
-      buttons: ['OK']
-    });
-    await alert.present();
+
+
+
+  // MOSTRA UM CARD COM INFORMAÇÕES SOBRE A ZONA
+  regiaoClicada(doc) {
+
+    JSON.stringify(doc);
+    this.zona = doc;
+    console.log(doc);
+    //regiao.on('click', (e) => { this.regiaoClicada(doc); });
+    //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
+    //this.poli.setStyle({ opacity: 0.0 })
+    //this.poli = regiao;
+    //this.poli.addTo(this.map);
+    this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
+  }
+  // FECHA O CARD ANTERIOR
+  fecharCard() {
+    this.poli.setStyle({ opacity: 0.0 })
+    this.zona = null;
   }
 
+  // MODAL PARA MAIS INFORMAÇÕES SOBRE A ZONA
   async mostraDetalhes() {
     var zona = this.zona;
     console.log('click')
@@ -391,37 +446,9 @@ export class HomePage {
     //this.alertas.presentModal(DetalheZonaPage, this.zona);
   }
 
-  regiaoClicada(doc) {
-  
-    JSON.stringify(doc);
-    this.zona = doc;
-    console.log(doc);
-    //regiao.on('click', (e) => { this.regiaoClicada(doc); });
-    //Adiciona o polígono ao mapa com um popup que aparece ao clicar no polígono
-    //this.poli.setStyle({ opacity: 0.0 })
-    //this.poli = regiao;
-    //this.poli.addTo(this.map);
-    this.poli.bindPopup(doc['nome'] + ': ' + doc['limite_ambulante']);
-  }
-
-  fecharCard() {
-    this.poli.setStyle({ opacity: 0.0 })
-    this.zona = null;
-  }
 
 
-  async irPerfis(item) {
-    const modal = await this.modalCtrl.create({
-      component: PerfilAmbulantePage,
-      componentProps: {
-        info: item
-      }
-    });
 
-    await modal.present();
-
-
-  }
 
 
 
