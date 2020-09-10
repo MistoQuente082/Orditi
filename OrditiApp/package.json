@@ -34,6 +34,7 @@
     "@ionic/storage": "^2.2.0",
     "br-mask": "0.0.8",
     "cordova": "^9.0.0",
+    "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-geolocation": "^4.0.2",
@@ -52,6 +53,7 @@
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "^6.6.0",
     "tslib": "^1.13.0",
+    "xcode": "^3.0.1",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -69,7 +71,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.2.2",
-    "cordova-android": "^9.0.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
@@ -108,7 +109,8 @@
       "cordova-plugin-inappbrowser": {},
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "cordova-plugin-add-swift-support": {}
     },
     "platforms": [
       "browser",
